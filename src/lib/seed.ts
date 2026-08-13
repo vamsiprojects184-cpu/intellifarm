@@ -15,7 +15,7 @@ async function main() {
   if (!admin) {
     admin = await db.user.create({
       data: {
-        fullName: "Eco Crop Admin",
+        fullName: "System Administrator",
         email: adminEmail,
         mobile: "9000000000",
         passwordHash: await hashPassword("admin123"),
@@ -26,6 +26,11 @@ async function main() {
       },
     });
     console.log("  ✓ Admin created (admin@ecocrop.farm / admin123)");
+  } else {
+    admin = await db.user.update({
+      where: { email: adminEmail },
+      data: { fullName: "System Administrator" },
+    });
   }
 
   // Demo farmer
@@ -34,7 +39,7 @@ async function main() {
   if (!farmer) {
     farmer = await db.user.create({
       data: {
-        fullName: "Ramesh Patil",
+        fullName: "Ramesh Kumar",
         email: farmerEmail,
         mobile: "9000000001",
         passwordHash: await hashPassword("farmer123"),
@@ -49,6 +54,11 @@ async function main() {
       },
     });
     console.log("  ✓ Demo farmer created (farmer@ecocrop.farm / farmer123)");
+  } else {
+    farmer = await db.user.update({
+      where: { email: farmerEmail },
+      data: { fullName: "Ramesh Kumar" },
+    });
   }
 
   // Demo expert
@@ -57,7 +67,7 @@ async function main() {
   if (!expertUser) {
     expertUser = await db.user.create({
       data: {
-        fullName: "Dr. Anjali Deshmukh",
+        fullName: "Dr. Anjali Sharma",
         email: expertEmail,
         mobile: "9000000002",
         passwordHash: await hashPassword("expert123"),
@@ -79,6 +89,11 @@ async function main() {
       },
     });
     console.log("  ✓ Demo expert created (expert@ecocrop.farm / expert123)");
+  } else {
+    expertUser = await db.user.update({
+      where: { email: expertEmail },
+      data: { fullName: "Dr. Anjali Sharma" },
+    });
   }
 
   // ---------- Crop database ----------

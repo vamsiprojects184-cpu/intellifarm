@@ -17,34 +17,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eco Crop — Smart Agriculture & Rural Development Platform",
+  title: "IntelliFarm — AI-Powered Smart Farming Platform",
   description:
-    "Eco Crop is an intelligent agriculture platform helping farmers make better decisions with AI-based recommendations, crop management, smart irrigation, weather intelligence, crop disease detection, and market insights.",
+    "IntelliFarm is an intelligent agriculture platform helping farmers make smarter decisions with AI recommendations, crop management, smart irrigation, weather intelligence, disease detection, and real-time market insights.",
   keywords: [
-    "Eco Crop",
-    "smart agriculture",
-    "farming",
+    "IntelliFarm",
+    "smart farming",
+    "AI agriculture",
     "crop management",
-    "irrigation",
+    "smart irrigation",
     "crop disease detection",
     "agriculture platform",
     "farm analytics",
+    "precision farming",
   ],
-  authors: [{ name: "Eco Crop Team" }],
+  authors: [{ name: "IntelliFarm Team" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Eco Crop — Smart Agriculture Platform",
+    title: "IntelliFarm — AI-Powered Smart Farming Platform",
     description:
-      "AI-powered agriculture platform for modern farmers. Crop management, smart irrigation, disease detection & market intelligence.",
-    siteName: "Eco Crop",
+      "AI-powered precision farming platform. Crop management, smart irrigation, disease detection & market intelligence — all in one place.",
+    siteName: "IntelliFarm",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eco Crop — Smart Agriculture Platform",
-    description: "AI-powered agriculture platform for modern farmers.",
+    title: "IntelliFarm — AI-Powered Smart Farming Platform",
+    description: "AI-powered precision farming platform for modern farmers.",
   },
 };
 

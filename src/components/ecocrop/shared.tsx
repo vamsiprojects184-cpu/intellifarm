@@ -124,7 +124,7 @@ export function HealthScoreRing({ score, size = 120 }: { score: number; size?: n
   const circ = 2 * Math.PI * radius;
   const offset = circ - (score / 100) * circ;
   const color =
-    score >= 85 ? "#16a34a" : score >= 70 ? "#65a30d" : score >= 50 ? "#d97706" : "#dc2626";
+    score >= 85 ? "#10B981" : score >= 70 ? "#34D399" : score >= 50 ? "#F59E0B" : "#EF4444";
   const label =
     score >= 85 ? "Excellent" : score >= 70 ? "Good" : score >= 50 ? "Needs Attention" : "Critical";
   return (
@@ -136,7 +136,7 @@ export function HealthScoreRing({ score, size = 120 }: { score: number; size?: n
           r={radius}
           fill="none"
           stroke="currentColor"
-          strokeWidth="8"
+          strokeWidth="6"
           className="text-muted"
         />
         <circle
@@ -145,7 +145,7 @@ export function HealthScoreRing({ score, size = 120 }: { score: number; size?: n
           r={radius}
           fill="none"
           stroke={color}
-          strokeWidth="8"
+          strokeWidth="6"
           strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={offset}
@@ -153,10 +153,10 @@ export function HealthScoreRing({ score, size = 120 }: { score: number; size?: n
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold" style={{ color }}>
+        <span className="text-2xl font-black tracking-tight" style={{ color }}>
           {score}
         </span>
-        <span className="text-[10px] font-medium text-muted-foreground">{label}</span>
+        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label}</span>
       </div>
     </div>
   );
@@ -175,11 +175,11 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="neo-raised mb-3 flex h-14 w-14 items-center justify-center rounded-2xl">
-        <Icon className="h-7 w-7 text-muted-foreground" />
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
+        <Icon className="h-5 w-5" />
       </div>
-      <h3 className="text-base font-semibold">{title}</h3>
-      <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
+      <h3 className="text-sm font-bold text-foreground">{title}</h3>
+      <p className="mt-1 max-w-xs text-xs text-muted-foreground leading-relaxed">{description}</p>
       {action && <div className="mt-4">{action}</div>}
     </div>
   );

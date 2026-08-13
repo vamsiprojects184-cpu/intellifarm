@@ -1,7 +1,7 @@
 "use client";
 
 // ============================================================
-// ECO CROP — MULTI-LANGUAGE TRANSLATION SYSTEM
+// INTELLIFARM — MULTI-LANGUAGE TRANSLATION SYSTEM
 // Supported: English (en), Telugu (te), Tamil (ta), Hindi (hi)
 // ============================================================
 
@@ -21,7 +21,7 @@ type Dict = Record<string, string>;
 // ============================================================
 const en: Dict = {
   // App
-  "app.name": "Eco Crop",
+  "app.name": "IntelliFarm",
   "app.tagline": "Smart Agriculture Platform",
   "app.farmerPortal": "Farmer Portal",
   "app.expertPortal": "Expert Portal",
@@ -45,8 +45,8 @@ const en: Dict = {
   "auth.primaryCrop": "Primary Crop",
   "auth.farmSize": "Farm Size (acres)",
   "auth.createAccount": "Create Account",
-  "auth.welcomeBack": "Welcome back to Eco Crop!",
-  "auth.welcomeTo": "Welcome to Eco Crop! Your journey begins.",
+  "auth.welcomeBack": "Welcome back to IntelliFarm!",
+  "auth.welcomeTo": "Welcome to IntelliFarm! Your journey begins.",
   "auth.logout": "Logout",
   "auth.quickDemo": "Quick demo login:",
   "auth.accountCreated": "Account created successfully",
@@ -103,7 +103,7 @@ const en: Dict = {
   "dash.viewAll": "View all",
   "dash.allCaughtUp": "All caught up!",
   "dash.noPending": "No pending recommendations. Click 'Refresh insights' to regenerate.",
-  "dash.onboardingTitle": "Welcome to Eco Crop! Let's set up your first farm.",
+  "dash.onboardingTitle": "Welcome to IntelliFarm! Let's set up your first farm.",
   "dash.onboardingDesc": "Create a farm to start tracking crops, get weather insights, irrigation recommendations and AI disease detection.",
   "dash.createFarm": "Create Farm",
 
@@ -135,7 +135,7 @@ const en: Dict = {
   "settings.notifications": "Notifications",
   "settings.notificationsOn": "In-app notifications enabled",
   "settings.accountStatus": "Account Status",
-  "settings.about": "About Eco Crop",
+  "settings.about": "About IntelliFarm",
   "settings.aboutDesc": "Smart Agriculture & Rural Development Platform v1.0. Built with Next.js, Prisma & AI-powered insights.",
 
   // Profile
@@ -151,7 +151,7 @@ const en: Dict = {
   "landing.heroTitle": "Smart technology for",
   "landing.heroHighlight": "complex farming",
   "landing.heroHighlight2": "problems",
-  "landing.heroDesc": "Eco Crop helps farmers make better decisions with AI recommendations, smart irrigation, disease detection, weather intelligence and market insights — all in one simple, mobile-first platform.",
+  "landing.heroDesc": "IntelliFarm helps farmers make better decisions with AI recommendations, smart irrigation, disease detection, weather intelligence and market insights — all in one simple, mobile-first platform.",
   "landing.startFree": "Start Free",
   "landing.tryDemo": "Try Demo Account",
   "landing.noCreditCard": "No credit card",
@@ -159,7 +159,7 @@ const en: Dict = {
   "landing.mobileFirst": "Mobile-first",
   "landing.featuresTitle": "Everything a modern farm needs",
   "landing.featuresDesc": "Twelve powerful modules working together to increase yield, save water and reduce farming risks.",
-  "landing.howTitle": "How Eco Crop works",
+  "landing.howTitle": "How IntelliFarm works",
   "landing.howDesc": "From sign-up to harvest-ready insights in four simple steps.",
   "landing.step1": "Register & Create Farm",
   "landing.step1Desc": "Sign up as a farmer, add your farm with location, soil type, irrigation and water source details.",
@@ -170,11 +170,11 @@ const en: Dict = {
   "landing.step4": "Track & Improve Yield",
   "landing.step4Desc": "Monitor farm health score, log activities, consult experts, check market prices and apply schemes.",
   "landing.architecture": "Built on a modular, secure architecture",
-  "landing.archDesc": "Eco Crop is engineered so IoT devices, AI models, weather providers and new agricultural services can be added later — without rebuilding the platform.",
+  "landing.archDesc": "IntelliFarm is engineered so IoT devices, AI models, weather providers and new agricultural services can be added later — without rebuilding the platform.",
   "landing.testimonials": "Trusted by farmers across India",
-  "landing.testimonialsDesc": "Real impact for real farmers. Here's what they say about Eco Crop.",
+  "landing.testimonialsDesc": "Real impact for real farmers. Here's what they say about IntelliFarm.",
   "landing.ctaTitle": "Ready to grow smarter?",
-  "landing.ctaDesc": "Join Eco Crop today and transform how you farm with data-driven decisions.",
+  "landing.ctaDesc": "Join IntelliFarm today and transform how you farm with data-driven decisions.",
   "landing.createAccount": "Create your account",
   "landing.loginDemo": "Login with demo",
   "landing.contact": "Get in touch",

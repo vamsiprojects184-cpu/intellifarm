@@ -44,127 +44,133 @@
 }
 
 /* ============================================================
-   ECO CROP — NEOMORPHISM DESIGN SYSTEM
+   INTELLIFARM — DARK NAVY, ELECTRIC BLUE & AMBER SYSTEM
    ============================================================ */
 
 :root {
-  --radius: 1rem;
+  --radius: 0.75rem;
 
-  /* Backgrounds — Ivory / Plaster */
-  --plaster: #F5F2EB;
-  --plaster-dark: #EBE8E0;
+  /* Base surfaces */
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
 
-  /* Primary Accents — Deep Forest / Eucalyptus & Moss */
-  --eucalyptus: #1F3A34;
-  --moss: #2A4A42;
+  /* Navy — primary brand */
+  --navy-900: #0F172A;
+  --navy-800: #1E293B;
+  --navy-700: #334155;
+  --navy-600: #475569;
 
-  /* Soft Gold — Highlights & Callouts */
-  --gold: #C8A96A;
-  --gold-hover: #B08E45;
+  /* Electric Blue — interactive / CTA */
+  --blue-600: #2563EB;
+  --blue-500: #3B82F6;
+  --blue-400: #60A5FA;
+  --blue-100: #DBEAFE;
 
-  /* Typography — Soot & Mist */
-  --soot: #2B2B2B;
-  --mist: #7A7A7A;
+  /* Amber — accent / highlights */
+  --amber-500: #F59E0B;
+  --amber-400: #FBBF24;
+  --amber-100: #FEF3C7;
 
-  /* Neumorphic Shadows — Light Mode */
-  --neo-shadow-light: #ffffff;
-  --neo-shadow-dark: #ccc8be;
+  /* Text */
+  --ink: #0F172A;
+  --ink-muted: #64748B;
 
   /* Semantic mapping */
-  --background: var(--plaster);
-  --foreground: var(--soot);
-  --card: var(--plaster);
-  --card-foreground: var(--soot);
-  --popover: var(--plaster);
-  --popover-foreground: var(--soot);
-  --primary: var(--eucalyptus);
-  --primary-foreground: #F5F2EB;
-  --secondary: var(--plaster-dark);
-  --secondary-foreground: var(--eucalyptus);
-  --muted: var(--plaster-dark);
-  --muted-foreground: var(--mist);
-  --accent: var(--gold);
-  --accent-foreground: var(--eucalyptus);
-  --destructive: #C04A3F;
-  --border: transparent;
-  --input: var(--plaster-dark);
-  --ring: var(--gold);
+  --background: var(--slate-50);
+  --foreground: var(--ink);
+  --card: #FFFFFF;
+  --card-foreground: var(--ink);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--ink);
+  --primary: var(--blue-600);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--slate-100);
+  --secondary-foreground: var(--navy-800);
+  --muted: var(--slate-100);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--amber-500);
+  --accent-foreground: var(--navy-900);
+  --destructive: #DC2626;
+  --border: var(--slate-200);
+  --input: var(--slate-100);
+  --ring: var(--blue-500);
 
   /* Charts */
-  --chart-1: #1F3A34;
-  --chart-2: #2A4A42;
-  --chart-3: #C8A96A;
-  --chart-4: #5B7D6E;
-  --chart-5: #8BA89B;
+  --chart-1: #2563EB;
+  --chart-2: #10B981;
+  --chart-3: #F59E0B;
+  --chart-4: #8B5CF6;
+  --chart-5: #EF4444;
 
   /* Sidebar */
-  --sidebar: var(--plaster);
-  --sidebar-foreground: var(--soot);
-  --sidebar-primary: var(--eucalyptus);
-  --sidebar-primary-foreground: #F5F2EB;
-  --sidebar-accent: var(--plaster-dark);
-  --sidebar-accent-foreground: var(--eucalyptus);
-  --sidebar-border: transparent;
-  --sidebar-ring: var(--gold);
+  --sidebar: var(--navy-900);
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: var(--blue-500);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--navy-800);
+  --sidebar-accent-foreground: #F1F5F9;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: var(--blue-400);
 }
 
 .dark {
-  /* Backgrounds — Dark Forest */
-  --plaster: #141E1B;
-  --plaster-dark: #1E2A26;
+  --slate-50: #0B1120;
+  --slate-100: #111827;
+  --slate-200: #1F2937;
+  --slate-300: #374151;
 
-  /* Eucalyptus & Moss — Lighter for dark mode */
-  --eucalyptus: #3D6B5E;
-  --moss: #3D6B5E;
+  --navy-900: #F1F5F9;
+  --navy-800: #E2E8F0;
+  --navy-700: #CBD5E1;
+  --navy-600: #94A3B8;
 
-  /* Soft Gold — Brighter for contrast */
-  --gold: #D4B87A;
-  --gold-hover: #C0A060;
+  --blue-600: #3B82F6;
+  --blue-500: #60A5FA;
+  --blue-400: #93C5FD;
+  --blue-100: #1E3A5F;
 
-  /* Ivory Text */
-  --soot: #E8E5DC;
-  --mist: #B5B2A8;
+  --amber-500: #FBBF24;
+  --amber-400: #FCD34D;
+  --amber-100: #2D1F00;
 
-  /* Neumorphic Shadows — Dark Mode */
-  --neo-shadow-light: #1e2a26;
-  --neo-shadow-dark: #0a1210;
+  --ink: #F1F5F9;
+  --ink-muted: #94A3B8;
 
-  /* Semantic mapping */
-  --background: var(--plaster);
-  --foreground: var(--soot);
-  --card: var(--plaster-dark);
-  --card-foreground: var(--soot);
-  --popover: var(--plaster-dark);
-  --popover-foreground: var(--soot);
-  --primary: var(--eucalyptus);
-  --primary-foreground: #141E1B;
-  --secondary: var(--plaster-dark);
-  --secondary-foreground: var(--soot);
-  --muted: var(--plaster-dark);
-  --muted-foreground: var(--mist);
-  --accent: var(--gold);
-  --accent-foreground: var(--plaster);
-  --destructive: #D45F4F;
-  --border: transparent;
-  --input: var(--plaster-dark);
-  --ring: var(--gold);
+  --background: var(--slate-50);
+  --foreground: var(--ink);
+  --card: #111827;
+  --card-foreground: var(--ink);
+  --popover: #111827;
+  --popover-foreground: var(--ink);
+  --primary: var(--blue-500);
+  --primary-foreground: #0F172A;
+  --secondary: var(--slate-200);
+  --secondary-foreground: var(--navy-800);
+  --muted: var(--slate-200);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--amber-500);
+  --accent-foreground: var(--slate-50);
+  --destructive: #F87171;
+  --border: #1F2937;
+  --input: var(--slate-200);
+  --ring: var(--blue-500);
 
-  /* Charts */
-  --chart-1: #3D6B5E;
-  --chart-2: #5B8B7D;
-  --chart-3: #D4B87A;
-  --chart-4: #7BA090;
-  --chart-5: #A8C4B8;
+  --chart-1: #60A5FA;
+  --chart-2: #34D399;
+  --chart-3: #FBBF24;
+  --chart-4: #A78BFA;
+  --chart-5: #F87171;
 
-  /* Sidebar */
-  --sidebar: var(--plaster);
-  --sidebar-foreground: var(--soot);
-  --sidebar-primary: var(--eucalyptus);
-  --sidebar-primary-foreground: #141E1B;
-  --sidebar-accent: var(--plaster-dark);
-  --sidebar-accent-foreground: var(--soot);
-  --sidebar-border: transparent;
-  --sidebar-ring: var(--gold);
+  --sidebar: #090E1A;
+  --sidebar-foreground: #CBD5E1;
+  --sidebar-primary: var(--blue-500);
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #111827;
+  --sidebar-accent-foreground: #E2E8F0;
+  --sidebar-border: #1F2937;
+  --sidebar-ring: var(--blue-400);
 }
 
 @layer base {
@@ -178,283 +184,205 @@
 }
 
 /* ============================================================
-   NEOMORPHISM COMPONENTS
+   INTELLIFARM COMPONENT CLASSES
    ============================================================ */
 
-/* Base neumorphic surface — extruded/raised */
-.neo-raised {
-  background: var(--plaster);
+/* Flat cards with subtle border + shadow */
+.if-card {
+  background: var(--card);
   border-radius: var(--radius);
-  box-shadow:
-    6px 6px 12px var(--neo-shadow-dark),
-    -6px -6px 12px var(--neo-shadow-light);
-  border: none;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.dark .neo-raised {
-  background: var(--plaster-dark);
-  box-shadow:
-    6px 6px 12px var(--neo-shadow-dark),
-    -6px -6px 12px var(--neo-shadow-light);
+.if-card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.06);
+  transform: translateY(-1px);
 }
 
-/* Inset/pressed neumorphic surface */
-.neo-inset {
-  background: var(--plaster);
+.dark .if-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.dark .if-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Raised surface (stronger shadow) */
+.if-raised {
+  background: var(--card);
   border-radius: var(--radius);
-  box-shadow:
-    inset 4px 4px 8px var(--neo-shadow-dark),
-    inset -4px -4px 8px var(--neo-shadow-light);
-  border: none;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
 }
 
-.dark .neo-inset {
-  background: var(--plaster-dark);
-  box-shadow:
-    inset 4px 4px 8px var(--neo-shadow-dark),
-    inset -4px -4px 8px var(--neo-shadow-light);
+.dark .if-raised {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Small raised — for buttons, badges */
-.neo-raised-sm {
-  background: var(--plaster);
-  border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    3px 3px 6px var(--neo-shadow-dark),
-    -3px -3px 6px var(--neo-shadow-light);
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.neo-raised-sm:hover {
-  box-shadow:
-    4px 4px 8px var(--neo-shadow-dark),
-    -4px -4px 8px var(--neo-shadow-light);
-}
-
-.neo-raised-sm:active {
-  box-shadow:
-    inset 2px 2px 4px var(--neo-shadow-dark),
-    inset -2px -2px 4px var(--neo-shadow-light);
-}
-
-.dark .neo-raised-sm {
-  background: var(--plaster-dark);
-}
-
-/* Small inset — for inputs, search bars */
-.neo-inset-sm {
-  background: var(--plaster);
-  border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    inset 2px 2px 4px var(--neo-shadow-dark),
-    inset -2px -2px 4px var(--neo-shadow-light);
-  border: none;
-}
-
-.dark .neo-inset-sm {
-  background: var(--plaster-dark);
-}
-
-/* Card — neumorphic raised */
-.neo-card {
-  background: var(--plaster);
+/* Inset surface */
+.if-inset {
+  background: var(--muted);
   border-radius: var(--radius);
-  box-shadow:
-    5px 5px 10px var(--neo-shadow-dark),
-    -5px -5px 10px var(--neo-shadow-light);
+  border: 1px solid var(--border);
+}
+
+/* Small raised */
+.if-raised-sm {
+  background: var(--card);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+  transition: all 0.15s ease;
+}
+
+.if-raised-sm:hover {
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12);
+  transform: translateY(-1px);
+}
+
+.if-raised-sm:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+/* Nav — sidebar dark */
+.if-nav {
+  background: transparent;
+  border-radius: calc(var(--radius) - 2px);
   border: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dark .neo-card {
-  background: var(--plaster-dark);
+.if-nav:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF !important;
 }
 
-/* Nav item — flat by default, raised on hover */
-.neo-nav {
-  background: transparent;
-  border-radius: calc(var(--radius) - 4px);
+/* Active nav */
+.if-nav-active {
+  background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-500) 100%);
+  color: #FFFFFF !important;
+  border-radius: calc(var(--radius) - 2px);
   border: none;
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  position: relative;
 }
 
-.neo-nav:hover {
-  box-shadow:
-    3px 3px 6px var(--neo-shadow-dark),
-    -3px -3px 6px var(--neo-shadow-light);
+.if-nav-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 25%;
+  height: 50%;
+  width: 3.5px;
+  background: #FFFFFF;
+  border-radius: 0 4px 4px 0;
 }
 
-.dark .neo-nav {
-  background: transparent;
+.dark .if-nav-active {
+  background: linear-gradient(135deg, var(--blue-500) 0%, var(--blue-400) 100%);
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.25);
 }
 
-/* Active nav — pressed/inset with primary color */
-.neo-nav-active {
-  background: var(--eucalyptus);
-  color: var(--plaster);
-  border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    inset 3px 3px 6px rgba(0, 0, 0, 0.25),
-    inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+/* Primary button */
+.if-btn-primary {
+  background: var(--blue-600);
+  color: #FFFFFF;
+  border-radius: calc(var(--radius) - 2px);
   border: none;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  transition: all 0.15s ease;
 }
 
-.dark .neo-nav-active {
-  background: var(--eucalyptus);
-  color: var(--plaster);
+.if-btn-primary:hover {
+  background: var(--blue-500);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+  transform: translateY(-1px);
 }
 
-/* Primary button — eucalyptus with neumorphic shadow */
-.neo-btn-primary {
-  background: var(--eucalyptus);
-  color: var(--plaster);
-  border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    3px 3px 6px var(--neo-shadow-dark),
-    -3px -3px 6px var(--neo-shadow-light);
+/* Amber button */
+.if-btn-amber {
+  background: var(--amber-500);
+  color: var(--navy-900);
+  border-radius: calc(var(--radius) - 2px);
   border: none;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  transition: all 0.15s ease;
 }
 
-.neo-btn-primary:hover {
-  background: var(--moss);
-  box-shadow:
-    4px 4px 8px var(--neo-shadow-dark),
-    -4px -4px 8px var(--neo-shadow-light);
+.if-btn-amber:hover {
+  background: var(--amber-400);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
 }
 
-.neo-btn-primary:active {
-  box-shadow:
-    inset 2px 2px 4px rgba(0, 0, 0, 0.3),
-    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+/* Sidebar structure */
+.if-sidebar {
+  background: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border);
 }
 
-/* Gold button */
-.neo-btn-gold {
-  background: var(--gold);
-  color: var(--eucalyptus);
-  border-radius: calc(var(--radius) - 4px);
-  box-shadow:
-    3px 3px 6px var(--neo-shadow-dark),
-    -3px -3px 6px var(--neo-shadow-light);
-  border: none;
-  transition: all 0.2s ease;
+/* Top bar / bottom bar */
+.if-topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
 }
 
-.neo-btn-gold:hover {
-  background: var(--gold-hover);
+.if-bottomnav {
+  background: var(--card);
+  border-top: 1px solid var(--border);
 }
 
-/* Badge — inset */
-.neo-badge {
-  border-radius: 9999px;
-  box-shadow:
-    inset 1px 1px 2px var(--neo-shadow-dark),
-    inset -1px -1px 2px var(--neo-shadow-light);
-  border: none;
-}
-
-/* Sidebar container */
-.neo-sidebar {
-  background: var(--plaster);
-}
-
-.dark .neo-sidebar {
-  background: var(--plaster);
-}
-
-/* Top bar */
-.neo-topbar {
-  background: var(--plaster);
-  border-bottom: none;
-}
-
-.dark .neo-topbar {
-  background: var(--plaster);
-}
-
-/* Bottom nav */
-.neo-bottomnav {
-  background: var(--plaster);
-  border-top: none;
-}
-
-.dark .neo-bottomnav {
-  background: var(--plaster);
-}
-
-/* Icon container — raised circle */
-.neo-icon {
-  border-radius: var(--radius);
-  box-shadow:
-    3px 3px 6px var(--neo-shadow-dark),
-    -3px -3px 6px var(--neo-shadow-light);
-  border: none;
-}
-
-/* Gold accent text */
-.text-gold {
-  color: var(--gold);
-}
-
-.text-eucalyptus {
-  color: var(--eucalyptus);
-}
-
-/* Gradient text — eucalyptus to gold */
-.text-gradient {
-  background: linear-gradient(135deg, var(--eucalyptus), var(--gold));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
-
-.eco-scroll::-webkit-scrollbar {
+/* Scrollbar styling */
+.if-scroll::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.eco-scroll::-webkit-scrollbar-track {
+
+.if-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
-.eco-scroll::-webkit-scrollbar-thumb {
-  background: var(--eucalyptus);
+
+.if-scroll::-webkit-scrollbar-thumb {
+  background: var(--navy-700);
   border-radius: 9999px;
 }
-.eco-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--moss);
+
+.if-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-500);
 }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-
-@keyframes eco-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+/* Custom indicator circles */
+.if-circle-indicator {
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.animate-float { animation: eco-float 6s ease-in-out infinite; }
 
-@keyframes eco-grow {
-  0% { transform: scaleY(0.4); opacity: 0.6; }
-  100% { transform: scaleY(1); opacity: 1; }
-}
-.animate-grow { animation: eco-grow 0.5s ease-out; transform-origin: bottom; }
-
-@keyframes neo-pulse {
-  0%, 100% {
-    box-shadow:
-      5px 5px 10px var(--neo-shadow-dark),
-      -5px -5px 10px var(--neo-shadow-light);
-  }
-  50% {
-    box-shadow:
-      3px 3px 6px var(--neo-shadow-dark),
-      -3px -3px 6px var(--neo-shadow-light);
-  }
-}
-.animate-neo-pulse { animation: neo-pulse 3s ease-in-out infinite; }
+/* Backward compat mappings */
+.neo-raised       { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+.neo-raised-sm    { background: var(--card); border-radius: calc(var(--radius) - 2px); border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08); transition: all 0.15s ease; }
+.neo-raised-sm:hover { box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12); }
+.neo-inset        { background: var(--muted); border-radius: var(--radius); border: 1px solid var(--border); }
+.neo-inset-sm     { background: var(--muted); border-radius: calc(var(--radius) - 2px); border: 1px solid var(--border); }
+.neo-card         { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(15,23,42,0.06); transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.neo-card:hover   { box-shadow: 0 4px 12px rgba(15,23,42,0.1); transform: translateY(-1px); }
+.neo-nav          { background: transparent; border-radius: calc(var(--radius) - 2px); border: none; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.neo-nav:hover    { transform: translateX(4px); background: rgba(255, 255, 255, 0.05); color: #FFFFFF !important; }
+.neo-nav-active   { background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-500) 100%); color: #FFFFFF !important; border-radius: calc(var(--radius) - 2px); border: none; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); position: relative; }
+.neo-nav-active::before { content: ''; position: absolute; left: 0; top: 25%; height: 50%; width: 3.5px; background: #FFFFFF; border-radius: 0 4px 4px 0; }
+.neo-btn-primary  { background: var(--blue-600); color: #FFFFFF; border-radius: calc(var(--radius) - 2px); border: none; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: all 0.15s ease; }
+.neo-btn-gold     { background: var(--amber-500); color: var(--navy-900); border-radius: calc(var(--radius) - 2px); border: none; transition: all 0.15s ease; }
+.neo-badge        { border-radius: 6px; border: 1px solid var(--border); }
+.neo-sidebar      { background: var(--sidebar); border-right: 1px solid var(--sidebar-border); }
+.neo-topbar       { background: var(--card); border-bottom: 1px solid var(--border); }
+.neo-bottomnav    { background: var(--card); border-top: 1px solid var(--border); }
+.neo-icon         { border-radius: calc(var(--radius) - 2px); display: flex; align-items: center; justify-content: center; }
+.eco-scroll::-webkit-scrollbar { width: 6px; }
+.eco-scroll::-webkit-scrollbar-track { background: transparent; }
+.eco-scroll::-webkit-scrollbar-thumb { background: var(--navy-700); border-radius: 9999px; }
+.eco-scroll::-webkit-scrollbar-thumb:hover { background: var(--blue-500); }

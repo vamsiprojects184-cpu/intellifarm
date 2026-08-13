@@ -40,9 +40,9 @@ export const SCHEME_CATEGORIES = [
   "INCOME_SUPPORT",
 ];
 
-export function formatDate(d: string | Date | null | undefined, withTime = false) {
+export function formatDate(d: string | Date | number | null | undefined, withTime = false) {
   if (!d) return "—";
-  const date = typeof d === "string" ? new Date(d) : d;
+  const date = d instanceof Date ? d : new Date(d);
   if (isNaN(date.getTime())) return "—";
   if (withTime) {
     return date.toLocaleString("en-IN", {
@@ -55,9 +55,9 @@ export function formatDate(d: string | Date | null | undefined, withTime = false
   return date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 }
 
-export function timeAgo(d: string | Date | null | undefined) {
+export function timeAgo(d: string | Date | number | null | undefined) {
   if (!d) return "—";
-  const date = typeof d === "string" ? new Date(d) : d;
+  const date = d instanceof Date ? d : new Date(d);
   if (isNaN(date.getTime())) return "—";
   const diff = Date.now() - date.getTime();
   if (diff < 0) return "just now";
