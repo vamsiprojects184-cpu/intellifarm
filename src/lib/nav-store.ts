@@ -21,6 +21,8 @@ export type FarmerView =
   | "crop-calendar"
   | "pests"
   | "expenses"
+  | "tasks"
+  | "farm-map"
   | "profile"
   | "settings";
 

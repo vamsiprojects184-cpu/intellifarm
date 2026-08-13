@@ -633,6 +633,40 @@ async function main() {
         }
       }
     }
+
+    // Demo tasks (independent of expense block)
+    const existingTask2 = await db.farmTask.findFirst({ where: { farmId: demoFarm.id } });
+    if (!existingTask2) {
+      const demoCrop3 = await db.crop.findFirst({ where: { farmId: demoFarm.id } });
+      const now = Date.now();
+      const tasks = [
+        { title: "Apply NPK fertilizer", description: "Basal dose for tomato plot", category: "FERTILIZER", priority: "HIGH", dueDate: new Date(now + 1 * 86400000), cropId: demoCrop3?.id ?? null },
+        { title: "Inspect for aphids", description: "Check lower leaves for pest infestation", category: "INSPECTION", priority: "MEDIUM", dueDate: new Date(now + 2 * 86400000), cropId: demoCrop3?.id ?? null },
+        { title: "Drip irrigation check", description: "Clean filters and check emitters", category: "IRRIGATION", priority: "LOW", dueDate: new Date(now + 3 * 86400000) },
+        { title: "Harvest tomatoes", description: "First harvest of ready fruits", category: "HARVEST", priority: "HIGH", dueDate: new Date(now + 10 * 86400000), cropId: demoCrop3?.id ?? null },
+        { title: "Soil moisture check", description: "Manual reading and log", category: "INSPECTION", priority: "MEDIUM", dueDate: new Date(now - 1 * 86400000), cropId: demoCrop3?.id ?? null, completed: true },
+      ];
+      for (const t of tasks) {
+        await db.farmTask.create({
+          data: { ...t, farmId: demoFarm.id, userId: farmer.id, completedAt: t.completed ? new Date(t.dueDate) : null },
+        });
+      }
+      console.log("  ✓ Demo tasks added (5 records)");
+    }
+
+    // Demo plots (independent)
+    const existingPlot2 = await db.farmPlot.findFirst({ where: { farmId: demoFarm.id } });
+    if (!existingPlot2) {
+      const plots = [
+        { name: "Plot A - Tomato", cropName: "Tomato", areaAcres: 1.5, x: 5, y: 5, width: 40, height: 35, color: "#16a34a", soilType: "LOAMY", currentCrop: "Tomato (Pusa Ruby)", notes: "Main tomato plot with drip irrigation" },
+        { name: "Plot B - Onion", cropName: "Onion", areaAcres: 1.0, x: 50, y: 5, width: 45, height: 35, color: "#ca8a04", soilType: "LOAMY", currentCrop: "Onion (Nashik Red)", notes: "Onion nursery and main field" },
+        { name: "Plot C - Fallow", cropName: null, areaAcres: 1.0, x: 5, y: 50, width: 90, height: 45, color: "#a3a3a3", soilType: "CLAY", currentCrop: null, notes: "Resting plot, planned for next season" },
+      ];
+      for (const p of plots) {
+        await db.farmPlot.create({ data: { ...p, farmId: demoFarm.id } });
+      }
+      console.log("  ✓ Demo plots added (3 field plots)");
+    }
   }
 
   console.log("✅ Seeding complete!");

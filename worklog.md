@@ -409,3 +409,52 @@ Stage Summary:
 - Landing page expanded (12 features + testimonials)
 - Platform now has 19 farmer views, all functional
 - Lint clean, 0 errors, deploy-ready
+
+---
+
+## Phase 5 — Tasks/Reminders & Farm Map (Cron Round 3)
+
+Task ID: 8
+Agent: main (webDevReview cron)
+Task: Assess status, QA, add Task Manager & Farm Map modules.
+
+### Current Project Status Assessment
+- Platform stable from Phase 4 (19 farmer views, Pest Control + Expenses modules)
+- QA sweep of all 19 views confirmed 0 errors, all 200
+- Dev server healthy, lint clean
+
+### New Features Added
+
+1. **Task & Reminder Manager** (`tasks` view + API)
+   - New `FarmTask` Prisma model: title, description, category (PLANTING/IRRIGATION/FERTILIZER/PESTICIDE/HARVEST/INSPECTION/OTHER), priority (LOW/MEDIUM/HIGH), dueDate, completed, completedAt
+   - POST `/api/v1/tasks` — create task with due date
+   - GET `/api/v1/tasks?status=pending|completed|all` — list with summary (total, pending, completed, overdue, dueToday)
+   - PATCH `/api/v1/tasks/[id]` — toggle complete (auto-logs activity when completed), update fields
+   - DELETE `/api/v1/tasks/[id]`
+   - UI: summary stat cards (Pending, Overdue, Due Today, Completed), filter buttons, task cards with checkbox toggle, category emoji icons, priority badges, OVERDUE/TODAY indicators, color-coded left borders
+
+2. **Farm Map / Field Layout** (`farm-map` view + API)
+   - New `FarmPlot` Prisma model: name, cropName, areaAcres, position (x, y, width, height as percentages on 0-100 grid), color, soilType, currentCrop, notes
+   - POST `/api/v1/plots` — create plot with grid position
+   - GET `/api/v1/plots?farmId=` — list plots for a farm
+   - PATCH `/api/v1/plots/[id]` — update plot
+   - DELETE `/api/v1/plots/[id]`
+   - UI: visual grid-based farm map (10x10 grid, aspect-4/3), plots rendered as positioned colored rectangles with crop icons, hover-to-delete, plot detail cards below, form with color picker and position inputs
+
+### Database Changes
+- 2 new models: FarmTask, FarmPlot
+- Farm/Crop/User models: added tasks + plots relations
+- Schema pushed, Prisma client regenerated
+- Seed updated: 5 demo tasks (NPK fertilizer, aphid inspection, irrigation check, harvest, soil moisture) + 3 demo plots (Tomato, Onion, Fallow)
+
+### Verification Results
+- All 19 farmer views load with 0 console errors (including 2 new views)
+- APIs tested: tasks (5 records, summary with overdue/today), plots (3 plots with positions)
+- `bun run lint` → 0 errors, 0 warnings
+- Dev server: all 200, no errors
+
+Stage Summary:
+- 2 new feature modules (Tasks/Reminders, Farm Map)
+- 5 demo tasks + 3 demo plots seeded
+- Platform now has 21 farmer views, all functional
+- Lint clean, 0 errors, deploy-ready

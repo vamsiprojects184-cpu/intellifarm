@@ -19,6 +19,8 @@ import { HarvestsView } from "./harvests";
 import { CropCalendarView } from "./crop-calendar";
 import { PestsView } from "./pests";
 import { ExpensesView } from "./expenses";
+import { TasksView } from "./tasks";
+import { FarmMapView } from "./farm-map";
 import { ProfileView } from "./profile";
 import { SettingsView } from "./settings";
 
@@ -61,6 +63,10 @@ export function FarmerViews() {
       return <PestsView />;
     case "expenses":
       return <ExpensesView />;
+    case "tasks":
+      return <TasksView />;
+    case "farm-map":
+      return <FarmMapView />;
     case "profile":
       return <ProfileView />;
     case "settings":

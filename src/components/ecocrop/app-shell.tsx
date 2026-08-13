@@ -25,6 +25,8 @@ import {
   CalendarDays,
   ShieldAlert,
   Wallet,
+  ListTodo,
+  Map as MapIcon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-store";
 import { useNav, type AppView } from "@/lib/nav-store";
@@ -61,6 +63,8 @@ const FARMER_NAV: NavItem[] = [
   { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
   { view: "pests", label: "Pest Control", icon: ShieldAlert },
   { view: "expenses", label: "Expenses", icon: Wallet },
+  { view: "tasks", label: "Tasks", icon: ListTodo },
+  { view: "farm-map", label: "Farm Map", icon: MapIcon },
   { view: "market", label: "Market Prices", icon: TrendingUp },
   { view: "schemes", label: "Govt. Schemes", icon: Landmark },
   { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },
