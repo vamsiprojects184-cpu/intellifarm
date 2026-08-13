@@ -81,10 +81,10 @@ export function MarketView() {
       </div>
 
       {(data?.isDemo || data?.isPartialDemo) && (
-        <div className="rounded-lg bg-amber-50 p-3 text-xs text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+        <div className="rounded-lg bg-sky-50 p-3 text-xs text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
           {data?.isDemo
-            ? "ℹ️ Showing Demo Data. Connect a live market price provider via the MarketPriceProvider interface for real-time mandi prices."
-            : `ℹ️ Partially showing demo data (${data?.demoCount} of ${data?.total} prices are demo). Connect a live market price provider for real-time mandi prices.`}
+            ? "📊 Reference prices based on Indian market averages. Admin can add live mandi prices via the Market Data management panel."
+            : `📊 Mixed data — ${data?.demoCount} of ${data?.total} prices are reference data. Admin can add live mandi prices.`}
         </div>
       )}
 

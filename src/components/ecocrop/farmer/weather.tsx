@@ -131,9 +131,11 @@ export function WeatherView() {
             </CardContent>
           </Card>
 
-          <p className="rounded-lg bg-amber-50 p-3 text-xs text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-            ⚠️ {weather.note}
-          </p>
+          {weather.note && (
+            <p className="rounded-lg bg-emerald-50 p-3 text-xs text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+              ✅ {weather.note}
+            </p>
+          )}
         </>
       )}
     </div>

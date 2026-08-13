@@ -62,11 +62,23 @@ export async function GET(req: NextRequest) {
   const advisory: AdvisoryItem[] = [];
 
   for (const farm of farms) {
-    // Weather-based advisory (demo weather logic)
-    const month = now.getMonth();
-    const rainySeason = month >= 5 && month <= 9;
-    const rainProb = rainySeason ? 60 + Math.floor(Math.random() * 30) : Math.floor(Math.random() * 40);
-    const temp = rainySeason ? 26 + Math.floor(Math.random() * 6) : 22 + Math.floor(Math.random() * 12);
+    // Fetch real weather data from Open-Meteo API
+    const lat = farm.latitude ?? 18.52;
+    const lon = farm.longitude ?? 73.85;
+    let rainProb = 0;
+    let temp = 28;
+
+    try {
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&daily=precipitation_probability_max&timezone=auto&forecast_days=2`;
+      const wResp = await fetch(weatherUrl, { next: { revalidate: 1800 } });
+      if (wResp.ok) {
+        const wData = await wResp.json();
+        temp = Math.round((wData.current?.temperature_2m ?? 28) * 10) / 10;
+        rainProb = Math.round(wData.daily?.precipitation_probability_max?.[1] ?? 0); // tomorrow's rain
+      }
+    } catch {
+      // Weather API unavailable — skip weather advisory
+    }
 
     if (rainProb > 70) {
       advisory.push({

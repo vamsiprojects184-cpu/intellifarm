@@ -34,30 +34,42 @@ export interface IrrigationResult {
   cropMatched: boolean;
 }
 
-// Generate a deterministic demo weather reading for the engine.
-function demoWeatherFor(farm: { latitude: number | null; longitude: number; state: string }) {
-  let h = 0;
-  const key = `${farm.latitude ?? 0}-${farm.longitude ?? 0}-${farm.state}`;
-  for (let i = 0; i < key.length; i++) h = (h << 5) - h + key.charCodeAt(i);
-  const seed = Math.abs(h);
-  const r1 = (Math.sin(seed) * 10000) % 1;
-  const r2 = (Math.sin(seed + 1) * 10000) % 1;
-  const temperature = 24 + Math.abs(r1) * 12;
-  const humidity = 50 + Math.abs(r2) * 40;
-  const month = new Date().getMonth();
-  const rainy = month >= 5 && month <= 9;
-  let rainToday = Math.abs(r1) * 100;
-  let rainTomorrow = Math.abs((Math.sin(seed + 2) * 10000)) % 1 * 100;
-  if (rainy) {
-    rainToday = Math.min(95, rainToday + 25);
-    rainTomorrow = Math.min(95, rainTomorrow + 25);
+// Fetch real weather data from Open-Meteo API (free, no key needed)
+async function fetchRealWeather(farm: { latitude: number | null; longitude: number | null; state: string }): Promise<{
+  temperature: number;
+  humidity: number;
+  rainToday: number;
+  rainTomorrow: number;
+}> {
+  const lat = farm.latitude ?? 18.52;
+  const lon = farm.longitude ?? 73.85;
+
+  try {
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation_probability&daily=precipitation_probability_max&timezone=auto&forecast_days=2`;
+
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 1800 }, // cache 30 min
+    });
+
+    if (!response.ok) throw new Error(`Weather API ${response.status}`);
+
+    const data = await response.json();
+
+    return {
+      temperature: Math.round((data.current?.temperature_2m ?? 28) * 10) / 10,
+      humidity: Math.round(data.current?.relative_humidity_2m ?? 60),
+      rainToday: Math.round(data.daily?.precipitation_probability_max?.[0] ?? 0),
+      rainTomorrow: Math.round(data.daily?.precipitation_probability_max?.[1] ?? 0),
+    };
+  } catch {
+    // Fallback to reasonable defaults if API unavailable
+    return {
+      temperature: 28,
+      humidity: 60,
+      rainToday: 20,
+      rainTomorrow: 30,
+    };
   }
-  return {
-    temperature: Math.round(temperature * 10) / 10,
-    humidity: Math.round(humidity * 10) / 10,
-    rainToday: Math.round(rainToday),
-    rainTomorrow: Math.round(rainTomorrow),
-  };
 }
 
 export async function analyzeIrrigation(
@@ -83,8 +95,8 @@ export async function analyzeIrrigation(
     overrides?.temperature ?? latest?.temperature ?? null;
   const humidity = overrides?.humidity ?? latest?.humidity ?? null;
 
-  // Demo weather (clearly labelled at API layer)
-  const w = demoWeatherFor(farm);
+  // Fetch real weather data from Open-Meteo API
+  const w = await fetchRealWeather(farm);
 
   // Load crop irrigation config
   let config = null;

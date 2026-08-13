@@ -3,28 +3,42 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { ok, unauthorized, notFound } from "@/lib/api";
 
-// Deterministic pseudo-weather generator seeded by farm lat/long + date.
-// This is clearly demo data; a WeatherProvider interface in lib/weather.ts
-// can later plug in OpenWeather / Open-Meteo without changing this route.
-function seededRandom(seed: number) {
-  let x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
+/**
+ * Weather Service — uses Open-Meteo free API (no key required)
+ * https://open-meteo.com/
+ * Provides real-time weather and 7-day forecasts based on farm coordinates.
+ */
+
+interface OpenMeteoResponse {
+  current: {
+    temperature_2m: number;
+    relative_humidity_2m: number;
+    precipitation_probability: number;
+    wind_speed_10m: number;
+    weather_code: number;
+  };
+  daily: {
+    time: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    precipitation_probability_max: number[];
+    wind_speed_10m_max: number[];
+    weather_code: number[];
+  };
 }
 
-function hashStr(s: string) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
-  return Math.abs(h);
+// WMO weather codes → readable condition
+function wmoToCondition(code: number): { condition: string; conditionText: string } {
+  if (code === 0) return { condition: "CLEAR", conditionText: "Clear sky" };
+  if (code <= 3) return { condition: "CLOUDY", conditionText: "Partly cloudy" };
+  if (code <= 48) return { condition: "FOG", conditionText: "Foggy conditions" };
+  if (code <= 67) return { condition: "RAIN", conditionText: "Rain expected" };
+  if (code <= 77) return { condition: "RAIN", conditionText: "Snow/rain mix" };
+  if (code <= 82) return { condition: "RAIN", conditionText: "Showers" };
+  if (code <= 86) return { condition: "RAIN", conditionText: "Snow showers" };
+  if (code >= 95) return { condition: "THUNDERSTORM", conditionText: "Thunderstorm likely" };
+  return { condition: "CLOUDY", conditionText: "Cloudy" };
 }
-
-const CONDITIONS = ["CLEAR", "CLOUDY", "RAIN", "THUNDERSTORM", "FOG"];
-const CONDITION_TEXT: Record<string, string> = {
-  CLEAR: "Clear sky",
-  CLOUDY: "Partly cloudy",
-  RAIN: "Rain expected",
-  THUNDERSTORM: "Thunderstorm likely",
-  FOG: "Foggy conditions",
-};
 
 interface DayForecast {
   date: string;
@@ -35,46 +49,6 @@ interface DayForecast {
   condition: string;
   conditionText: string;
   isToday: boolean;
-}
-
-function generateForecast(seedKey: string, days = 7): DayForecast[] {
-  const baseSeed = hashStr(seedKey);
-  const out: DayForecast[] = [];
-  const today = new Date();
-  // bias toward season: kharif (jun-oct) rainier
-  const month = today.getMonth();
-  const rainySeason = month >= 5 && month <= 9;
-  for (let i = 0; i < days; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() + i);
-    const seed = baseSeed + i * 7;
-    const r1 = seededRandom(seed);
-    const r2 = seededRandom(seed + 1);
-    const r3 = seededRandom(seed + 2);
-    const r4 = seededRandom(seed + 3);
-    const temperature = Math.round((24 + r1 * 12) * 10) / 10; // 24-36
-    const humidity = Math.round((45 + r2 * 45) * 10) / 10; // 45-90
-    let rainProbability = Math.round(r3 * 100);
-    if (rainySeason) rainProbability = Math.min(95, rainProbability + 25);
-    const windSpeed = Math.round((5 + r4 * 25) * 10) / 10; // 5-30 km/h
-    let condition = CONDITIONS[0];
-    if (rainProbability > 70) condition = "THUNDERSTORM";
-    else if (rainProbability > 45) condition = "RAIN";
-    else if (humidity > 80 && temperature < 26) condition = "FOG";
-    else if (rainProbability > 20) condition = "CLOUDY";
-    else condition = "CLEAR";
-    out.push({
-      date: d.toISOString().slice(0, 10),
-      temperature,
-      humidity,
-      rainProbability,
-      windSpeed,
-      condition,
-      conditionText: CONDITION_TEXT[condition],
-      isToday: i === 0,
-    });
-  }
-  return out;
 }
 
 function buildInsights(forecast: DayForecast[]): { priority: string; title: string; message: string }[] {
@@ -88,21 +62,21 @@ function buildInsights(forecast: DayForecast[]): { priority: string; title: stri
       message: `Rain probability ${tomorrow.rainProbability}% tomorrow. Postpone irrigation and inspect field drainage.`,
     });
   }
-  if (today.temperature >= 35) {
+  if (today && today.temperature >= 35) {
     insights.push({
       priority: "MEDIUM",
       title: "High temperature alert",
       message: `Today's temperature (${today.temperature}°C) may increase crop water requirement. Consider irrigating early morning or late evening.`,
     });
   }
-  if (today.windSpeed >= 20) {
+  if (today && today.windSpeed >= 20) {
     insights.push({
       priority: "MEDIUM",
       title: "Strong winds expected",
       message: `Wind speed ${today.windSpeed} km/h may affect spraying activities. Schedule spray for calmer periods.`,
     });
   }
-  if (today.humidity >= 80) {
+  if (today && today.humidity >= 80) {
     insights.push({
       priority: "MEDIUM",
       title: "High humidity — fungal risk",
@@ -139,22 +113,85 @@ export async function GET(
   if (user.role !== "ADMIN" && farm.ownerId !== user.id)
     return notFound("Farm not found");
 
-  const seedKey = `${farm.latitude ?? 0}-${farm.longitude ?? 0}-${farm.state}`;
-  const forecast = generateForecast(seedKey, 7);
-  const insights = buildInsights(forecast);
+  const lat = farm.latitude ?? 18.52; // default to Pune if no coordinates
+  const lon = farm.longitude ?? 73.85;
 
-  return ok({
-    isDemo: true,
-    location: {
-      state: farm.state,
-      district: farm.district,
-      village: farm.village,
-      latitude: farm.latitude,
-      longitude: farm.longitude,
-    },
-    today: forecast[0],
-    forecast,
-    insights,
-    note: "Demo weather data. Connect a live weather provider via the WeatherProvider interface for real-time forecasts.",
-  });
+  try {
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation_probability,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code&timezone=auto&forecast_days=7`;
+
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 1800 }, // cache for 30 minutes
+    });
+
+    if (!response.ok) {
+      throw new Error(`Weather API returned ${response.status}`);
+    }
+
+    const data: OpenMeteoResponse = await response.json();
+
+    // Build forecast array
+    const forecast: DayForecast[] = data.daily.time.map((date, i) => {
+      const wmo = wmoToCondition(data.daily.weather_code[i]);
+      return {
+        date,
+        temperature: Math.round(data.daily.temperature_2m_max[i] * 10) / 10,
+        humidity: Math.round(data.current.relative_humidity_2m), // use current humidity as proxy
+        rainProbability: data.daily.precipitation_probability_max[i] ?? 0,
+        windSpeed: Math.round(data.daily.wind_speed_10m_max[i] * 10) / 10,
+        condition: wmo.condition,
+        conditionText: wmo.conditionText,
+        isToday: i === 0,
+      };
+    });
+
+    const currentWmo = wmoToCondition(data.current.weather_code);
+    const insights = buildInsights(forecast);
+
+    return ok({
+      isDemo: false,
+      isRealData: true,
+      location: {
+        state: farm.state,
+        district: farm.district,
+        village: farm.village,
+        latitude: farm.latitude,
+        longitude: farm.longitude,
+      },
+      today: {
+        date: forecast[0].date,
+        temperature: Math.round(data.current.temperature_2m * 10) / 10,
+        humidity: Math.round(data.current.relative_humidity_2m),
+        rainProbability: data.current.precipitation_probability ?? forecast[0].rainProbability,
+        windSpeed: Math.round(data.current.wind_speed_10m * 10) / 10,
+        condition: currentWmo.condition,
+        conditionText: currentWmo.conditionText,
+        isToday: true,
+      },
+      forecast,
+      insights,
+      dataSource: "Open-Meteo API (real-time weather data)",
+      note: "Real weather data from Open-Meteo. Updated every 30 minutes.",
+    });
+  } catch (error) {
+    console.error("Weather API error:", error);
+    return ok({
+      isDemo: false,
+      isRealData: false,
+      error: "Unable to fetch live weather data. Please try again later.",
+      location: {
+        state: farm.state,
+        district: farm.district,
+        village: farm.village,
+        latitude: farm.latitude,
+        longitude: farm.longitude,
+      },
+      today: null,
+      forecast: [],
+      insights: [{
+        priority: "INFO",
+        title: "Weather data unavailable",
+        message: "Unable to fetch live weather data. Please check your internet connection and try again.",
+      }],
+    });
+  }
 }
