@@ -17,6 +17,8 @@ import { AnalyticsView } from "./analytics";
 import { SoilTestsView } from "./soil-tests";
 import { HarvestsView } from "./harvests";
 import { CropCalendarView } from "./crop-calendar";
+import { PestsView } from "./pests";
+import { ExpensesView } from "./expenses";
 import { ProfileView } from "./profile";
 import { SettingsView } from "./settings";
 
@@ -55,6 +57,10 @@ export function FarmerViews() {
       return <HarvestsView />;
     case "crop-calendar":
       return <CropCalendarView />;
+    case "pests":
+      return <PestsView />;
+    case "expenses":
+      return <ExpensesView />;
     case "profile":
       return <ProfileView />;
     case "settings":

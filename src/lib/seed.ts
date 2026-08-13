@@ -180,6 +180,36 @@ async function main() {
   }
   console.log(`  ✓ ${fertCount} fertilizer recommendations added (${fertilizerRecs.length} total)`);
 
+  // ---------- Pesticide database ----------
+  const pesticides = [
+    { pestName: "Aphids", cropName: "Tomato", pesticideName: "Imidacloprid 17.8 SL", chemicalName: "Imidacloprid", dosage: "0.3 ml/L water, 200 L/acre spray", method: "SPRAY", timing: "Early morning or evening, at pest appearance", waitingPeriod: "7 days", precaution: "Do not spray during flowering to protect bees." },
+    { pestName: "Whitefly", cropName: "Cotton", pesticideName: "Spiromesifen 240 SC", chemicalName: "Spiromesifen", dosage: "0.8 ml/L water, 200 L/acre", method: "SPRAY", timing: "When 5-10 adults per leaf observed", waitingPeriod: "14 days", precaution: "Use sticker for better coverage on lower leaf surface." },
+    { pestName: "Bollworm", cropName: "Cotton", pesticideName: "Spinosad 45 SC", chemicalName: "Spinosad", dosage: "0.5 ml/L water, 200 L/acre", method: "SPRAY", timing: "At egg laying or early larval stage", waitingPeriod: "10 days", precaution: "Effective against Helicoverpa. Rotate with Bt." },
+    { pestName: "Stem Borer", cropName: "Rice", pesticideName: "Cartap Hydrochloride 50 SP", chemicalName: "Cartap", dosage: "400 g/acre", method: "SOIL", timing: "20-30 DAT, granular application", waitingPeriod: "30 days", precaution: "Maintain water level in field for 3 days after application." },
+    { pestName: "Leafhopper", cropName: "Rice", pesticideName: "Deltamethrin 2.8 EC", chemicalName: "Deltamethrin", dosage: "1 ml/L water, 200 L/acre", method: "SPRAY", timing: "At pest appearance", waitingPeriod: "20 days", precaution: "Avoid near fish ponds." },
+    { pestName: "Thrips", cropName: "Chilli", pesticideName: "Fipronil 5 SC", chemicalName: "Fipronil", dosage: "1 ml/L water, 200 L/acre", method: "SPRAY", timing: "Early stage of infestation", waitingPeriod: "15 days", precaution: "Toxic to aquatic life. Do not contaminate water." },
+    { pestName: "Mites", cropName: "Chilli", pesticideName: "Abamectin 1.9 EC", chemicalName: "Abamectin", dosage: "0.5 ml/L water, 200 L/acre", method: "SPRAY", timing: "When mites observed on undersides of leaves", waitingPeriod: "14 days", precaution: "Spray undersides of leaves thoroughly." },
+    { pestName: "Fruit Borer", cropName: "Tomato", pesticideName: "Indoxacarb 14.5 SC", chemicalName: "Indoxacarb", dosage: "0.5 ml/L water, 200 L/acre", method: "SPRAY", timing: "At fruiting stage, when larvae appear", waitingPeriod: "10 days", precaution: "Effective against Helicoverpa armigera." },
+    { pestName: "Thrips", cropName: "Onion", pesticideName: "Lambda-cyhalothrin 5 EC", chemicalName: "Lambda-cyhalothrin", dosage: "0.5 ml/L water, 200 L/acre", method: "SPRAY", timing: "At pest appearance, repeat after 10 days", waitingPeriod: "14 days", precaution: "Spray early morning to avoid phytotoxicity." },
+    { pestName: "Fall Armyworm", cropName: "Maize", pesticideName: "Emamectin Benzoate 5 SG", chemicalName: "Emamectin", dosage: "0.4 g/L water, 200 L/acre", method: "SPRAY", timing: "Whorl stage, when 5% plants infested", waitingPeriod: "10 days", precaution: "Direct spray into whorl for best results." },
+    { pestName: "Aphids", cropName: "Wheat", pesticideName: "Dimethoate 30 EC", chemicalName: "Dimethoate", dosage: "1 ml/L water, 200 L/acre", method: "SPRAY", timing: "When aphids appear on earheads", waitingPeriod: "20 days", precaution: "Do not use on hot sunny days." },
+    { pestName: "Pod Borer", cropName: "Gram", pesticideName: "Quinalphos 25 EC", chemicalName: "Quinalphos", dosage: "1.5 ml/L water, 200 L/acre", method: "SPRAY", timing: "At flowering and pod formation", waitingPeriod: "15 days", precaution: "Effective against Helicoverpa in pulses." },
+    { pestName: "Diamondback Moth", cropName: "Cabbage", pesticideName: "Bacillus thuringiensis (Bt)", chemicalName: "Bt var. kurstaki", dosage: "1 g/L water, 200 L/acre", method: "SPRAY", timing: "At larval stage, repeat every 7 days", waitingPeriod: "0 days", precaution: "Organic, safe for beneficial insects. Best on young larvae." },
+    { pestName: "Nematodes", cropName: "Tomato", pesticideName: "Carbofuran 3G", chemicalName: "Carbofuran", dosage: "10 kg/acre", method: "SOIL", timing: "At transplanting, basal application", waitingPeriod: "30 days", precaution: "Highly toxic. Use gloves. Apply near root zone." },
+    { pestName: "Mealy Bug", cropName: "Grapes", pesticideName: "Chlorpyriphos 20 EC", chemicalName: "Chlorpyriphos", dosage: "2 ml/L water, 200 L/acre", method: "SPRAY", timing: "When mealybugs observed on stems and leaves", waitingPeriod: "21 days", precaution: "Avoid during fruiting. Toxic to bees." },
+  ];
+  let pestCount = 0;
+  for (const p of pesticides) {
+    const exists = await db.pesticideDatabase.findFirst({
+      where: { pestName: p.pestName, cropName: p.cropName, pesticideName: p.pesticideName },
+    });
+    if (!exists) {
+      await db.pesticideDatabase.create({ data: p });
+      pestCount++;
+    }
+  }
+  console.log(`  ✓ ${pestCount} pesticide recommendations added`);
+
   // ---------- Disease database ----------
   const diseases = [
     { cropName: "Tomato", diseaseName: "Early Blight", symptoms: "Dark brown concentric rings on lower leaves, yellowing around spots, leaf drop.", cause: "Fungus Alternaria solani", severity: "MODERATE", treatment: "Apply copper-based fungicide or mancozeb every 7-10 days. Remove infected leaves.", prevention: "Crop rotation, proper spacing, avoid overhead watering, use disease-free seed." },
@@ -558,6 +588,49 @@ async function main() {
           },
         });
         console.log("  ✓ Demo soil test added");
+      }
+
+      // Demo expenses
+      const existingExpense = await db.farmExpense.findFirst({ where: { farmId: demoFarm.id } });
+      if (!existingExpense) {
+        const demoCrop2 = await db.crop.findFirst({ where: { farmId: demoFarm.id } });
+        const expData = [
+          { category: "SEEDS", description: "Tomato seedlings (Pusa Ruby)", amount: 1200, vendor: "Local nursery", paymentMode: "CASH", expenseDate: new Date(Date.now() - 30 * 86400000) },
+          { category: "FERTILIZER", description: "NPK 19-19-19 basal dose", amount: 1800, vendor: "Krishi Kendra", paymentMode: "UPI", expenseDate: new Date(Date.now() - 28 * 86400000) },
+          { category: "FERTILIZER", description: "Urea top-dressing", amount: 450, vendor: "Krishi Kendra", paymentMode: "CASH", expenseDate: new Date(Date.now() - 15 * 86400000) },
+          { category: "PESTICIDE", description: "Mancozeb fungicide spray", amount: 350, vendor: "Agri shop", paymentMode: "UPI", expenseDate: new Date(Date.now() - 10 * 86400000) },
+          { category: "LABOR", description: "Transplanting labor (3 workers)", amount: 900, vendor: "Village labor", paymentMode: "CASH", expenseDate: new Date(Date.now() - 30 * 86400000) },
+          { category: "LABOR", description: "Weeding and spray labor", amount: 600, vendor: "Village labor", paymentMode: "CASH", expenseDate: new Date(Date.now() - 10 * 86400000) },
+          { category: "IRRIGATION", description: "Drip irrigation maintenance", amount: 300, vendor: "Irrigation service", paymentMode: "CASH", expenseDate: new Date(Date.now() - 20 * 86400000) },
+          { category: "FUEL", description: "Diesel for water pump", amount: 800, vendor: "Petrol pump", paymentMode: "UPI", expenseDate: new Date(Date.now() - 12 * 86400000) },
+        ];
+        for (const e of expData) {
+          await db.farmExpense.create({
+            data: { ...e, farmId: demoFarm.id, cropId: demoCrop2?.id ?? null, userId: farmer.id },
+          });
+        }
+        console.log("  ✓ Demo expenses added (8 records)");
+
+        // Demo pest report
+        const existingPest = await db.pestReport.findFirst({ where: { farmId: demoFarm.id } });
+        if (!existingPest && demoCrop2) {
+          await db.pestReport.create({
+            data: {
+              farmId: demoFarm.id,
+              cropId: demoCrop2.id,
+              userId: farmer.id,
+              pestName: "Aphids",
+              severity: "MEDIUM",
+              affectedArea: 0.5,
+              observedDate: new Date(Date.now() - 8 * 86400000),
+              treatment: "Imidacloprid 17.8 SL spray",
+              treatmentDate: new Date(Date.now() - 7 * 86400000),
+              status: "TREATED",
+              notes: "Aphids on lower leaves, treated with imidacloprid spray. Monitoring for reinfestation.",
+            },
+          });
+          console.log("  ✓ Demo pest report added");
+        }
       }
     }
   }

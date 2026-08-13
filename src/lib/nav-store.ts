@@ -19,6 +19,8 @@ export type FarmerView =
   | "soil-tests"
   | "harvests"
   | "crop-calendar"
+  | "pests"
+  | "expenses"
   | "profile"
   | "settings";
 

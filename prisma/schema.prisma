@@ -53,6 +53,8 @@ model User {
   irrigationLogs  IrrigationLog[]
   soilTests       SoilTest[]
   harvests        Harvest[]
+  pestReports     PestReport[]
+  expenses        FarmExpense[]
 }
 
 model RefreshToken {
@@ -110,6 +112,8 @@ model Farm {
   sensorReadings SensorReading[]
   soilTests     SoilTest[]
   harvests      Harvest[]
+  pestReports   PestReport[]
+  expenses      FarmExpense[]
 }
 
 // ============================================================
@@ -154,6 +158,8 @@ model Crop {
   recommendations Recommendation[]
   harvests        Harvest[]
   soilTests       SoilTest[]
+  pestReports     PestReport[]
+  expenses        FarmExpense[]
 }
 
 model FarmActivity {
@@ -536,6 +542,68 @@ model FertilizerRecommendation {
   fertilizer    String   // recommended fertilizer name e.g. "NPK 19-19-19"
   quantity      String   // per acre
   timing        String   // when to apply
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+// ============================================================
+// PEST & PESTICIDE MANAGEMENT
+// ============================================================
+
+model PestReport {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropId        String?
+  crop          Crop?    @relation(fields: [cropId], references: [id], onDelete: SetNull)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pestName      String
+  severity      String   @default("MEDIUM") // LOW / MEDIUM / HIGH / SEVERE
+  affectedArea  Float?   // acres
+  observedDate  DateTime @default(now())
+  treatment     String?  // pesticide used
+  treatmentDate DateTime?
+  status        String   @default("ACTIVE") // ACTIVE / TREATED / MONITORING
+  notes         String?
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+}
+
+model PesticideDatabase {
+  id            String   @id @default(cuid())
+  pestName      String
+  cropName      String
+  pesticideName String
+  chemicalName  String?
+  dosage        String   // per acre
+  method        String   // SPRAY / DUST / SOIL / SEED_TREATMENT
+  timing        String   // when to apply
+  waitingPeriod String?  // days to harvest after application
+  precaution    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ============================================================
+// FARM EXPENSES / FINANCE
+// ============================================================
+
+model FarmExpense {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropId        String?
+  crop          Crop?    @relation(fields: [cropId], references: [id], onDelete: SetNull)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category      String   // SEEDS / FERTILIZER / PESTICIDE / LABOR / FUEL / EQUIPMENT / IRRIGATION / LAND_RENT / OTHER
+  description   String
+  amount        Float    // ₹
+  expenseDate   DateTime @default(now())
+  vendor        String?
+  paymentMode   String?  // CASH / UPI / BANK / CREDIT
+  receiptNo     String?
   notes         String?
   createdAt     DateTime @default(now())
 }

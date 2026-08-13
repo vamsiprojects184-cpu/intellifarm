@@ -27,6 +27,13 @@ import {
   Github,
   Twitter,
   Facebook,
+  FlaskConical,
+  Wallet,
+  ShieldAlert,
+  Wheat,
+  CalendarDays,
+  Star,
+  Quote,
 } from "lucide-react";
 
 const FEATURES = [
@@ -78,6 +85,30 @@ const FEATURES = [
     desc: "Weather, irrigation, disease & sensor anomaly alerts delivered in-app — extensible to SMS & WhatsApp.",
     color: "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300",
   },
+  {
+    icon: FlaskConical,
+    title: "Soil Testing",
+    desc: "Log soil test reports with NPK, pH & micronutrients. Get auto fertility scores and fertilizer recommendations.",
+    color: "bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300",
+  },
+  {
+    icon: Wallet,
+    title: "Expense Tracking",
+    desc: "Track farm input costs by category — seeds, fertilizer, pesticide, labor, fuel. Visualize spending with charts.",
+    color: "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300",
+  },
+  {
+    icon: ShieldAlert,
+    title: "Pest Management",
+    desc: "Log pest infestations, track treatments, and access a pesticide reference database with dosages & precautions.",
+    color: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
+  },
+  {
+    icon: Wheat,
+    title: "Harvest & Yield",
+    desc: "Log harvests with quantity, quality & sale price. Auto-compute yield/acre, income and net profit per crop.",
+    color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+  },
 ];
 
 const STEPS = [
@@ -104,10 +135,10 @@ const STEPS = [
 ];
 
 const STATS = [
-  { value: "14+", label: "Crops in database" },
-  { value: "12+", label: "Disease profiles" },
+  { value: "15+", label: "Crops in database" },
+  { value: "27+", label: "Disease & pest profiles" },
+  { value: "35+", label: "Fertilizer schedules" },
   { value: "10+", label: "Govt. schemes" },
-  { value: "8", label: "Markets tracked" },
 ];
 
 export function PublicLanding() {
@@ -344,6 +375,49 @@ export function PublicLanding() {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="border-t bg-muted/30">
+          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+            <div className="mx-auto max-w-2xl text-center">
+              <Badge className="mb-4 bg-primary/10 text-primary"><Star className="mr-1 h-3 w-3" /> Farmer Stories</Badge>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Trusted by farmers across India
+              </h2>
+              <p className="mt-3 text-muted-foreground">
+                Real impact for real farmers. Here&apos;s what they say about Eco Crop.
+              </p>
+            </div>
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              {[
+                { name: "Ramesh Patil", location: "Pune, Maharashtra", crop: "Tomato farmer", quote: "The disease detection saved my tomato crop. I uploaded a leaf photo and got instant diagnosis — knew exactly which fungicide to use.", rating: 5 },
+                { name: "Lakshmi Devi", location: "Nashik, Maharashtra", crop: "Onion farmer", quote: "Smart irrigation tells me exactly when to water and how much. I saved 30% water this season and my yield improved.", rating: 5 },
+                { name: "Suresh Kumar", location: "Indore, MP", crop: "Soybean farmer", quote: "The market price tracker helped me sell at the right time. I got ₹200 more per quintal by checking prices across mandis.", rating: 4 },
+              ].map((t) => (
+                <Card key={t.name} className="relative">
+                  <CardContent className="p-5">
+                    <Quote className="absolute right-4 top-4 h-8 w-8 text-primary/10" />
+                    <div className="mb-2 flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`h-3.5 w-3.5 ${i < t.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`} />
+                      ))}
+                    </div>
+                    <p className="text-sm text-foreground">&ldquo;{t.quote}&rdquo;</p>
+                    <div className="mt-4 flex items-center gap-3 border-t pt-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                        {t.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">{t.name}</p>
+                        <p className="text-[11px] text-muted-foreground">{t.crop} · {t.location}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>

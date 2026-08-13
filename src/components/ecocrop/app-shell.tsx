@@ -23,6 +23,8 @@ import {
   FlaskConical,
   Wheat,
   CalendarDays,
+  ShieldAlert,
+  Wallet,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-store";
 import { useNav, type AppView } from "@/lib/nav-store";
@@ -57,6 +59,8 @@ const FARMER_NAV: NavItem[] = [
   { view: "soil-tests", label: "Soil Tests", icon: FlaskConical },
   { view: "harvests", label: "Harvests", icon: Wheat },
   { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
+  { view: "pests", label: "Pest Control", icon: ShieldAlert },
+  { view: "expenses", label: "Expenses", icon: Wallet },
   { view: "market", label: "Market Prices", icon: TrendingUp },
   { view: "schemes", label: "Govt. Schemes", icon: Landmark },
   { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },

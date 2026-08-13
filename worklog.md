@@ -351,3 +351,61 @@ Stage Summary:
 - Styling polished (animated stat cards, improved quick actions)
 - Platform now has 17 farmer views (was 12), all functional
 - Lint clean, 0 errors, deploy-ready
+
+---
+
+## Phase 4 — Pest Management, Expense Tracker & Landing Polish (Cron Round 2)
+
+Task ID: 7
+Agent: main (webDevReview cron)
+Task: Assess status, QA, add Pest Control + Expense Tracker modules, improve landing page.
+
+### Current Project Status Assessment
+- Platform stable from Phase 3 (17 farmer views, 3 new modules, lint clean)
+- QA sweep of all 17 views confirmed 0 errors, all 200
+- Dev server healthy
+
+### New Features Added
+
+1. **Pest & Pesticide Management Module** (`pests` view + API)
+   - New `PestReport` Prisma model: pestName, severity (LOW/MEDIUM/HIGH/SEVERE), affectedArea, treatment, treatmentDate, status (ACTIVE/TREATED/MONITORING)
+   - New `PesticideDatabase` model: 15 pesticide entries across crops (Aphids, Whitefly, Bollworm, Stem Borer, Thrips, Mites, Fruit Borer, Fall Armyworm, etc.)
+   - POST `/api/v1/pests` — creates report, auto-logs activity, creates CRITICAL/HIGH alert for severe infestations
+   - GET `/api/v1/pests` — list with farm/crop relations, filterable by status
+   - PATCH `/api/v1/pests/[id]` — update status (mark treated/monitoring)
+   - GET `/api/v1/pesticide-db` — searchable reference database
+   - UI: filter buttons with counts, pest cards with severity/status badges, treatment panel, pesticide reference DB with dosages/methods/waiting periods/precautions, smart pesticide suggestions in form based on pest name
+
+2. **Farm Expense Tracker Module** (`expenses` view + API)
+   - New `FarmExpense` Prisma model: category (SEEDS/FERTILIZER/PESTICIDE/LABOR/FUEL/EQUIPMENT/IRRIGATION/LAND_RENT/OTHER), amount, vendor, paymentMode, receiptNo
+   - POST `/api/v1/expenses` — creates expense, auto-logs activity
+   - GET `/api/v1/expenses` — list with summary (total, count, byCategory grouped aggregation)
+   - DELETE `/api/v1/expenses/[id]`
+   - UI: summary stat cards (total, avg, categories), pie chart (expenses by category), category breakdown with percentages, category filter buttons, expense cards with category-colored icons
+
+3. **Landing Page Improvements**
+   - Expanded FEATURES from 8 to 12 (added Soil Testing, Expense Tracking, Pest Management, Harvest & Yield)
+   - Updated STATS (15+ crops, 27+ disease & pest profiles, 35+ fertilizer schedules, 10+ govt schemes)
+   - New Testimonials section with 3 farmer stories (star ratings, quotes, avatars, crop/location)
+   - Quote icon decoration, amber star ratings
+
+### Database Changes
+- 3 new models: PestReport, PesticideDatabase, FarmExpense
+- Farm/Crop/User models: added pestReports + expenses relations
+- Schema pushed, Prisma client regenerated
+- Seed updated: 15 pesticide entries, 8 demo expenses, 1 demo pest report (Aphids, TREATED)
+
+### Verification Results
+- All 17 farmer views load with 0 console errors (including 2 new views)
+- APIs tested: pests (1 demo report), expenses (8 records, ₹6,400 total), pesticide-db (15 entries)
+- Landing page: 12 features + testimonials section render correctly
+- `bun run lint` → 0 errors, 0 warnings
+- Dev server: all 200, no errors
+
+Stage Summary:
+- 2 new feature modules (Pest Control, Expense Tracker)
+- 15 pesticide reference entries seeded
+- 8 demo expenses + 1 demo pest report seeded
+- Landing page expanded (12 features + testimonials)
+- Platform now has 19 farmer views, all functional
+- Lint clean, 0 errors, deploy-ready
