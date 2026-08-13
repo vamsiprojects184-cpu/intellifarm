@@ -175,7 +175,7 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="glass mb-3 flex h-14 w-14 items-center justify-center rounded-full">
+      <div className="neo-raised mb-3 flex h-14 w-14 items-center justify-center rounded-2xl">
         <Icon className="h-7 w-7 text-muted-foreground" />
       </div>
       <h3 className="text-base font-semibold">{title}</h3>
@@ -206,13 +206,12 @@ export function StatCard({
     lime: "bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300",
   };
   return (
-    <div className="glass-card group relative overflow-hidden rounded-xl p-4">
-      <div className={cn("absolute -right-4 -top-4 h-16 w-16 rounded-full opacity-10 transition-opacity group-hover:opacity-20", accents[accent])} />
+    <div className="neo-card group relative rounded-2xl p-4">
       <div className="relative flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {label}
         </span>
-        <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg transition-transform group-hover:scale-110", accents[accent])}>
+        <div className={cn("neo-icon flex h-8 w-8 items-center justify-center rounded-lg transition-transform group-hover:scale-105", accents[accent])}>
           <Icon className="h-4 w-4" />
         </div>
       </div>

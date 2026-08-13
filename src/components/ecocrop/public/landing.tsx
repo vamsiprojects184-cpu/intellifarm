@@ -152,37 +152,27 @@ export function PublicLanding() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      {/* Full-screen background */}
-      <div className="bg-hero-farm fixed inset-0 z-0" />
-
-      {/* Content wrapper above background */}
-      <div className="relative z-10 flex flex-1 flex-col">
-
-      {/* Decorative glass orbs */}
-      <div className="glass-orb h-96 w-96 bg-emerald-400/30" style={{ top: "-5%", right: "-5%" }} />
-      <div className="glass-orb h-80 w-80 bg-amber-400/20" style={{ top: "40%", left: "-10%" }} />
-      <div className="glass-orb h-72 w-72 bg-green-500/25" style={{ bottom: "5%", right: "10%" }} />
+    <div className="flex min-h-screen flex-col bg-background">
 
       {/* Header */}
-      <header className="glass-topbar sticky top-0 z-40">
+      <header className="neo-topbar sticky top-0 z-40">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <div className="glass flex h-9 w-9 items-center justify-center rounded-xl bg-primary/80 text-primary-foreground">
+            <div className="neo-raised flex h-9 w-9 items-center justify-center rounded-xl bg-primary/80 text-primary-foreground">
               <Sprout className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-lg font-bold tracking-tight text-glow-sm">Eco Crop</span>
+              <span className="text-lg font-bold tracking-tight ">Eco Crop</span>
               <span className="ml-2 hidden text-xs text-muted-foreground sm:inline">
                 Smart Agriculture Platform
               </span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={() => openAuth("login")} className="hidden glass-button sm:inline-flex">
+            <Button variant="ghost" onClick={() => openAuth("login")} className="hidden neo-raised-sm sm:inline-flex">
               Login
             </Button>
-            <Button onClick={() => openAuth("register")} className="glass-shimmer">
+            <Button onClick={() => openAuth("register")} className="">
               Get Started
               <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
@@ -196,24 +186,24 @@ export function PublicLanding() {
           <div className="mx-auto max-w-7xl px-4">
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <div>
-                <Badge className="glass-badge mb-4 text-primary">
+                <Badge className="neo-badge mb-4 text-primary">
                   <Leaf className="mr-1 h-3 w-3" /> AI-powered farming
                 </Badge>
-                <h1 className="text-glow text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                   Smart technology for{" "}
-                  <span className="bg-gradient-to-r from-emerald-400 to-green-600 bg-clip-text text-transparent">complex farming</span> problems
+                  <span className="text-gradient">complex farming</span> problems
                 </h1>
-                <p className="text-glow-sm mt-5 max-w-xl text-lg text-foreground/80">
+                <p className=" mt-5 max-w-xl text-lg text-foreground/80">
                   Eco Crop helps farmers make better decisions with AI recommendations,
                   smart irrigation, disease detection, weather intelligence and market
                   insights — all in one simple, mobile-first platform.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <Button size="lg" onClick={() => openAuth("register")} className="glass-shimmer">
+                  <Button size="lg" onClick={() => openAuth("register")} className="">
                     Start Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="glass-button">
+                  <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="neo-raised-sm">
                     Try Demo Account
                   </Button>
                 </div>
@@ -231,31 +221,31 @@ export function PublicLanding() {
               </div>
 
               <div className="relative">
-                <div className="glass-strong animate-float rounded-2xl p-5">
+                <div className="neo-raised animate-float rounded-2xl p-5">
                   <div className="mb-3 flex items-center justify-between">
                     <div>
                       <p className="text-xs text-muted-foreground">Patil Family Farm</p>
                       <p className="text-sm font-semibold">Shirur, Pune</p>
                     </div>
-                    <Badge className="glass-badge bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    <Badge className="neo-badge bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                       Health 82 · Good
                     </Badge>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="glass-card rounded-xl p-3">
+                    <div className="neo-card rounded-xl p-3">
                       <CloudSun className="mb-1 h-5 w-5 text-sky-600" />
                       <p className="text-xs text-muted-foreground">Today</p>
                       <p className="text-lg font-bold">28°C</p>
                       <p className="text-xs text-sky-600">Rain 30%</p>
                     </div>
-                    <div className="glass-card rounded-xl p-3">
+                    <div className="neo-card rounded-xl p-3">
                       <Droplets className="mb-1 h-5 w-5 text-emerald-600" />
                       <p className="text-xs text-muted-foreground">Soil</p>
                       <p className="text-lg font-bold">34%</p>
                       <p className="text-xs text-emerald-600">Irrigate today</p>
                     </div>
                   </div>
-                  <div className="glass mt-3 rounded-lg border-l-4 border-l-amber-500 p-3">
+                  <div className="neo-raised mt-3 rounded-lg border-l-4 border-l-amber-500 p-3">
                     <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
                       💡 Recommendation
                     </p>
@@ -264,7 +254,7 @@ export function PublicLanding() {
                     </p>
                   </div>
                   <div className="mt-3 flex items-center gap-2">
-                    <div className="glass flex h-8 w-8 items-center justify-center rounded-full bg-rose-500/20">
+                    <div className="neo-raised flex h-8 w-8 items-center justify-center rounded-full bg-rose-500/20">
                       <Bug className="h-4 w-4 text-rose-600" />
                     </div>
                     <div className="text-xs">
@@ -278,7 +268,7 @@ export function PublicLanding() {
 
             <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {STATS.map((s) => (
-                <div key={s.label} className="glass-card rounded-xl p-4 text-center">
+                <div key={s.label} className="neo-card rounded-xl p-4 text-center">
                   <div className="bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-3xl font-bold text-transparent">{s.value}</div>
                   <div className="text-xs text-muted-foreground">{s.label}</div>
                 </div>
@@ -291,7 +281,7 @@ export function PublicLanding() {
         <section id="features" className="py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className=" text-3xl font-bold tracking-tight sm:text-4xl">
                 Everything a modern farm needs
               </h2>
               <p className="mt-3 text-foreground/70">
@@ -301,7 +291,7 @@ export function PublicLanding() {
             </div>
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {FEATURES.map((f) => (
-                <div key={f.title} className="glass-card glass-shimmer rounded-2xl p-5">
+                <div key={f.title} className="neo-card  rounded-2xl p-5">
                   <div className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${f.color}`}>
                     <f.icon className="h-5 w-5" />
                   </div>
@@ -317,7 +307,7 @@ export function PublicLanding() {
         <section id="how" className="py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className=" text-3xl font-bold tracking-tight sm:text-4xl">
                 How Eco Crop works
               </h2>
               <p className="mt-3 text-foreground/70">
@@ -326,8 +316,8 @@ export function PublicLanding() {
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((s) => (
-                <div key={s.n} className="glass-card relative rounded-2xl p-5">
-                  <div className="glass flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
+                <div key={s.n} className="neo-card relative rounded-2xl p-5">
+                  <div className="neo-raised flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                     {s.n}
                   </div>
                   <h3 className="mt-4 font-semibold">{s.title}</h3>
@@ -367,7 +357,7 @@ export function PublicLanding() {
                   ))}
                 </ul>
               </div>
-              <div className="glass-strong rounded-2xl p-6">
+              <div className="neo-raised rounded-2xl p-6">
                 <p className="mb-3 text-sm font-semibold">Role-based access control</p>
                 <div className="space-y-3">
                   {[
@@ -375,8 +365,8 @@ export function PublicLanding() {
                     { role: "Expert", color: "bg-violet-500/20 text-violet-700 dark:text-violet-300", desc: "Answer consultations, review disease cases, provide guidance" },
                     { role: "Admin", color: "bg-amber-500/20 text-amber-700 dark:text-amber-300", desc: "Manage users, schemes, market data, disease DB, system analytics" },
                   ].map((r) => (
-                    <div key={r.role} className="glass flex items-start gap-3 rounded-lg p-3">
-                      <Badge className={`glass-badge ${r.color}`}>{r.role}</Badge>
+                    <div key={r.role} className="neo-raised flex items-start gap-3 rounded-lg p-3">
+                      <Badge className={`neo-badge ${r.color}`}>{r.role}</Badge>
                       <p className="text-xs text-muted-foreground">{r.desc}</p>
                     </div>
                   ))}
@@ -390,8 +380,8 @@ export function PublicLanding() {
         <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <Badge className="glass-badge mb-4 text-primary"><Star className="mr-1 h-3 w-3" /> Farmer Stories</Badge>
-              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
+              <Badge className="neo-badge mb-4 text-primary"><Star className="mr-1 h-3 w-3" /> Farmer Stories</Badge>
+              <h2 className=" text-3xl font-bold tracking-tight sm:text-4xl">
                 Trusted by farmers across India
               </h2>
               <p className="mt-3 text-foreground/70">
@@ -404,7 +394,7 @@ export function PublicLanding() {
                 { name: "Lakshmi Devi", location: "Nashik, Maharashtra", crop: "Onion farmer", quote: "Smart irrigation tells me exactly when to water and how much. I saved 30% water this season and my yield improved.", rating: 5 },
                 { name: "Suresh Kumar", location: "Indore, MP", crop: "Soybean farmer", quote: "The market price tracker helped me sell at the right time. I got ₹200 more per quintal by checking prices across mandis.", rating: 4 },
               ].map((t) => (
-                <div key={t.name} className="glass-card relative rounded-2xl p-5">
+                <div key={t.name} className="neo-card relative rounded-2xl p-5">
                   <Quote className="absolute right-4 top-4 h-8 w-8 text-primary/10" />
                   <div className="mb-2 flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -413,7 +403,7 @@ export function PublicLanding() {
                   </div>
                   <p className="text-sm text-foreground">&ldquo;{t.quote}&rdquo;</p>
                   <div className="mt-4 flex items-center gap-3 border-t border-white/20 pt-3">
-                    <div className="glass flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                    <div className="neo-raised flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                       {t.name.charAt(0)}
                     </div>
                     <div>
@@ -430,19 +420,19 @@ export function PublicLanding() {
         {/* CTA */}
         <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-4xl px-4 text-center">
-            <div className="glass-strong rounded-3xl p-8 sm:p-12">
-              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
+            <div className="neo-raised rounded-3xl p-8 sm:p-12">
+              <h2 className=" text-3xl font-bold tracking-tight sm:text-4xl">
                 Ready to grow smarter?
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-foreground/70">
                 Join Eco Crop today and transform how you farm with data-driven decisions.
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Button size="lg" onClick={() => openAuth("register")} className="glass-shimmer">
+                <Button size="lg" onClick={() => openAuth("register")} className="">
                   Create your account
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="glass-button">
+                <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="neo-raised-sm">
                   Login with demo
                 </Button>
               </div>
@@ -454,25 +444,25 @@ export function PublicLanding() {
         <section id="contact" className="py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-glow-sm text-3xl font-bold tracking-tight">Get in touch</h2>
+              <h2 className=" text-3xl font-bold tracking-tight">Get in touch</h2>
               <p className="mt-3 text-foreground/70">
                 Questions, partnerships or feedback? We&apos;d love to hear from you.
               </p>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+              <div className="neo-card flex flex-col items-center rounded-2xl p-6 text-center">
                 <MapPin className="mb-2 h-6 w-6 text-primary" />
                 <p className="text-sm font-medium">Address</p>
                 <p className="mt-1 text-xs text-muted-foreground">Eco Crop Agri Tech, Pune, Maharashtra, India</p>
               </div>
-              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+              <div className="neo-card flex flex-col items-center rounded-2xl p-6 text-center">
                 <Mail className="mb-2 h-6 w-6 text-primary" />
                 <p className="text-sm font-medium">Email</p>
                 <a href="mailto:hello@ecocrop.farm" className="mt-1 text-xs text-primary hover:underline">
                   hello@ecocrop.farm
                 </a>
               </div>
-              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+              <div className="neo-card flex flex-col items-center rounded-2xl p-6 text-center">
                 <Phone className="mb-2 h-6 w-6 text-primary" />
                   <p className="text-sm font-medium">Helpline</p>
                   <a href="tel:+911800000000" className="mt-1 text-xs text-primary hover:underline">
@@ -485,7 +475,7 @@ export function PublicLanding() {
       </main>
 
       {/* Footer — sticky to bottom */}
-      <footer className="glass-topbar border-t">
+      <footer className="neo-topbar border-t">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <div className="grid gap-8 md:grid-cols-4">
             <div className="md:col-span-2">
@@ -539,7 +529,6 @@ export function PublicLanding() {
       <AuthDialog open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
       {/* keep setView referenced for future navigation */}
       <span className="hidden">{String(!!setView)}{String(!!fetchUser)}</span>
-      </div>
     </div>
   );
 }

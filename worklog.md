@@ -680,3 +680,83 @@ Stage Summary:
 - Sidebar reorganized into 5 logical sections with headers
 - Glass cards now 72-88% opaque for readability while still showing texture
 - Platform visually polished and deploy-ready
+
+---
+
+## Phase 10 — Neomorphism UI Transformation (Soft UI)
+
+Task ID: 13
+Agent: main
+Task: Remove ALL glassmorphism and background images. Rebuild with neomorphism using user's exact color palette.
+
+### What Was Done
+
+1. **Completely Rewrote globals.css** — Removed all glassmorphism classes (glass, glass-card, glass-strong, glass-nav, glass-sidebar, glass-topbar, glass-bottomnav, glass-badge, glass-button, glass-shimmer, glass-orb, glass-hero-overlay, bg-hero-farm, bg-app-texture, bg-liquid-glass, animated-gradient, text-glow). Replaced with neomorphism design system using user's exact colors:
+
+   **Light Theme:**
+   - `--plaster: #F5F2EB` (backgrounds)
+   - `--plaster-dark: #EBE8E0` (muted backgrounds)
+   - `--eucalyptus: #1F3A34` (primary — deep forest green)
+   - `--moss: #2A4A42` (secondary dark green)
+   - `--gold: #C8A96A` (highlights)
+   - `--gold-hover: #B08E45` (hover state)
+   - `--soot: #2B2B2B` (body text)
+   - `--mist: #7A7A7A` (muted text)
+   - `--neo-shadow-light: #ffffff`
+   - `--neo-shadow-dark: #ccc8be`
+
+   **Dark Theme:**
+   - `--plaster: #141E1B` (dark base)
+   - `--plaster-dark: #1E2A26` (cards)
+   - `--eucalyptus: #3D6B5E` (lighter green)
+   - `--gold: #D4B87A` (brighter gold)
+   - `--soot: #E8E5DC` (ivory text)
+   - `--mist: #B5B2A8` (muted)
+   - `--neo-shadow-light: #1e2a26`
+   - `--neo-shadow-dark: #0a1210`
+
+2. **Neomorphism Component Classes:**
+   - `.neo-raised` — Extruded surface (dual shadow: light top-left, dark bottom-right)
+   - `.neo-inset` — Pressed/inset surface (inset shadows)
+   - `.neo-raised-sm` — Small raised (buttons, badges) with hover/active states
+   - `.neo-inset-sm` — Small inset (inputs, textareas)
+   - `.neo-card` — Card with raised neumorphic shadow
+   - `.neo-nav` — Flat nav item, raised on hover
+   - `.neo-nav-active` — Pressed/inset with eucalyptus fill
+   - `.neo-btn-primary` — Eucalyptus button with neumorphic shadow
+   - `.neo-btn-gold` — Gold button variant
+   - `.neo-badge` — Inset badge
+   - `.neo-sidebar` / `.neo-topbar` / `.neo-bottomnav` — Navigation containers
+   - `.neo-icon` — Raised icon circle
+   - `.text-gradient` — Eucalyptus-to-gold gradient text
+   - All with dark mode variants
+
+3. **Updated All Components:**
+   - Card → `neo-card` (raised neumorphic)
+   - Dialog → `neo-raised` (raised neumorphic)
+   - Sheet → `neo-raised` (raised neumorphic)
+   - Button → `neo-btn-primary` / `neo-raised-sm` (raised with press states)
+   - Input → `neo-inset-sm` (inset/pressed)
+   - Textarea → `neo-inset-sm` (inset/pressed)
+   - StatCard → `neo-card` with `neo-icon`
+   - EmptyState → `neo-raised` icon circle
+
+4. **Removed All Background Images** — Deleted hero-farm.jpg, texture-green.jpg, texture-pattern.jpg, liquid-glass.jpg, hero-2.jpg references from landing page and app shell. Background is now solid plaster/ivory.
+
+5. **Landing Page** — Removed background image div, glass orbs, content wrapper. Clean neomorphism with raised cards, gradient text (eucalyptus → gold), raised dashboard preview.
+
+6. **App Shell** — Solid plaster background, neumorphic sidebar, raised nav items with pressed active state, neumorphic topbar/bottomnav, inset user profile card.
+
+### Verification Results (VLM Analysis)
+- **Landing page: 9/10** — Solid cream background, neumorphic raised cards, deep forest green + gold accents, no background images
+- **Dashboard: 8/10** — Extruded cards with soft shadows, sectioned sidebar, inset active nav, clean typography
+- All 23 farmer views load with 0 console errors
+- `bun run lint` → 0 errors, 0 warnings
+
+Stage Summary:
+- Complete glassmorphism → neomorphism transformation
+- ALL background images removed
+- User's exact color palette implemented (plaster, eucalyptus, moss, gold, soot, mist)
+- Neumorphic shadows (raised + inset) on all components
+- Light + dark theme support
+- Platform visually stunning with Soft UI aesthetic
