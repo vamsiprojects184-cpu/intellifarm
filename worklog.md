@@ -458,3 +458,55 @@ Stage Summary:
 - 5 demo tasks + 3 demo plots seeded
 - Platform now has 21 farmer views, all functional
 - Lint clean, 0 errors, deploy-ready
+
+---
+
+## Phase 6 — Daily Advisory & Yield Benchmarking (Cron Round 4)
+
+Task ID: 9
+Agent: main (webDevReview cron)
+Task: Assess status, QA, add Daily Advisory & Yield Benchmark modules.
+
+### Current Project Status Assessment
+- Platform stable from Phase 5 (21 farmer views, Tasks + Farm Map modules)
+- QA sweep of all 21 views confirmed 0 errors, all 200
+- Dev server healthy, lint clean
+
+### New Features Added
+
+1. **Daily Advisory Module** (`advisory` view + API)
+   - GET `/api/v1/daily-advisory` — generates personalized action plan based on:
+     - Current weather conditions (rain probability, temperature)
+     - Soil moisture levels from latest sensor readings
+     - Active unread alerts
+     - Overdue and due-today tasks
+     - Crop growth stages (FLOWERING → monitor pests, FRUITING → apply potash, HARVEST_READY → check market)
+     - Unread recommendations count
+   - Returns prioritized advisory items (CRITICAL/HIGH/MEDIUM/LOW) with icons, categories, and action buttons that link to relevant views
+   - Time-based greeting (Good morning/afternoon/evening) with farmer name and full date
+   - UI: gradient greeting header with summary badges (total actions, critical count, high count), prioritized advisory cards with color-coded left borders, category badges, action buttons (e.g., "Run Irrigation Analysis" → irrigation view)
+
+2. **Yield Benchmarking Module** (`benchmark` view + API)
+   - GET `/api/v1/yield-benchmark` — compares farmer's harvest yields against Indian standard agricultural benchmarks
+   - Standard yield database for 15 crops (Rice, Wheat, Maize, Tomato, Onion, Cotton, Soybean, Groundnut, Sugarcane, Potato, Chilli, Banana, Gram, Mustard, Brinjal) with average/good/excellent thresholds
+   - Computes per-crop: your average/min/max yield, percentile rating (Below Average/Average/Good/Excellent), total income & profit
+   - UI: summary stat cards (crops compared, top rating, total income, profit), grouped bar chart (your yield vs standard avg/good/excellent), per-crop cards with visual yield comparison bars, min/max/avg badges, financial summary, scrollable reference table with all 15 crop standards
+
+### Verification Results
+- All 21 farmer views load with 0 console errors (including 2 new views)
+- APIs tested:
+  - daily-advisory: greeting "Good evening, Ramesh Patil", CRITICAL irrigation alert (soil moisture 15%), HIGH rain alert (77% probability), task reminders
+  - yield-benchmark: Tomato harvest rated "Below Average" (300 kg/acre vs 8000 standard), percentile 25%, ₹8,100 income, ₹5,100 profit
+- `bun run lint` → 0 errors, 0 warnings
+- Dev server: all 200, no errors
+
+### No Database Changes Required
+- Both features are computed endpoints using existing models (Farm, Crop, Sensor, Alert, Task, Harvest)
+- No new Prisma models needed
+
+Stage Summary:
+- 2 new feature modules (Daily Advisory, Yield Benchmarking)
+- Daily Advisory provides personalized action plan from weather + soil + tasks + crops
+- Yield Benchmark compares farmer yields against Indian standard benchmarks (15 crops)
+- Platform now has 23 farmer views, all functional
+- Lint clean, 0 errors, deploy-ready

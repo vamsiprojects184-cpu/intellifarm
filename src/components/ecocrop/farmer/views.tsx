@@ -21,6 +21,8 @@ import { PestsView } from "./pests";
 import { ExpensesView } from "./expenses";
 import { TasksView } from "./tasks";
 import { FarmMapView } from "./farm-map";
+import { AdvisoryView } from "./advisory";
+import { BenchmarkView } from "./benchmark";
 import { ProfileView } from "./profile";
 import { SettingsView } from "./settings";
 
@@ -67,6 +69,10 @@ export function FarmerViews() {
       return <TasksView />;
     case "farm-map":
       return <FarmMapView />;
+    case "advisory":
+      return <AdvisoryView />;
+    case "benchmark":
+      return <BenchmarkView />;
     case "profile":
       return <ProfileView />;
     case "settings":

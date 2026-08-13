@@ -27,6 +27,8 @@ import {
   Wallet,
   ListTodo,
   Map as MapIcon,
+  Sunrise,
+  BarChart3,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-store";
 import { useNav, type AppView } from "@/lib/nav-store";
@@ -65,6 +67,8 @@ const FARMER_NAV: NavItem[] = [
   { view: "expenses", label: "Expenses", icon: Wallet },
   { view: "tasks", label: "Tasks", icon: ListTodo },
   { view: "farm-map", label: "Farm Map", icon: MapIcon },
+  { view: "advisory", label: "Daily Advisory", icon: Sunrise },
+  { view: "benchmark", label: "Yield Compare", icon: BarChart3 },
   { view: "market", label: "Market Prices", icon: TrendingUp },
   { view: "schemes", label: "Govt. Schemes", icon: Landmark },
   { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },

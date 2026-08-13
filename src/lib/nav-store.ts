@@ -23,6 +23,8 @@ export type FarmerView =
   | "expenses"
   | "tasks"
   | "farm-map"
+  | "advisory"
+  | "benchmark"
   | "profile"
   | "settings";
 
