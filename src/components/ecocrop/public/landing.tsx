@@ -152,26 +152,37 @@ export function PublicLanding() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col">
+      {/* Full-screen background */}
+      <div className="bg-hero-farm fixed inset-0 z-0" />
+
+      {/* Content wrapper above background */}
+      <div className="relative z-10 flex flex-1 flex-col">
+
+      {/* Decorative glass orbs */}
+      <div className="glass-orb h-96 w-96 bg-emerald-400/30" style={{ top: "-5%", right: "-5%" }} />
+      <div className="glass-orb h-80 w-80 bg-amber-400/20" style={{ top: "40%", left: "-10%" }} />
+      <div className="glass-orb h-72 w-72 bg-green-500/25" style={{ bottom: "5%", right: "10%" }} />
+
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="glass-topbar sticky top-0 z-40">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+            <div className="glass flex h-9 w-9 items-center justify-center rounded-xl bg-primary/80 text-primary-foreground">
               <Sprout className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-lg font-bold tracking-tight">Eco Crop</span>
+              <span className="text-lg font-bold tracking-tight text-glow-sm">Eco Crop</span>
               <span className="ml-2 hidden text-xs text-muted-foreground sm:inline">
                 Smart Agriculture Platform
               </span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={() => openAuth("login")} className="hidden sm:inline-flex">
+            <Button variant="ghost" onClick={() => openAuth("login")} className="hidden glass-button sm:inline-flex">
               Login
             </Button>
-            <Button onClick={() => openAuth("register")}>
+            <Button onClick={() => openAuth("register")} className="glass-shimmer">
               Get Started
               <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
@@ -181,32 +192,32 @@ export function PublicLanding() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="eco-leaf-bg relative overflow-hidden">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
+        <section className="relative overflow-hidden py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <div>
-                <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/15">
+                <Badge className="glass-badge mb-4 text-primary">
                   <Leaf className="mr-1 h-3 w-3" /> AI-powered farming
                 </Badge>
-                <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                <h1 className="text-glow text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                   Smart technology for{" "}
-                  <span className="text-primary">complex farming</span> problems
+                  <span className="bg-gradient-to-r from-emerald-400 to-green-600 bg-clip-text text-transparent">complex farming</span> problems
                 </h1>
-                <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+                <p className="text-glow-sm mt-5 max-w-xl text-lg text-foreground/80">
                   Eco Crop helps farmers make better decisions with AI recommendations,
                   smart irrigation, disease detection, weather intelligence and market
                   insights — all in one simple, mobile-first platform.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <Button size="lg" onClick={() => openAuth("register")}>
+                  <Button size="lg" onClick={() => openAuth("register")} className="glass-shimmer">
                     Start Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <Button size="lg" variant="outline" onClick={() => openAuth("login")}>
+                  <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="glass-button">
                     Try Demo Account
                   </Button>
                 </div>
-                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/70">
                   <span className="flex items-center gap-1.5">
                     <CheckCircle2 className="h-4 w-4 text-primary" /> No credit card
                   </span>
@@ -220,31 +231,31 @@ export function PublicLanding() {
               </div>
 
               <div className="relative">
-                <div className="animate-float rounded-2xl border bg-card p-5 shadow-xl">
+                <div className="glass-strong animate-float rounded-2xl p-5">
                   <div className="mb-3 flex items-center justify-between">
                     <div>
                       <p className="text-xs text-muted-foreground">Patil Family Farm</p>
                       <p className="text-sm font-semibold">Shirur, Pune</p>
                     </div>
-                    <Badge className="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300">
+                    <Badge className="glass-badge bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                       Health 82 · Good
                     </Badge>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-lg bg-sky-50 p-3 dark:bg-sky-950/40">
+                    <div className="glass-card rounded-xl p-3">
                       <CloudSun className="mb-1 h-5 w-5 text-sky-600" />
                       <p className="text-xs text-muted-foreground">Today</p>
                       <p className="text-lg font-bold">28°C</p>
                       <p className="text-xs text-sky-600">Rain 30%</p>
                     </div>
-                    <div className="rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950/40">
+                    <div className="glass-card rounded-xl p-3">
                       <Droplets className="mb-1 h-5 w-5 text-emerald-600" />
                       <p className="text-xs text-muted-foreground">Soil</p>
                       <p className="text-lg font-bold">34%</p>
                       <p className="text-xs text-emerald-600">Irrigate today</p>
                     </div>
                   </div>
-                  <div className="mt-3 rounded-lg border-l-4 border-l-amber-500 bg-amber-50 p-3 dark:bg-amber-950/40">
+                  <div className="glass mt-3 rounded-lg border-l-4 border-l-amber-500 p-3">
                     <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
                       💡 Recommendation
                     </p>
@@ -253,7 +264,7 @@ export function PublicLanding() {
                     </p>
                   </div>
                   <div className="mt-3 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950">
+                    <div className="glass flex h-8 w-8 items-center justify-center rounded-full bg-rose-500/20">
                       <Bug className="h-4 w-4 text-rose-600" />
                     </div>
                     <div className="text-xs">
@@ -267,8 +278,8 @@ export function PublicLanding() {
 
             <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {STATS.map((s) => (
-                <div key={s.label} className="text-center">
-                  <div className="text-3xl font-bold text-primary">{s.value}</div>
+                <div key={s.label} className="glass-card rounded-xl p-4 text-center">
+                  <div className="bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-3xl font-bold text-transparent">{s.value}</div>
                   <div className="text-xs text-muted-foreground">{s.label}</div>
                 </div>
               ))}
@@ -277,48 +288,46 @@ export function PublicLanding() {
         </section>
 
         {/* Features */}
-        <section id="features" className="border-t bg-muted/30">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <section id="features" className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
                 Everything a modern farm needs
               </h2>
-              <p className="mt-3 text-muted-foreground">
-                Eight powerful modules working together to increase yield, save water
+              <p className="mt-3 text-foreground/70">
+                Twelve powerful modules working together to increase yield, save water
                 and reduce farming risks.
               </p>
             </div>
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {FEATURES.map((f) => (
-                <Card key={f.title} className="border-border/60 transition-shadow hover:shadow-md">
-                  <CardContent className="p-5">
-                    <div className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${f.color}`}>
-                      <f.icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="font-semibold">{f.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
-                  </CardContent>
-                </Card>
+                <div key={f.title} className="glass-card glass-shimmer rounded-2xl p-5">
+                  <div className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${f.color}`}>
+                    <f.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold">{f.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         {/* How it works */}
-        <section id="how" className="border-t">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <section id="how" className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
                 How Eco Crop works
               </h2>
-              <p className="mt-3 text-muted-foreground">
+              <p className="mt-3 text-foreground/70">
                 From sign-up to harvest-ready insights in four simple steps.
               </p>
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((s) => (
-                <div key={s.n} className="relative">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-sm">
+                <div key={s.n} className="glass-card relative rounded-2xl p-5">
+                  <div className="glass flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
                     {s.n}
                   </div>
                   <h3 className="mt-4 font-semibold">{s.title}</h3>
@@ -330,8 +339,8 @@ export function PublicLanding() {
         </section>
 
         {/* Trust / architecture */}
-        <section className="border-t bg-muted/30">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight">
@@ -358,36 +367,34 @@ export function PublicLanding() {
                   ))}
                 </ul>
               </div>
-              <Card>
-                <CardContent className="p-6">
-                  <p className="mb-3 text-sm font-semibold">Role-based access control</p>
-                  <div className="space-y-3">
-                    {[
-                      { role: "Farmer", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300", desc: "Manage farms, crops, get recommendations, detect disease, consult experts" },
-                      { role: "Expert", color: "bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300", desc: "Answer consultations, review disease cases, provide guidance" },
-                      { role: "Admin", color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300", desc: "Manage users, schemes, market data, disease DB, system analytics" },
-                    ].map((r) => (
-                      <div key={r.role} className="flex items-start gap-3 rounded-lg border p-3">
-                        <Badge className={r.color}>{r.role}</Badge>
-                        <p className="text-xs text-muted-foreground">{r.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="glass-strong rounded-2xl p-6">
+                <p className="mb-3 text-sm font-semibold">Role-based access control</p>
+                <div className="space-y-3">
+                  {[
+                    { role: "Farmer", color: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300", desc: "Manage farms, crops, get recommendations, detect disease, consult experts" },
+                    { role: "Expert", color: "bg-violet-500/20 text-violet-700 dark:text-violet-300", desc: "Answer consultations, review disease cases, provide guidance" },
+                    { role: "Admin", color: "bg-amber-500/20 text-amber-700 dark:text-amber-300", desc: "Manage users, schemes, market data, disease DB, system analytics" },
+                  ].map((r) => (
+                    <div key={r.role} className="glass flex items-start gap-3 rounded-lg p-3">
+                      <Badge className={`glass-badge ${r.color}`}>{r.role}</Badge>
+                      <p className="text-xs text-muted-foreground">{r.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Testimonials */}
-        <section className="border-t bg-muted/30">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <Badge className="mb-4 bg-primary/10 text-primary"><Star className="mr-1 h-3 w-3" /> Farmer Stories</Badge>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              <Badge className="glass-badge mb-4 text-primary"><Star className="mr-1 h-3 w-3" /> Farmer Stories</Badge>
+              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
                 Trusted by farmers across India
               </h2>
-              <p className="mt-3 text-muted-foreground">
+              <p className="mt-3 text-foreground/70">
                 Real impact for real farmers. Here&apos;s what they say about Eco Crop.
               </p>
             </div>
@@ -397,94 +404,88 @@ export function PublicLanding() {
                 { name: "Lakshmi Devi", location: "Nashik, Maharashtra", crop: "Onion farmer", quote: "Smart irrigation tells me exactly when to water and how much. I saved 30% water this season and my yield improved.", rating: 5 },
                 { name: "Suresh Kumar", location: "Indore, MP", crop: "Soybean farmer", quote: "The market price tracker helped me sell at the right time. I got ₹200 more per quintal by checking prices across mandis.", rating: 4 },
               ].map((t) => (
-                <Card key={t.name} className="relative">
-                  <CardContent className="p-5">
-                    <Quote className="absolute right-4 top-4 h-8 w-8 text-primary/10" />
-                    <div className="mb-2 flex gap-0.5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`h-3.5 w-3.5 ${i < t.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`} />
-                      ))}
+                <div key={t.name} className="glass-card relative rounded-2xl p-5">
+                  <Quote className="absolute right-4 top-4 h-8 w-8 text-primary/10" />
+                  <div className="mb-2 flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className={`h-3.5 w-3.5 ${i < t.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`} />
+                    ))}
+                  </div>
+                  <p className="text-sm text-foreground">&ldquo;{t.quote}&rdquo;</p>
+                  <div className="mt-4 flex items-center gap-3 border-t border-white/20 pt-3">
+                    <div className="glass flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                      {t.name.charAt(0)}
                     </div>
-                    <p className="text-sm text-foreground">&ldquo;{t.quote}&rdquo;</p>
-                    <div className="mt-4 flex items-center gap-3 border-t pt-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                        {t.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold">{t.name}</p>
-                        <p className="text-[11px] text-muted-foreground">{t.crop} · {t.location}</p>
-                      </div>
+                    <div>
+                      <p className="text-sm font-semibold">{t.name}</p>
+                      <p className="text-[11px] text-muted-foreground">{t.crop} · {t.location}</p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="border-t">
-          <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:py-20">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to grow smarter?
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              Join Eco Crop today and transform how you farm with data-driven decisions.
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Button size="lg" onClick={() => openAuth("register")}>
-                Create your account
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => openAuth("login")}>
-                Login with demo
-              </Button>
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto max-w-4xl px-4 text-center">
+            <div className="glass-strong rounded-3xl p-8 sm:p-12">
+              <h2 className="text-glow-sm text-3xl font-bold tracking-tight sm:text-4xl">
+                Ready to grow smarter?
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-foreground/70">
+                Join Eco Crop today and transform how you farm with data-driven decisions.
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <Button size="lg" onClick={() => openAuth("register")} className="glass-shimmer">
+                  Create your account
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" onClick={() => openAuth("login")} className="glass-button">
+                  Login with demo
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Contact */}
-        <section id="contact" className="border-t bg-muted/30">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <section id="contact" className="py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight">Get in touch</h2>
-              <p className="mt-3 text-muted-foreground">
+              <h2 className="text-glow-sm text-3xl font-bold tracking-tight">Get in touch</h2>
+              <p className="mt-3 text-foreground/70">
                 Questions, partnerships or feedback? We&apos;d love to hear from you.
               </p>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              <Card>
-                <CardContent className="flex flex-col items-center p-6 text-center">
-                  <MapPin className="mb-2 h-6 w-6 text-primary" />
-                  <p className="text-sm font-medium">Address</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Eco Crop Agri Tech, Pune, Maharashtra, India</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="flex flex-col items-center p-6 text-center">
-                  <Mail className="mb-2 h-6 w-6 text-primary" />
-                  <p className="text-sm font-medium">Email</p>
-                  <a href="mailto:hello@ecocrop.farm" className="mt-1 text-xs text-primary hover:underline">
-                    hello@ecocrop.farm
-                  </a>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="flex flex-col items-center p-6 text-center">
-                  <Phone className="mb-2 h-6 w-6 text-primary" />
+              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+                <MapPin className="mb-2 h-6 w-6 text-primary" />
+                <p className="text-sm font-medium">Address</p>
+                <p className="mt-1 text-xs text-muted-foreground">Eco Crop Agri Tech, Pune, Maharashtra, India</p>
+              </div>
+              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+                <Mail className="mb-2 h-6 w-6 text-primary" />
+                <p className="text-sm font-medium">Email</p>
+                <a href="mailto:hello@ecocrop.farm" className="mt-1 text-xs text-primary hover:underline">
+                  hello@ecocrop.farm
+                </a>
+              </div>
+              <div className="glass-card flex flex-col items-center rounded-2xl p-6 text-center">
+                <Phone className="mb-2 h-6 w-6 text-primary" />
                   <p className="text-sm font-medium">Helpline</p>
                   <a href="tel:+911800000000" className="mt-1 text-xs text-primary hover:underline">
                     1800-000-000 (toll-free)
                   </a>
-                </CardContent>
-              </Card>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer — sticky to bottom */}
-      <footer className="border-t bg-background">
+      <footer className="glass-topbar border-t">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <div className="grid gap-8 md:grid-cols-4">
             <div className="md:col-span-2">
@@ -538,6 +539,7 @@ export function PublicLanding() {
       <AuthDialog open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
       {/* keep setView referenced for future navigation */}
       <span className="hidden">{String(!!setView)}{String(!!fetchUser)}</span>
+      </div>
     </div>
   );
 }

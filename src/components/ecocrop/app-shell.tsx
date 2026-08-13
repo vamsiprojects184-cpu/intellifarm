@@ -151,7 +151,7 @@ export function AppShell() {
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2 border-b px-5">
+      <div className="flex h-16 items-center gap-2 border-b border-white/10 px-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           <Sprout className="h-4 w-4" />
         </div>
@@ -168,10 +168,10 @@ export function AppShell() {
               key={item.view}
               onClick={() => handleNav(item.view)}
               className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
                 view === item.view
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "glass bg-primary text-primary-foreground shadow-md"
+                  : "glass-nav text-muted-foreground hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" />
@@ -191,10 +191,10 @@ export function AppShell() {
                   key={item.view}
                   onClick={() => handleNav(item.view)}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                    "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
                     view === item.view
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      ? "glass bg-primary text-primary-foreground shadow-md"
+                      : "glass-nav text-muted-foreground hover:text-foreground"
                   )}
                 >
                   <item.icon className="h-4 w-4 shrink-0" />
@@ -206,7 +206,7 @@ export function AppShell() {
         )}
       </nav>
 
-      <div className="border-t p-3">
+      <div className="glass border-t border-white/10 p-3">
         <div className="flex items-center gap-3 rounded-lg p-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm font-semibold">
             {user.fullName.charAt(0).toUpperCase()}
@@ -227,9 +227,9 @@ export function AppShell() {
   const bottomNav = nav.slice(0, 5);
 
   return (
-    <div className="flex min-h-screen bg-muted/20">
+    <div className="bg-app-texture flex min-h-screen">
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r bg-background lg:block">
+      <aside className="glass-sidebar hidden w-64 shrink-0 lg:block">
         {SidebarContent}
       </aside>
 
@@ -245,7 +245,7 @@ export function AppShell() {
 
       <div className="flex flex-1 flex-col">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-background/90 px-4 backdrop-blur lg:hidden">
+        <header className="glass-topbar sticky top-0 z-30 flex h-14 items-center gap-3 px-4 lg:hidden">
           <Button
             variant="ghost"
             size="icon"
@@ -271,7 +271,7 @@ export function AppShell() {
         </main>
 
         {/* Mobile bottom nav */}
-        <nav className="fixed bottom-0 left-0 right-0 z-40 border-t bg-background/95 backdrop-blur lg:hidden">
+        <nav className="glass-bottomnav fixed bottom-0 left-0 right-0 z-40 lg:hidden">
           <div className="grid grid-cols-5">
             {bottomNav.map((item) => (
               <button
