@@ -510,3 +510,51 @@ Stage Summary:
 - Yield Benchmark compares farmer yields against Indian standard benchmarks (15 crops)
 - Platform now has 23 farmer views, all functional
 - Lint clean, 0 errors, deploy-ready
+
+---
+
+## Phase 7 — Equipment & Inventory Management (Cron Round 5)
+
+Task ID: 10
+Agent: main (webDevReview cron)
+Task: Complete Equipment & Inventory module (started in previous round, interrupted by tool outage).
+
+### Current Project Status Assessment
+- Platform stable from Phase 6 (23 farmer views, Daily Advisory + Yield Benchmarking)
+- Previous round partially created Equipment schema + API but was interrupted by tool outage
+- QA sweep confirmed all existing views load with 0 errors
+- Dev server healthy, lint clean
+
+### Completed Work
+
+1. **Equipment Management Module** (`equipment` view + API)
+   - `Equipment` Prisma model: name, category (TRACTOR/PUMP/SPRAYER/HARVESTER/TILLER/IRRIGATION/OTHER), brand, model, purchaseDate, purchasePrice, currentValue, status (ACTIVE/MAINTENANCE/BROKEN/SOLD), lastService, nextService, hoursUsed, fuelType (DIESEL/PETROL/ELECTRIC/MANUAL), notes
+   - POST `/api/v1/equipment` — create with all fields
+   - GET `/api/v1/equipment` — list with farm relations
+   - PATCH `/api/v1/equipment/[id]` — update status and fields
+   - DELETE `/api/v1/equipment/[id]`
+   - UI: stat cards (Total, Active, In Maintenance, Total Value), service-due alerts, equipment cards with category emoji icons, status badges, service date tracking (overdue/soon), fuel type & hours used, status toggle buttons (Mark Active/Maintenance)
+
+2. **Inventory Management Module** (`inventory` view + API)
+   - `InventoryItem` Prisma model: name, category (SEEDS/FERTILIZER/PESTICIDE/FUEL/TOOLS/OTHER), quantity, unit, minStock, pricePerUnit, purchaseDate, expiryDate, batchNo, supplier, notes
+   - POST `/api/v1/inventory` — create with computed summary
+   - GET `/api/v1/inventory` — list with summary (total, lowStock, expiringSoon, totalValue)
+   - PATCH `/api/v1/inventory/[id]` — update quantity and fields
+   - DELETE `/api/v1/inventory/[id]`
+   - UI: stat cards (Total Items, Low Stock, Expiring Soon, Total Value), category filter buttons, inventory cards with LOW STOCK/EXPIRED/EXPIRING badges, quantity with unit, price per unit, expiry tracking, batch numbers, supplier info
+
+### Demo Data Seeded
+- 4 equipment items: John Deere Tractor (₹5.5L), Drip Pump (₹20k), Knapsack Sprayer (₹3k), Power Tiller (MAINTENANCE, service overdue)
+- 6 inventory items: Tomato Seeds, NPK Fertilizer (45kg), Urea (LOW STOCK at 15kg < 20kg min), Mancozeb (EXPIRING in 20 days), Diesel (30L), Garden Hoe
+
+### Verification Results
+- All 23 farmer views load with 0 console errors (including 2 new views)
+- APIs tested: equipment (4 items, total value ₹633,000), inventory (6 items, low-stock + expiring alerts working)
+- `bun run lint` → 0 errors, 0 warnings
+- Dev server: all 200, no errors
+
+Stage Summary:
+- 2 new feature modules (Equipment, Inventory) — completed from previous interrupted round
+- 4 demo equipment + 6 demo inventory items seeded
+- Platform now has 25 farmer views, all functional
+- Lint clean, 0 errors, deploy-ready

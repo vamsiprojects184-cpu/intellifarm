@@ -56,6 +56,8 @@ model User {
   pestReports     PestReport[]
   expenses        FarmExpense[]
   tasks           FarmTask[]
+  equipment       Equipment[]
+  inventory       InventoryItem[]
 }
 
 model RefreshToken {
@@ -117,6 +119,8 @@ model Farm {
   expenses      FarmExpense[]
   tasks         FarmTask[]
   plots         FarmPlot[]
+  equipment     Equipment[]
+  inventory     InventoryItem[]
 }
 
 // ============================================================
@@ -656,4 +660,52 @@ model FarmPlot {
   notes       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// ============================================================
+// EQUIPMENT & INVENTORY MANAGEMENT
+// ============================================================
+
+model Equipment {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  category      String   // TRACTOR / PUMP / SPRAYER / HARVESTER / TILLER / IRRIGATION / OTHER
+  brand         String?
+  model         String?
+  purchaseDate  DateTime?
+  purchasePrice Float?
+  currentValue  Float?
+  status        String   @default("ACTIVE") // ACTIVE / MAINTENANCE / BROKEN / SOLD
+  lastService   DateTime?
+  nextService   DateTime?
+  hoursUsed     Float?
+  fuelType      String?  // DIESEL / PETROL / ELECTRIC / MANUAL
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model InventoryItem {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  category      String   // SEEDS / FERTILIZER / PESTICIDE / FUEL / TOOLS / OTHER
+  quantity      Float
+  unit          String   @default("kg") // kg / L / pieces / bags
+  minStock      Float    @default(0)
+  pricePerUnit  Float?
+  purchaseDate  DateTime?
+  expiryDate    DateTime?
+  batchNo       String?
+  supplier      String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

@@ -25,6 +25,8 @@ export type FarmerView =
   | "farm-map"
   | "advisory"
   | "benchmark"
+  | "equipment"
+  | "inventory"
   | "profile"
   | "settings";
 

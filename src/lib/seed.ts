@@ -667,6 +667,38 @@ async function main() {
       }
       console.log("  ✓ Demo plots added (3 field plots)");
     }
+
+    // Demo equipment
+    const existingEquip = await db.equipment.findFirst({ where: { farmId: demoFarm.id } });
+    if (!existingEquip) {
+      const equipData = [
+        { name: "John Deere 5050D Tractor", category: "TRACTOR", brand: "John Deere", model: "5050D", purchaseDate: new Date("2023-06-15"), purchasePrice: 650000, currentValue: 550000, status: "ACTIVE", fuelType: "DIESEL", hoursUsed: 1200, lastService: new Date("2026-01-15"), nextService: new Date(Date.now() + 5 * 86400000), notes: "Main tractor for plowing and transport" },
+        { name: "Drip Irrigation Pump", category: "PUMP", brand: "Kirloskar", model: "KDS-444", purchaseDate: new Date("2024-03-10"), purchasePrice: 25000, currentValue: 20000, status: "ACTIVE", fuelType: "ELECTRIC", hoursUsed: 800, lastService: new Date("2026-06-01"), nextService: new Date(Date.now() + 30 * 86400000) },
+        { name: "Knapsack Sprayer", category: "SPRAYER", brand: "ASPEE", model: "KS-16", purchaseDate: new Date("2025-08-01"), purchasePrice: 3500, currentValue: 3000, status: "ACTIVE", fuelType: "MANUAL", notes: "Manual sprayer for pesticide application" },
+        { name: "Power Tiller", category: "TILLER", brand: "Honda", model: "FJ500", purchaseDate: new Date("2022-11-20"), purchasePrice: 85000, currentValue: 60000, status: "MAINTENANCE", fuelType: "PETROL", hoursUsed: 500, lastService: new Date("2025-12-01"), nextService: new Date(Date.now() - 3 * 86400000), notes: "Needs clutch repair" },
+      ];
+      for (const e of equipData) {
+        await db.equipment.create({ data: { ...e, farmId: demoFarm.id, userId: farmer.id } });
+      }
+      console.log("  ✓ Demo equipment added (4 items)");
+    }
+
+    // Demo inventory
+    const existingInv = await db.inventoryItem.findFirst({ where: { farmId: demoFarm.id } });
+    if (!existingInv) {
+      const invData = [
+        { name: "Tomato Seeds (Pusa Ruby)", category: "SEEDS", quantity: 0.5, unit: "kg", minStock: 0.2, pricePerUnit: 800, purchaseDate: new Date(Date.now() - 35 * 86400000), batchNo: "PR-2026-08", supplier: "Local seed shop", notes: "Hybrid tomato seeds" },
+        { name: "NPK 19-19-19", category: "FERTILIZER", quantity: 45, unit: "kg", minStock: 20, pricePerUnit: 45, purchaseDate: new Date(Date.now() - 28 * 86400000), batchNo: "NPK-2026-07", supplier: "Krishi Kendra", expiryDate: new Date(Date.now() + 365 * 86400000) },
+        { name: "Urea", category: "FERTILIZER", quantity: 15, unit: "kg", minStock: 20, pricePerUnit: 18, purchaseDate: new Date(Date.now() - 15 * 86400000), supplier: "Krishi Kendra", expiryDate: new Date(Date.now() + 730 * 86400000) },
+        { name: "Mancozeb 75% WP", category: "PESTICIDE", quantity: 2, unit: "kg", minStock: 0.5, pricePerUnit: 350, purchaseDate: new Date(Date.now() - 10 * 86400000), batchNo: "MCZ-2026", supplier: "Agri shop", expiryDate: new Date(Date.now() + 20 * 86400000), notes: "Fungicide for blight" },
+        { name: "Diesel", category: "FUEL", quantity: 30, unit: "L", minStock: 10, pricePerUnit: 92, purchaseDate: new Date(Date.now() - 5 * 86400000), supplier: "Petrol pump" },
+        { name: "Garden Hoe", category: "TOOLS", quantity: 3, unit: "pieces", minStock: 1, pricePerUnit: 450, purchaseDate: new Date("2024-01-15"), supplier: "Hardware store" },
+      ];
+      for (const i of invData) {
+        await db.inventoryItem.create({ data: { ...i, farmId: demoFarm.id, userId: farmer.id } });
+      }
+      console.log("  ✓ Demo inventory added (6 items)");
+    }
   }
 
   console.log("✅ Seeding complete!");

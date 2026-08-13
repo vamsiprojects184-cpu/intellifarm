@@ -23,6 +23,8 @@ import { TasksView } from "./tasks";
 import { FarmMapView } from "./farm-map";
 import { AdvisoryView } from "./advisory";
 import { BenchmarkView } from "./benchmark";
+import { EquipmentView } from "./equipment";
+import { InventoryView } from "./inventory";
 import { ProfileView } from "./profile";
 import { SettingsView } from "./settings";
 
@@ -73,6 +75,10 @@ export function FarmerViews() {
       return <AdvisoryView />;
     case "benchmark":
       return <BenchmarkView />;
+    case "equipment":
+      return <EquipmentView />;
+    case "inventory":
+      return <InventoryView />;
     case "profile":
       return <ProfileView />;
     case "settings":
