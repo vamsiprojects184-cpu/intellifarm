@@ -48,65 +48,73 @@ import { Toaster } from "@/components/ui/sonner";
 import { FarmerViews } from "@/components/ecocrop/farmer/views";
 import { ExpertViews } from "@/components/ecocrop/expert/views";
 import { AdminViews } from "@/components/ecocrop/admin/views";
+import { useT } from "@/lib/i18n-store";
 
 interface NavItem {
   view: AppView;
   label: string;
+  tKey: string;
   icon: typeof LayoutDashboard;
 }
 
 interface NavSection {
   title: string;
+  tKey: string;
   items: NavItem[];
 }
 
 const FARMER_NAV_SECTIONS: NavSection[] = [
   {
     title: "Overview",
+    tKey: "nav.overview",
     items: [
-      { view: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { view: "advisory", label: "Daily Advisory", icon: Sunrise },
-      { view: "analytics", label: "Analytics", icon: Activity },
+      { view: "dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
+      { view: "advisory", label: "Daily Advisory", tKey: "nav.advisory", icon: Sunrise },
+      { view: "analytics", label: "Analytics", tKey: "nav.analytics", icon: Activity },
     ],
   },
   {
     title: "Farm Management",
+    tKey: "nav.farmManagement",
     items: [
-      { view: "farms", label: "My Farms", icon: Tractor },
-      { view: "crops", label: "Crops", icon: Sprout },
-      { view: "farm-map", label: "Farm Map", icon: MapIcon },
-      { view: "tasks", label: "Tasks", icon: ListTodo },
-      { view: "timeline", label: "Activity", icon: CalendarClock },
+      { view: "farms", label: "My Farms", tKey: "nav.farms", icon: Tractor },
+      { view: "crops", label: "Crops", tKey: "nav.crops", icon: Sprout },
+      { view: "farm-map", label: "Farm Map", tKey: "nav.farmMap", icon: MapIcon },
+      { view: "tasks", label: "Tasks", tKey: "nav.tasks", icon: ListTodo },
+      { view: "timeline", label: "Activity", tKey: "nav.timeline", icon: CalendarClock },
     ],
   },
   {
     title: "Crop Intelligence",
+    tKey: "nav.cropIntelligence",
     items: [
-      { view: "weather", label: "Weather", icon: CloudSun },
-      { view: "irrigation", label: "Irrigation", icon: Droplets },
-      { view: "disease", label: "Disease Scan", icon: Bug },
-      { view: "soil-tests", label: "Soil Tests", icon: FlaskConical },
-      { view: "pests", label: "Pest Control", icon: ShieldAlert },
-      { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
+      { view: "weather", label: "Weather", tKey: "nav.weather", icon: CloudSun },
+      { view: "irrigation", label: "Irrigation", tKey: "nav.irrigation", icon: Droplets },
+      { view: "disease", label: "Disease Scan", tKey: "nav.disease", icon: Bug },
+      { view: "soil-tests", label: "Soil Tests", tKey: "nav.soilTests", icon: FlaskConical },
+      { view: "pests", label: "Pest Control", tKey: "nav.pests", icon: ShieldAlert },
+      { view: "crop-calendar", label: "Crop Calendar", tKey: "nav.cropCalendar", icon: CalendarDays },
     ],
   },
   {
     title: "Harvest & Finance",
+    tKey: "nav.harvestFinance",
     items: [
-      { view: "harvests", label: "Harvests", icon: Wheat },
-      { view: "benchmark", label: "Yield Compare", icon: BarChart3 },
-      { view: "expenses", label: "Expenses", icon: Wallet },
-      { view: "equipment", label: "Equipment", icon: Wrench },
-      { view: "inventory", label: "Inventory", icon: Package },
+      { view: "harvests", label: "Harvests", tKey: "nav.harvests", icon: Wheat },
+      { view: "benchmark", label: "Yield Compare", tKey: "nav.benchmark", icon: BarChart3 },
+      { view: "expenses", label: "Expenses", tKey: "nav.expenses", icon: Wallet },
+      { view: "equipment", label: "Equipment", tKey: "nav.equipment", icon: Wrench },
+      { view: "inventory", label: "Inventory", tKey: "nav.inventory", icon: Package },
     ],
   },
   {
     title: "Resources",
+    tKey: "nav.resources",
     items: [
-      { view: "market", label: "Market Prices", icon: TrendingUp },
-      { view: "schemes", label: "Govt. Schemes", icon: Landmark },
-      { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },
-      { view: "notifications", label: "Notifications", icon: Bell },
+      { view: "market", label: "Market Prices", tKey: "nav.market", icon: TrendingUp },
+      { view: "schemes", label: "Govt. Schemes", tKey: "nav.schemes", icon: Landmark },
+      { view: "expert-connect", label: "Expert Connect", tKey: "nav.expertConnect", icon: MessageSquare },
+      { view: "notifications", label: "Notifications", tKey: "nav.notifications", icon: Bell },
     ],
   },
 ];
@@ -114,30 +122,31 @@ const FARMER_NAV_SECTIONS: NavSection[] = [
 const FARMER_NAV: NavItem[] = FARMER_NAV_SECTIONS.flatMap((s) => s.items);
 
 const FARMER_NAV_SECONDARY: NavItem[] = [
-  { view: "profile", label: "Profile", icon: User },
-  { view: "settings", label: "Settings", icon: Settings },
+  { view: "profile", label: "Profile", tKey: "nav.profile", icon: User },
+  { view: "settings", label: "Settings", tKey: "nav.settings", icon: Settings },
 ];
 
 const EXPERT_NAV: NavItem[] = [
-  { view: "expert-dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { view: "consultations", label: "Consultations", icon: MessageSquare },
-  { view: "disease-cases", label: "Disease Cases", icon: Bug },
-  { view: "expert-profile", label: "My Profile", icon: User },
+  { view: "expert-dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
+  { view: "consultations", label: "Consultations", tKey: "nav.expertConnect", icon: MessageSquare },
+  { view: "disease-cases", label: "Disease Cases", tKey: "nav.disease", icon: Bug },
+  { view: "expert-profile", label: "My Profile", tKey: "nav.profile", icon: User },
 ];
 
 const ADMIN_NAV: NavItem[] = [
-  { view: "admin-dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { view: "admin-users", label: "Users", icon: Users },
-  { view: "admin-farms", label: "Farms", icon: Tractor },
-  { view: "admin-schemes", label: "Schemes", icon: Landmark },
-  { view: "admin-market", label: "Market Data", icon: TrendingUp },
-  { view: "admin-disease-db", label: "Disease DB", icon: Bug },
-  { view: "admin-stats", label: "System Stats", icon: Activity },
+  { view: "admin-dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
+  { view: "admin-users", label: "Users", tKey: "nav.profile", icon: Users },
+  { view: "admin-farms", label: "Farms", tKey: "nav.farms", icon: Tractor },
+  { view: "admin-schemes", label: "Schemes", tKey: "nav.schemes", icon: Landmark },
+  { view: "admin-market", label: "Market Data", tKey: "nav.market", icon: TrendingUp },
+  { view: "admin-disease-db", label: "Disease DB", tKey: "nav.disease", icon: Bug },
+  { view: "admin-stats", label: "System Stats", tKey: "nav.analytics", icon: Activity },
 ];
 
 export function AppShell() {
   const { user, logout } = useAuth();
   const { view, navigate } = useNav();
+  const t = useT();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // default view per role — only reset when a role lands on another role's portal
@@ -168,7 +177,7 @@ export function AppShell() {
   const secondary = user.role === "FARMER" ? FARMER_NAV_SECONDARY : [];
 
   const roleLabel =
-    user.role === "ADMIN" ? "Administrator" : user.role === "EXPERT" ? "Expert" : "Farmer";
+    user.role === "ADMIN" ? t("app.adminPortal") : user.role === "EXPERT" ? t("app.expertPortal") : t("app.farmerPortal");
   const roleColor =
     user.role === "ADMIN"
       ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
@@ -199,7 +208,7 @@ export function AppShell() {
             {FARMER_NAV_SECTIONS.map((section, si) => (
               <div key={section.title} className={si > 0 ? "mt-4" : ""}>
                 <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-wider text-primary/60">
-                  {section.title}
+                  {t(section.tKey)}
                 </p>
                 <div className="space-y-0.5">
                   {section.items.map((item) => (
@@ -214,7 +223,7 @@ export function AppShell() {
                       )}
                     >
                       <item.icon className="h-4 w-4 shrink-0" />
-                      {item.label}
+                      {t(item.tKey)}
                     </button>
                   ))}
                 </div>
@@ -235,7 +244,7 @@ export function AppShell() {
                 )}
               >
                 <item.icon className="h-4 w-4 shrink-0" />
-                {item.label}
+                {t(item.tKey)}
               </button>
             ))}
           </div>
@@ -259,7 +268,7 @@ export function AppShell() {
                   )}
                 >
                   <item.icon className="h-4 w-4 shrink-0" />
-                  {item.label}
+                  {t(item.tKey)}
                 </button>
               ))}
             </div>

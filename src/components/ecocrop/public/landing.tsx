@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AuthDialog } from "@/components/ecocrop/auth-dialog";
 import { useAuth } from "@/lib/auth-store";
+import { useT } from "@/lib/i18n-store";
 import {
   Sprout,
   Droplets,
@@ -145,6 +146,7 @@ export function PublicLanding() {
   const [authOpen, setAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState<"login" | "register">("login");
   const { fetchUser, setView } = useAuth();
+  const t = useT();
 
   function openAuth(tab: "login" | "register") {
     setAuthTab(tab);
@@ -191,7 +193,7 @@ export function PublicLanding() {
                 </Badge>
                 <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                   Smart technology for{" "}
-                  <span className="text-gradient">complex farming</span> problems
+                  <span className="text-gradient">{t("landing.heroHighlight")}</span> problems
                 </h1>
                 <p className=" mt-5 max-w-xl text-lg text-foreground/80">
                   Eco Crop helps farmers make better decisions with AI recommendations,
@@ -444,7 +446,7 @@ export function PublicLanding() {
         <section id="contact" className="py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className=" text-3xl font-bold tracking-tight">Get in touch</h2>
+              <h2 className=" text-3xl font-bold tracking-tight">{t("landing.contact")}</h2>
               <p className="mt-3 text-foreground/70">
                 Questions, partnerships or feedback? We&apos;d love to hear from you.
               </p>
@@ -513,7 +515,7 @@ export function PublicLanding() {
             <div>
               <p className="text-sm font-semibold">For Farmers</p>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li><button onClick={() => openAuth("login")} className="hover:text-foreground">Login</button></li>
+                <li><button onClick={() => openAuth("login")} className="hover:text-foreground">{t("auth.login")}</button></li>
                 <li><button onClick={() => openAuth("register")} className="hover:text-foreground">Register</button></li>
                 <li><button onClick={() => openAuth("login")} className="hover:text-foreground">Try demo</button></li>
               </ul>

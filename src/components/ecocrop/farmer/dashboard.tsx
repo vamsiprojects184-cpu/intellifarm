@@ -31,10 +31,12 @@ import {
   HealthScoreRing,
   EmptyState,
 } from "@/components/ecocrop/shared";
+import { useT } from "@/lib/i18n-store";
 
 export function FarmerDashboard() {
   const qc = useQueryClient();
   const { navigate } = useNav();
+  const t = useT();
 
   const { data: analytics, isLoading: aLoading } = useQuery({
     queryKey: ["analytics"],
@@ -89,14 +91,14 @@ export function FarmerDashboard() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t("dash.title")}</h1>
           <p className="text-sm text-muted-foreground">
-            Overview of your farms, crops and recommendations
+            {t("dash.subtitle")}
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => refreshRecs.mutate()} disabled={refreshRecs.isPending}>
           <RefreshCw className={`mr-2 h-4 w-4 ${refreshRecs.isPending ? "animate-spin" : ""}`} />
-          Refresh insights
+          {t("dash.refreshInsights")}
         </Button>
       </div>
 
@@ -128,10 +130,10 @@ export function FarmerDashboard() {
           Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-xl" />)
         ) : (
           <>
-            <StatCard icon={Tractor} label="Farms" value={analytics?.totals.farms ?? 0} />
-            <StatCard icon={Sprout} label="Active Crops" value={analytics?.totals.activeCrops ?? 0} hint={`${analytics?.totals.crops ?? 0} total`} accent="lime" />
-            <StatCard icon={AlertTriangle} label="Need Attention" value={analytics?.totals.needsAttention ?? 0} accent={analytics?.totals.needsAttention ? "amber" : "primary"} />
-            <StatCard icon={CloudSun} label="Weather" value={weather?.today ? `${weather.today.temperature}°C` : "—"} hint={weather?.today?.conditionText} accent="sky" />
+            <StatCard icon={Tractor} label={t("dash.farms")} value={analytics?.totals.farms ?? 0} />
+            <StatCard icon={Sprout} label={t("dash.activeCrops")} value={analytics?.totals.activeCrops ?? 0} hint={`${analytics?.totals.crops ?? 0} total`} accent="lime" />
+            <StatCard icon={AlertTriangle} label={t("dash.needAttention")} value={analytics?.totals.needsAttention ?? 0} accent={analytics?.totals.needsAttention ? "amber" : "primary"} />
+            <StatCard icon={CloudSun} label={t("dash.weather")} value={weather?.today ? `${weather.today.temperature}°C` : "—"} hint={weather?.today?.conditionText} accent="sky" />
           </>
         )}
       </div>
@@ -140,7 +142,7 @@ export function FarmerDashboard() {
         {/* Health score */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Farm Health Score</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("dash.healthScore")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center pt-2">
             {aLoading ? (
@@ -160,7 +162,7 @@ export function FarmerDashboard() {
         {/* Weather insights */}
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Weather Intelligence</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("dash.weatherIntel")}</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => navigate("weather")}>
               Details <ArrowRight className="ml-1 h-3 w-3" />
             </Button>
@@ -189,7 +191,7 @@ export function FarmerDashboard() {
       {/* Recommendations */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Recommendations</CardTitle>
+          <CardTitle className="text-sm font-medium">{t("dash.recommendations")}</CardTitle>
           <Button variant="ghost" size="sm" onClick={() => navigate("analytics")}>
             View all <ArrowRight className="ml-1 h-3 w-3" />
           </Button>
