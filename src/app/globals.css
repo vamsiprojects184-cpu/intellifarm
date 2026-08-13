@@ -95,12 +95,12 @@
   --secondary: oklch(0.27 0.025 145);
   --secondary-foreground: oklch(0.96 0.01 120);
   --muted: oklch(0.25 0.02 145);
-  --muted-foreground: oklch(0.7 0.02 130);
+  --muted-foreground: oklch(0.78 0.02 130);
   --accent: oklch(0.3 0.04 75);
   --accent-foreground: oklch(0.95 0.02 90);
   --destructive: oklch(0.7 0.19 22);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
   --ring: oklch(0.68 0.15 150);
   --chart-1: oklch(0.7 0.16 150);
   --chart-2: oklch(0.6 0.14 170);

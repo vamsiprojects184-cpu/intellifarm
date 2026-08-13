@@ -27,9 +27,11 @@ export async function GET(req: NextRequest) {
     include: { market: true },
     take: 500,
   });
-  // flag demo
-  const isDemo = prices.length > 0 ? prices.every((p) => p.isDemo) : true;
-  return ok({ prices, isDemo });
+  // flag demo — true if all prices are demo, partial if some are
+  const demoCount = prices.filter((p) => p.isDemo).length;
+  const isDemo = prices.length > 0 ? demoCount === prices.length : true;
+  const isPartialDemo = demoCount > 0 && demoCount < prices.length;
+  return ok({ prices, isDemo, isPartialDemo, demoCount, total: prices.length });
 }
 
 export async function getMarkets() {

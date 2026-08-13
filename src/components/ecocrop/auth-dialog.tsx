@@ -100,6 +100,24 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
     setLoginEmail(email);
     setLoginPassword(password);
     setTab("login");
+    // Auto-submit after state updates (one-click demo login)
+    setTimeout(() => {
+      handleLoginAuto(email, password);
+    }, 50);
+  }
+
+  async function handleLoginAuto(email: string, password: string) {
+    setLoading(true);
+    try {
+      await api.post("/api/v1/auth/login", { email, password });
+      await fetchUser();
+      onOpenChange(false);
+      toast.success("Welcome back to Eco Crop!");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Login failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

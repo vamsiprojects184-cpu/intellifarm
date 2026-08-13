@@ -19,6 +19,7 @@ import {
   RefreshCw,
   CalendarClock,
   CheckCircle2,
+  Plus,
 } from "lucide-react";
 import {
   StatCard,
@@ -95,6 +96,28 @@ export function FarmerDashboard() {
           Refresh insights
         </Button>
       </div>
+
+      {/* Onboarding banner for farmers with no farms */}
+      {farmsData && farmsData.length === 0 && (
+        <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-emerald-50/50 to-amber-50/30 dark:from-primary/10 dark:via-emerald-950/20 dark:to-amber-950/10">
+          <CardContent className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                <Tractor className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Welcome to Eco Crop! Let&apos;s set up your first farm.</h3>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Create a farm to start tracking crops, get weather insights, irrigation recommendations and AI disease detection.
+                </p>
+              </div>
+            </div>
+            <Button onClick={() => navigate("farms")} className="shrink-0">
+              <Plus className="mr-1 h-4 w-4" /> Create Farm
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">

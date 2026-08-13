@@ -130,15 +130,16 @@ export async function analyzeIrrigation(
   }
 
   // RULE 2: soil moisture above threshold → skip
-  if (soilMoisture !== null) {
-    if (soilMoisture >= moistureThreshold && irrigationRequired) {
+  const smRounded = soilMoisture !== null ? Math.round(soilMoisture * 10) / 10 : null;
+  if (smRounded !== null) {
+    if (smRounded >= moistureThreshold && irrigationRequired) {
       irrigationRequired = false;
       reasoning.push(
-        `Soil moisture is ${soilMoisture}% (≥ threshold ${moistureThreshold}%). No irrigation needed.`
+        `Soil moisture is ${smRounded}% (≥ threshold ${moistureThreshold}%). No irrigation needed.`
       );
-    } else if (soilMoisture < moistureThreshold) {
+    } else if (smRounded < moistureThreshold) {
       reasoning.push(
-        `Soil moisture is ${soilMoisture}% (< threshold ${moistureThreshold}%). Irrigation recommended.`
+        `Soil moisture is ${smRounded}% (< threshold ${moistureThreshold}%). Irrigation recommended.`
       );
     }
   } else {
@@ -150,10 +151,11 @@ export async function analyzeIrrigation(
   // RULE 3: high temperature increases water need
   let waterMultiplier = 1;
   const effectiveTemp = temperature ?? w.temperature;
+  const tempRounded = Math.round(effectiveTemp * 10) / 10;
   if (effectiveTemp > tempThreshold) {
     waterMultiplier = 1 + (effectiveTemp - tempThreshold) / 20;
     reasoning.push(
-      `Temperature ${effectiveTemp}°C exceeds threshold ${tempThreshold}°C. Increasing water quantity by ${Math.round(
+      `Temperature ${tempRounded}°C exceeds threshold ${tempThreshold}°C. Increasing water quantity by ${Math.round(
         (waterMultiplier - 1) * 100
       )}%.`
     );
@@ -198,9 +200,9 @@ export async function analyzeIrrigation(
     recommendedTime,
     reasoning,
     factors: {
-      soilMoisture,
-      temperature,
-      humidity,
+      soilMoisture: soilMoisture !== null ? Math.round(soilMoisture * 10) / 10 : null,
+      temperature: temperature !== null ? Math.round(temperature * 10) / 10 : null,
+      humidity: humidity !== null ? Math.round(humidity * 10) / 10 : null,
       rainProbabilityToday: w.rainToday,
       rainProbabilityTomorrow: w.rainTomorrow,
       cropName: crop?.name ?? null,

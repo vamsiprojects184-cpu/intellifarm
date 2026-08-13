@@ -81,8 +81,19 @@ export async function PATCH(
       });
     }
   } else if (action === "ANSWER" && user.role === "EXPERT") {
+    // Auto-assign expert if not already assigned
+    if (!expertId && user.expertProfile?.id) {
+      expertId = user.expertProfile.id;
+      await db.expertProfile.update({
+        where: { id: user.expertProfile.id },
+        data: { totalConsultations: { increment: 1 } },
+      });
+    }
     newStatus = "ANSWERED";
   } else if (action === "IN_PROGRESS" && user.role === "EXPERT") {
+    if (!expertId && user.expertProfile?.id) {
+      expertId = user.expertProfile.id;
+    }
     newStatus = "IN_PROGRESS";
   } else if (action === "CLOSE") {
     newStatus = "CLOSED";

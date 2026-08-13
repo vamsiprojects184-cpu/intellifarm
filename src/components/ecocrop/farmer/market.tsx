@@ -80,9 +80,11 @@ export function MarketView() {
         <p className="text-sm text-muted-foreground">Track mandi prices & 7-day trends</p>
       </div>
 
-      {data?.isDemo && (
+      {(data?.isDemo || data?.isPartialDemo) && (
         <div className="rounded-lg bg-amber-50 p-3 text-xs text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-          ℹ️ Showing Demo Data. Connect a live market price provider via the MarketPriceProvider interface for real-time mandi prices.
+          {data?.isDemo
+            ? "ℹ️ Showing Demo Data. Connect a live market price provider via the MarketPriceProvider interface for real-time mandi prices."
+            : `ℹ️ Partially showing demo data (${data?.demoCount} of ${data?.total} prices are demo). Connect a live market price provider for real-time mandi prices.`}
         </div>
       )}
 
