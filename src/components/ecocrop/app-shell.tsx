@@ -55,31 +55,63 @@ interface NavItem {
   icon: typeof LayoutDashboard;
 }
 
-const FARMER_NAV: NavItem[] = [
-  { view: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { view: "farms", label: "My Farms", icon: Tractor },
-  { view: "crops", label: "Crops", icon: Sprout },
-  { view: "weather", label: "Weather", icon: CloudSun },
-  { view: "irrigation", label: "Irrigation", icon: Droplets },
-  { view: "disease", label: "Disease Scan", icon: Bug },
-  { view: "soil-tests", label: "Soil Tests", icon: FlaskConical },
-  { view: "harvests", label: "Harvests", icon: Wheat },
-  { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
-  { view: "pests", label: "Pest Control", icon: ShieldAlert },
-  { view: "expenses", label: "Expenses", icon: Wallet },
-  { view: "tasks", label: "Tasks", icon: ListTodo },
-  { view: "farm-map", label: "Farm Map", icon: MapIcon },
-  { view: "advisory", label: "Daily Advisory", icon: Sunrise },
-  { view: "benchmark", label: "Yield Compare", icon: BarChart3 },
-  { view: "equipment", label: "Equipment", icon: Wrench },
-  { view: "inventory", label: "Inventory", icon: Package },
-  { view: "market", label: "Market Prices", icon: TrendingUp },
-  { view: "schemes", label: "Govt. Schemes", icon: Landmark },
-  { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },
-  { view: "timeline", label: "Activity", icon: CalendarClock },
-  { view: "analytics", label: "Analytics", icon: Activity },
-  { view: "notifications", label: "Notifications", icon: Bell },
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const FARMER_NAV_SECTIONS: NavSection[] = [
+  {
+    title: "Overview",
+    items: [
+      { view: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { view: "advisory", label: "Daily Advisory", icon: Sunrise },
+      { view: "analytics", label: "Analytics", icon: Activity },
+    ],
+  },
+  {
+    title: "Farm Management",
+    items: [
+      { view: "farms", label: "My Farms", icon: Tractor },
+      { view: "crops", label: "Crops", icon: Sprout },
+      { view: "farm-map", label: "Farm Map", icon: MapIcon },
+      { view: "tasks", label: "Tasks", icon: ListTodo },
+      { view: "timeline", label: "Activity", icon: CalendarClock },
+    ],
+  },
+  {
+    title: "Crop Intelligence",
+    items: [
+      { view: "weather", label: "Weather", icon: CloudSun },
+      { view: "irrigation", label: "Irrigation", icon: Droplets },
+      { view: "disease", label: "Disease Scan", icon: Bug },
+      { view: "soil-tests", label: "Soil Tests", icon: FlaskConical },
+      { view: "pests", label: "Pest Control", icon: ShieldAlert },
+      { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
+    ],
+  },
+  {
+    title: "Harvest & Finance",
+    items: [
+      { view: "harvests", label: "Harvests", icon: Wheat },
+      { view: "benchmark", label: "Yield Compare", icon: BarChart3 },
+      { view: "expenses", label: "Expenses", icon: Wallet },
+      { view: "equipment", label: "Equipment", icon: Wrench },
+      { view: "inventory", label: "Inventory", icon: Package },
+    ],
+  },
+  {
+    title: "Resources",
+    items: [
+      { view: "market", label: "Market Prices", icon: TrendingUp },
+      { view: "schemes", label: "Govt. Schemes", icon: Landmark },
+      { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },
+      { view: "notifications", label: "Notifications", icon: Bell },
+    ],
+  },
 ];
+
+const FARMER_NAV: NavItem[] = FARMER_NAV_SECTIONS.flatMap((s) => s.items);
 
 const FARMER_NAV_SECONDARY: NavItem[] = [
   { view: "profile", label: "Profile", icon: User },
@@ -162,23 +194,52 @@ export function AppShell() {
       </div>
 
       <nav className="eco-scroll flex-1 overflow-y-auto p-3">
-        <div className="space-y-1">
-          {nav.map((item) => (
-            <button
-              key={item.view}
-              onClick={() => handleNav(item.view)}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
-                view === item.view
-                  ? "glass bg-primary text-primary-foreground shadow-md"
-                  : "glass-nav text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <item.icon className="h-4 w-4 shrink-0" />
-              {item.label}
-            </button>
-          ))}
-        </div>
+        {user.role === "FARMER" ? (
+          <>
+            {FARMER_NAV_SECTIONS.map((section, si) => (
+              <div key={section.title} className={si > 0 ? "mt-4" : ""}>
+                <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-wider text-primary/60">
+                  {section.title}
+                </p>
+                <div className="space-y-0.5">
+                  {section.items.map((item) => (
+                    <button
+                      key={item.view}
+                      onClick={() => handleNav(item.view)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
+                        view === item.view
+                          ? "glass bg-primary text-primary-foreground shadow-md"
+                          : "glass-nav text-foreground/70 hover:text-foreground hover:bg-white/50"
+                      )}
+                    >
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="space-y-1">
+            {nav.map((item) => (
+              <button
+                key={item.view}
+                onClick={() => handleNav(item.view)}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
+                  view === item.view
+                    ? "glass bg-primary text-primary-foreground shadow-md"
+                    : "glass-nav text-foreground/70 hover:text-foreground hover:bg-white/50"
+                )}
+              >
+                <item.icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {secondary.length > 0 && (
           <>
@@ -194,7 +255,7 @@ export function AppShell() {
                     "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
                     view === item.view
                       ? "glass bg-primary text-primary-foreground shadow-md"
-                      : "glass-nav text-muted-foreground hover:text-foreground"
+                      : "glass-nav text-foreground/70 hover:text-foreground hover:bg-white/50"
                   )}
                 >
                   <item.icon className="h-4 w-4 shrink-0" />

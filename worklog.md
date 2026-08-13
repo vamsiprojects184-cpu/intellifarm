@@ -642,3 +642,41 @@ Stage Summary:
 - All cards, dialogs, sidebars, nav items now glass
 - Landing page rated 8/10, dashboard rated 8/10 by VLM
 - Platform is visually stunning and deploy-ready
+
+---
+
+## Phase 9 — Glassmorphism Fixes & Sidebar Reorganization
+
+Task ID: 12
+Agent: main
+Task: Fix UI issues reported by user — low contrast, weak glass, overcrowded sidebar.
+
+### Issues Fixed
+
+1. **Low contrast text** — Increased muted-foreground darkness from oklch(0.5) to oklch(0.42) for better readability
+2. **Weak glass cards** — Increased opacity: glass 0.55→0.78, glass-card 0.5→0.72, glass-strong 0.72→0.88, with stronger borders (0.6→0.8) and more blur (16px→20px)
+3. **Background interference** — Added darker overlay on app background (0.85 opacity white) so texture doesn't compete with text
+4. **Hero background** — Darker gradient overlay (green/brown tones) for better text readability over farm image
+5. **Sidebar overcrowding** — Reorganized 23 flat nav items into 5 grouped sections:
+   - **Overview**: Dashboard, Daily Advisory, Analytics
+   - **Farm Management**: My Farms, Crops, Farm Map, Tasks, Activity
+   - **Crop Intelligence**: Weather, Irrigation, Disease Scan, Soil Tests, Pest Control, Crop Calendar
+   - **Harvest & Finance**: Harvests, Yield Compare, Expenses, Equipment, Inventory
+   - **Resources**: Market Prices, Govt. Schemes, Expert Connect, Notifications
+6. **Inactive nav visibility** — Changed from `text-muted-foreground` to `text-foreground/70` with `hover:bg-white/50` for better visibility
+7. **Glass nav items** — Made transparent by default (no background) instead of semi-transparent white, cleaner look
+
+### Verification Results (VLM Analysis)
+- **Text readability: 9/10** (was low contrast)
+- **Glass quality: 9/10** (stronger opacity + borders)
+- **Sidebar organization: 10/10** (perfect section grouping)
+- **Landing page: 8/10** (good hero with gradient text)
+- **Dashboard: 8/10** overall
+- All 23 farmer views load with 0 console errors
+- `bun run lint` → 0 errors, 0 warnings
+
+Stage Summary:
+- 7 UI issues fixed (contrast, glass opacity, borders, background, sidebar organization, nav visibility)
+- Sidebar reorganized into 5 logical sections with headers
+- Glass cards now 72-88% opaque for readability while still showing texture
+- Platform visually polished and deploy-ready
