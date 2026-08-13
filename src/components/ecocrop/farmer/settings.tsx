@@ -3,6 +3,7 @@
 import { useAuth } from "@/lib/auth-store";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import { Moon, Sun, Bell, Globe, Shield, LogOut, Info } from "lucide-react";
 import { toast } from "sonner";
@@ -20,10 +21,16 @@ export function SettingsView() {
 
       <Card>
         <CardContent className="divide-y p-0">
-          <SettingRow icon={Sun} title="Appearance" desc="Toggle light or dark mode">
-            <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-              {theme === "dark" ? <><Sun className="mr-1 h-3 w-3" /> Light</> : <><Moon className="mr-1 h-3 w-3" /> Dark</>}
-            </Button>
+          <SettingRow
+            icon={theme === "dark" ? Moon : Sun}
+            title="Dark Mode"
+            desc={theme === "dark" ? "Currently using dark theme" : "Currently using light theme"}
+          >
+            <Switch
+              checked={theme === "dark"}
+              onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+              aria-label="Toggle dark mode"
+            />
           </SettingRow>
           <SettingRow icon={Globe} title="Language" desc="Interface language">
             <span className="text-sm text-muted-foreground">{user?.preferredLang === "en" ? "English" : user?.preferredLang}</span>

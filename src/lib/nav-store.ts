@@ -12,7 +12,7 @@ export type FarmerView =
   | "disease"
   | "market"
   | "schemes"
-  | "expert"
+  | "expert-connect"
   | "timeline"
   | "notifications"
   | "analytics"

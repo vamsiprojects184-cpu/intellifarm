@@ -38,7 +38,7 @@ export function FarmerViews() {
       return <MarketView />;
     case "schemes":
       return <SchemesView />;
-    case "expert":
+    case "expert-connect":
       return <ExpertConnectView />;
     case "timeline":
       return <TimelineView />;

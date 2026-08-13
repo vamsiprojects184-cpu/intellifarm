@@ -53,7 +53,7 @@ const FARMER_NAV: NavItem[] = [
   { view: "disease", label: "Disease Scan", icon: Bug },
   { view: "market", label: "Market Prices", icon: TrendingUp },
   { view: "schemes", label: "Govt. Schemes", icon: Landmark },
-  { view: "expert", label: "Expert Connect", icon: MessageSquare },
+  { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },
   { view: "timeline", label: "Activity", icon: CalendarClock },
   { view: "analytics", label: "Analytics", icon: Activity },
   { view: "notifications", label: "Notifications", icon: Bell },
@@ -86,14 +86,21 @@ export function AppShell() {
   const { view, navigate } = useNav();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // default view per role
+  // default view per role — only reset when a role lands on another role's portal
   useEffect(() => {
-    if (user) {
-      if (user.role === "EXPERT" && !view.startsWith("expert")) navigate("expert-dashboard");
-      else if (user.role === "ADMIN" && !view.startsWith("admin")) navigate("admin-dashboard");
-      else if (user.role === "FARMER" && (view.startsWith("expert") || view.startsWith("admin")))
-        navigate("dashboard");
-    }
+    if (!user) return;
+    // Expert portal views (excluding farmer's "expert-connect")
+    const isExpertPortal =
+      view === "expert-dashboard" ||
+      view === "expert-profile" ||
+      view === "disease-cases" ||
+      view === "consultations" ||
+      view === "consultation-detail";
+    const isAdminPortal = view.startsWith("admin-");
+    const isFarmerPortal = !isExpertPortal && !isAdminPortal;
+    if (user.role === "EXPERT" && !isExpertPortal) navigate("expert-dashboard");
+    else if (user.role === "ADMIN" && !isAdminPortal) navigate("admin-dashboard");
+    else if (user.role === "FARMER" && !isFarmerPortal) navigate("dashboard");
   }, [user, view, navigate]);
 
   if (!user) return null;

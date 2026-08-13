@@ -20,8 +20,9 @@ export async function GET(req: NextRequest) {
   if (!user) return unauthorized();
   const { searchParams } = new URL(req.url);
   const farmId = searchParams.get("farmId");
+  // Admins and experts see all disease reports; farmers see only their own
   const where =
-    user.role === "ADMIN"
+    user.role === "ADMIN" || user.role === "EXPERT"
       ? farmId
         ? { farmId }
         : {}
@@ -30,7 +31,10 @@ export async function GET(req: NextRequest) {
     where,
     orderBy: { createdAt: "desc" },
     take: 50,
-    include: { farm: { select: { id: true, name: true } } },
+    include: {
+      farm: { select: { id: true, name: true } },
+      user: { select: { id: true, fullName: true } },
+    },
   });
   return ok(reports);
 }
