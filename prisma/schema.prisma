@@ -51,6 +51,8 @@ model User {
   auditLogs       AuditLog[]
   sensorReadings  SensorReading[]
   irrigationLogs  IrrigationLog[]
+  soilTests       SoilTest[]
+  harvests        Harvest[]
 }
 
 model RefreshToken {
@@ -106,6 +108,8 @@ model Farm {
   alerts        Alert[]
   irrigationLogs IrrigationLog[]
   sensorReadings SensorReading[]
+  soilTests     SoilTest[]
+  harvests      Harvest[]
 }
 
 // ============================================================
@@ -148,6 +152,8 @@ model Crop {
   activities      FarmActivity[]
   diseaseReports  DiseaseReport[]
   recommendations Recommendation[]
+  harvests        Harvest[]
+  soilTests       SoilTest[]
 }
 
 model FarmActivity {
@@ -455,5 +461,81 @@ model CropDatabase {
   durationDays  Int?
   waterNeed     String?  // LOW / MEDIUM / HIGH
   description   String?
+  createdAt     DateTime @default(now())
+}
+
+// ============================================================
+// SOIL TEST REPORTS
+// ============================================================
+
+model SoilTest {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropId        String?
+  crop          Crop?    @relation(fields: [cropId], references: [id], onDelete: SetNull)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testDate      DateTime @default(now())
+  ph            Float?   // 0-14
+  nitrogen      Float?   // kg/ha (N)
+  phosphorus    Float?   // kg/ha (P)
+  potassium     Float?   // kg/ha (K)
+  organicCarbon Float?   // %
+  ec            Float?   // electrical conductivity dS/m
+  sulfur        Float?
+  iron          Float?
+  zinc          Float?
+  boron         Float?
+  soilMoisture  Float?   // %
+  texture       String?  // LOAMY / CLAY / SANDY / SILT
+  fertility     String   @default("MEDIUM") // LOW / MEDIUM / HIGH
+  labName       String?
+  notes         String?
+  recommendations String? // JSON string of fertilizer recommendations
+  createdAt     DateTime @default(now())
+}
+
+// ============================================================
+// HARVEST & YIELD TRACKING
+// ============================================================
+
+model Harvest {
+  id            String   @id @default(cuid())
+  farmId        String
+  farm          Farm     @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropId        String
+  crop          Crop     @relation(fields: [cropId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  harvestDate   DateTime @default(now())
+  quantityKg    Float    // total harvest in kg
+  areaAcres     Float    // area harvested
+  yieldPerAcre  Float    // kg/acre (computed)
+  quality       String   @default("GOOD") // EXCELLENT / GOOD / AVERAGE / POOR
+  salePrice     Float?   // ₹ per kg
+  totalIncome   Float?   // ₹ (computed)
+  expenses      Float?   // ₹ total input cost
+  netProfit     Float?   // ₹ (computed)
+  buyer         String?  // who purchased
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+// ============================================================
+// FERTILIZER RECOMMENDATIONS (reference DB)
+// ============================================================
+
+model FertilizerRecommendation {
+  id            String   @id @default(cuid())
+  cropName      String
+  growthStage   String   // PLANTED / VEGETATIVE / FLOWERING / FRUITING
+  nitrogen      Float    // kg/acre recommended
+  phosphorus    Float    // kg/acre
+  potassium     Float    // kg/acre
+  fertilizer    String   // recommended fertilizer name e.g. "NPK 19-19-19"
+  quantity      String   // per acre
+  timing        String   // when to apply
+  notes         String?
   createdAt     DateTime @default(now())
 }

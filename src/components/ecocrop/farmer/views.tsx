@@ -14,6 +14,9 @@ import { ExpertConnectView } from "./expert-connect";
 import { TimelineView } from "./timeline";
 import { NotificationsView } from "./notifications";
 import { AnalyticsView } from "./analytics";
+import { SoilTestsView } from "./soil-tests";
+import { HarvestsView } from "./harvests";
+import { CropCalendarView } from "./crop-calendar";
 import { ProfileView } from "./profile";
 import { SettingsView } from "./settings";
 
@@ -46,6 +49,12 @@ export function FarmerViews() {
       return <NotificationsView />;
     case "analytics":
       return <AnalyticsView />;
+    case "soil-tests":
+      return <SoilTestsView />;
+    case "harvests":
+      return <HarvestsView />;
+    case "crop-calendar":
+      return <CropCalendarView />;
     case "profile":
       return <ProfileView />;
     case "settings":

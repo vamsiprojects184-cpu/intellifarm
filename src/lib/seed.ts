@@ -130,6 +130,56 @@ async function main() {
   }
   console.log(`  ✓ ${irrigationConfigs.length} irrigation configs`);
 
+  // ---------- Fertilizer recommendations ----------
+  const fertilizerRecs = [
+    { cropName: "Rice", growthStage: "PLANTED", nitrogen: 30, phosphorus: 20, potassium: 20, fertilizer: "DAP + Urea", quantity: "50 kg DAP + 30 kg Urea per acre", timing: "At transplanting as basal dose", notes: "Apply 50% N as basal, 25% at tillering, 25% at panicle initiation" },
+    { cropName: "Rice", growthStage: "VEGETATIVE", nitrogen: 25, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "25 kg Urea per acre", timing: "30 days after transplanting (tillering stage)", notes: "Top-dress nitrogen in split doses" },
+    { cropName: "Rice", growthStage: "FLOWERING", nitrogen: 20, phosphorus: 0, potassium: 15, fertilizer: "Urea + MOP", quantity: "20 kg Urea + 10 kg MOP per acre", timing: "At panicle initiation", notes: "Last nitrogen application before flowering" },
+    { cropName: "Wheat", growthStage: "PLANTED", nitrogen: 30, phosphorus: 25, potassium: 15, fertilizer: "DAP + Urea", quantity: "55 kg DAP + 20 kg Urea per acre", timing: "At sowing as basal dose", notes: "Apply full P and K, half N as basal" },
+    { cropName: "Wheat", growthStage: "VEGETATIVE", nitrogen: 30, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "30 kg Urea per acre", timing: "21 and 45 days after sowing (CRI stage)", notes: "Split into two top-dressings" },
+    { cropName: "Tomato", growthStage: "PLANTED", nitrogen: 20, phosphorus: 25, potassium: 20, fertilizer: "NPK 19-19-19", quantity: "40 kg per acre as basal", timing: "At transplanting", notes: "Mix well in soil before transplanting" },
+    { cropName: "Tomato", growthStage: "VEGETATIVE", nitrogen: 25, phosphorus: 0, potassium: 0, fertilizer: "Urea (foliar)", quantity: "2% urea spray, 5 L per acre", timing: "20-30 days after transplanting", notes: "Foliar spray for vigorous vegetative growth" },
+    { cropName: "Tomato", growthStage: "FLOWERING", nitrogen: 10, phosphorus: 15, potassium: 20, fertilizer: "NPK 0-52-34 (MKP)", quantity: "5 kg per acre foliar", timing: "At flowering", notes: "Improves flower set and fruit quality" },
+    { cropName: "Tomato", growthStage: "FRUITING", nitrogen: 5, phosphorus: 0, potassium: 25, fertilizer: "Potash (MOP)", quantity: "15 kg per acre", timing: "During fruit development", notes: "Enhances fruit size, color and shelf life" },
+    { cropName: "Cotton", growthStage: "PLANTED", nitrogen: 15, phosphorus: 20, potassium: 15, fertilizer: "DAP + MOP", quantity: "45 kg DAP + 10 kg MOP per acre", timing: "At sowing", notes: "Basal application of P and K" },
+    { cropName: "Cotton", growthStage: "VEGETATIVE", nitrogen: 30, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "30 kg Urea per acre", timing: "30-45 days after sowing", notes: "Split into 2 applications" },
+    { cropName: "Cotton", growthStage: "FLOWERING", nitrogen: 15, phosphorus: 0, potassium: 10, fertilizer: "Urea + MOP", quantity: "15 kg Urea + 8 kg MOP per acre", timing: "At square formation", notes: "Last N application" },
+    { cropName: "Onion", growthStage: "PLANTED", nitrogen: 15, phosphorus: 25, potassium: 20, fertilizer: "SSP + MOP", quantity: "100 kg SSP + 15 kg MOP per acre", timing: "At transplanting as basal", notes: "Onion needs high sulfur, use SSP" },
+    { cropName: "Onion", growthStage: "VEGETATIVE", nitrogen: 25, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "25 kg Urea per acre", timing: "30 and 45 days after transplanting", notes: "Split application for bulb development" },
+    { cropName: "Onion", growthStage: "FRUITING", nitrogen: 10, phosphorus: 0, potassium: 20, fertilizer: "MOP", quantity: "15 kg MOP per acre", timing: "Bulb enlargement stage (60-75 days)", notes: "Improves bulb size and quality" },
+    { cropName: "Maize", growthStage: "PLANTED", nitrogen: 20, phosphorus: 25, potassium: 15, fertilizer: "DAP + MOP", quantity: "55 kg DAP + 10 kg MOP per acre", timing: "At sowing as basal", notes: "Apply near seed but not in direct contact" },
+    { cropName: "Maize", growthStage: "VEGETATIVE", nitrogen: 35, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "35 kg Urea per acre", timing: "25-30 days after sowing (knee-high stage)", notes: "Critical nitrogen top-dressing" },
+    { cropName: "Maize", growthStage: "FLOWERING", nitrogen: 15, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "15 kg Urea per acre", timing: "At tasseling (50-55 days)", notes: "Final N application for grain filling" },
+    { cropName: "Potato", growthStage: "PLANTED", nitrogen: 20, phosphorus: 30, potassium: 30, fertilizer: "NPK 10-26-26", quantity: "100 kg per acre as basal", timing: "At planting in furrows", notes: "Potato is high K feeder" },
+    { cropName: "Potato", growthStage: "VEGETATIVE", nitrogen: 25, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "25 kg Urea per acre", timing: "25 and 40 days after planting", notes: "Earthing up after first top-dress" },
+    { cropName: "Soybean", growthStage: "PLANTED", nitrogen: 0, phosphorus: 25, potassium: 20, fertilizer: "SSP + MOP + Rhizobium", quantity: "100 kg SSP + 15 kg MOP per acre + Rhizobium seed treatment", timing: "At sowing", notes: "Soybean fixes own N; use Rhizobium culture" },
+    { cropName: "Soybean", growthStage: "VEGETATIVE", nitrogen: 0, phosphorus: 0, potassium: 0, fertilizer: "Foliar spray", quantity: "0.5% ZnSO4 + 1% FeSO4 spray", timing: "30-40 days after sowing", notes: "Micronutrient spray if deficiency observed" },
+    { cropName: "Groundnut", growthStage: "PLANTED", nitrogen: 5, phosphorus: 25, potassium: 20, fertilizer: "SSP + MOP + Gypsum", quantity: "100 kg SSP + 15 kg MOP + 200 kg Gypsum per acre", timing: "At sowing (basal)", notes: "Gypsum provides Ca and S for pod development" },
+    { cropName: "Groundnut", growthStage: "FLOWERING", nitrogen: 0, phosphorus: 0, potassium: 0, fertilizer: "Gypsum", quantity: "200 kg per acre", timing: "At pegging stage (35-40 days)", notes: "Apply around base for pod filling" },
+    { cropName: "Sugarcane", growthStage: "PLANTED", nitrogen: 30, phosphorus: 25, potassium: 25, fertilizer: "NPK complex", quantity: "80 kg 17-17-17 per acre", timing: "At planting", notes: "Basal application in furrows" },
+    { cropName: "Sugarcane", growthStage: "VEGETATIVE", nitrogen: 50, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "50 kg Urea per acre", timing: "45, 90 and 120 days after planting", notes: "Split into 3 applications" },
+    { cropName: "Mustard", growthStage: "PLANTED", nitrogen: 20, phosphorus: 25, potassium: 15, fertilizer: "DAP + MOP + Urea", quantity: "45 kg DAP + 10 kg MOP + 15 kg Urea per acre", timing: "At sowing", notes: "Apply sulfur through SSP if deficient" },
+    { cropName: "Mustard", growthStage: "VEGETATIVE", nitrogen: 25, phosphorus: 0, potassium: 0, fertilizer: "Urea", quantity: "25 kg Urea per acre", timing: "30 days after sowing", notes: "Single top-dressing" },
+    { cropName: "Gram", growthStage: "PLANTED", nitrogen: 5, phosphorus: 25, potassium: 15, fertilizer: "DAP + Rhizobium", quantity: "50 kg DAP per acre + Rhizobium seed treatment", timing: "At sowing", notes: "Gram fixes N; starter N only" },
+    { cropName: "Chilli", growthStage: "PLANTED", nitrogen: 15, phosphorus: 25, potassium: 20, fertilizer: "NPK 19-19-19", quantity: "40 kg per acre as basal", timing: "At transplanting", notes: "Well-decomposed FYM recommended" },
+    { cropName: "Chilli", growthStage: "FLOWERING", nitrogen: 10, phosphorus: 10, potassium: 20, fertilizer: "NPK 0-52-34 (MKP)", quantity: "5 kg per acre foliar", timing: "At flowering", notes: "Improves fruit set" },
+    { cropName: "Banana", growthStage: "PLANTED", nitrogen: 30, phosphorus: 25, potassium: 40, fertilizer: "NPK complex + FYM", quantity: "100 kg 17-17-17 + 10 t FYM per acre", timing: "At planting", notes: "Banana is heavy K feeder" },
+    { cropName: "Banana", growthStage: "VEGETATIVE", nitrogen: 40, phosphorus: 0, potassium: 30, fertilizer: "Urea + MOP", quantity: "40 kg Urea + 20 kg MOP per acre", timing: "2, 4, 6 months after planting", notes: "Split applications every 2 months" },
+    { cropName: "Brinjal", growthStage: "PLANTED", nitrogen: 20, phosphorus: 25, potassium: 20, fertilizer: "NPK 19-19-19", quantity: "40 kg per acre as basal", timing: "At transplanting", notes: "Apply FYM 10 t/acre" },
+    { cropName: "Brinjal", growthStage: "FLOWERING", nitrogen: 15, phosphorus: 0, potassium: 15, fertilizer: "Urea + MOP", quantity: "15 kg Urea + 10 kg MOP per acre", timing: "At first flowering", notes: "Top-dress after each harvest" },
+  ];
+  let fertCount = 0;
+  for (const fr of fertilizerRecs) {
+    const exists = await db.fertilizerRecommendation.findFirst({
+      where: { cropName: fr.cropName, growthStage: fr.growthStage },
+    });
+    if (!exists) {
+      await db.fertilizerRecommendation.create({ data: fr });
+      fertCount++;
+    }
+  }
+  console.log(`  ✓ ${fertCount} fertilizer recommendations added (${fertilizerRecs.length} total)`);
+
   // ---------- Disease database ----------
   const diseases = [
     { cropName: "Tomato", diseaseName: "Early Blight", symptoms: "Dark brown concentric rings on lower leaves, yellowing around spots, leaf drop.", cause: "Fungus Alternaria solani", severity: "MODERATE", treatment: "Apply copper-based fungicide or mancozeb every 7-10 days. Remove infected leaves.", prevention: "Crop rotation, proper spacing, avoid overhead watering, use disease-free seed." },
@@ -437,7 +487,78 @@ async function main() {
       // demo notifications
       await db.notification.create({ data: { userId: farmer.id, category: "MARKET", title: "Tomato price update", message: "Tomato modal price at Pune APMC today: ₹1,820/quintal.", priority: "INFO" } });
       await db.notification.create({ data: { userId: farmer.id, category: "SCHEME", title: "PM-KISAN instalment", message: "New PM-KISAN instalment may be due. Check eligibility on pmkisan.gov.in", priority: "LOW" } });
-      console.log("  ✓ Demo farm, crop, sensor readings, activities, recommendations, alerts seeded");
+
+      // demo soil test
+      const existingSoilTest = await db.soilTest.findFirst({ where: { farmId: farm.id } });
+      if (!existingSoilTest) {
+        await db.soilTest.create({
+          data: {
+            farmId: farm.id,
+            cropId: (await db.crop.findFirst({ where: { farmId: farm.id } }))?.id ?? null,
+            userId: farmer.id,
+            testDate: new Date(Date.now() - 15 * 86400000),
+            ph: 6.8,
+            nitrogen: 180,
+            phosphorus: 18,
+            potassium: 160,
+            organicCarbon: 0.55,
+            ec: 0.4,
+            sulfur: 12,
+            iron: 8,
+            zinc: 1.2,
+            boron: 0.8,
+            soilMoisture: 32,
+            texture: "LOAMY",
+            fertility: "MEDIUM",
+            labName: "Pune District Soil Testing Lab",
+            notes: "Slightly low phosphorus. Recommend DAP application.",
+            recommendations: JSON.stringify([
+              "Low phosphorus (18 kg/ha). Apply 40-60 kg SSP/acre or 20 kg DAP/acre.",
+              "Maintain regular organic matter application.",
+            ]),
+          },
+        });
+      }
+      console.log("  ✓ Demo farm, crop, sensor readings, activities, recommendations, alerts, soil test seeded");
+    }
+
+    // Ensure demo soil test exists (runs even if farm already existed)
+    const demoFarm = await db.farm.findFirst({
+      where: { ownerId: farmer.id, name: "Patil Family Farm" },
+    });
+    if (demoFarm) {
+      const existingSoilTest = await db.soilTest.findFirst({ where: { farmId: demoFarm.id } });
+      if (!existingSoilTest) {
+        const demoCrop = await db.crop.findFirst({ where: { farmId: demoFarm.id } });
+        await db.soilTest.create({
+          data: {
+            farmId: demoFarm.id,
+            cropId: demoCrop?.id ?? null,
+            userId: farmer.id,
+            testDate: new Date(Date.now() - 15 * 86400000),
+            ph: 6.8,
+            nitrogen: 180,
+            phosphorus: 18,
+            potassium: 160,
+            organicCarbon: 0.55,
+            ec: 0.4,
+            sulfur: 12,
+            iron: 8,
+            zinc: 1.2,
+            boron: 0.8,
+            soilMoisture: 32,
+            texture: "LOAMY",
+            fertility: "MEDIUM",
+            labName: "Pune District Soil Testing Lab",
+            notes: "Slightly low phosphorus. Recommend DAP application.",
+            recommendations: JSON.stringify([
+              "Low phosphorus (18 kg/ha). Apply 40-60 kg SSP/acre or 20 kg DAP/acre.",
+              "Maintain regular organic matter application.",
+            ]),
+          },
+        });
+        console.log("  ✓ Demo soil test added");
+      }
     }
   }
 

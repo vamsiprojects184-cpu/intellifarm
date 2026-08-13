@@ -206,17 +206,18 @@ export function StatCard({
     lime: "bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300",
   };
   return (
-    <div className="rounded-xl border bg-card p-4 shadow-sm">
-      <div className="flex items-center justify-between">
+    <div className="group relative overflow-hidden rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+      <div className={cn("absolute -right-4 -top-4 h-16 w-16 rounded-full opacity-10 transition-opacity group-hover:opacity-20", accents[accent])} />
+      <div className="relative flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {label}
         </span>
-        <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", accents[accent])}>
+        <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg transition-transform group-hover:scale-110", accents[accent])}>
           <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className="mt-2 text-2xl font-bold">{value}</div>
-      {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
+      <div className="relative mt-2 text-2xl font-bold tabular-nums">{value}</div>
+      {hint && <p className="relative mt-0.5 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }

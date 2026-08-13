@@ -287,3 +287,67 @@ Stage Summary:
 - Disease detection pipeline fully verified end-to-end with real VLM
 - All auto-generated artifacts (recommendation, alert, notification, activity) confirmed
 - Platform is production-ready and deploy-ready
+
+---
+
+## Phase 3 — New Features & Styling Improvements (Cron Round 1)
+
+Task ID: 6
+Agent: main (webDevReview cron)
+Task: Assess project status, perform QA, add new features (Soil Tests, Harvests, Crop Calendar), improve styling.
+
+### Current Project Status Assessment
+- Platform was stable from Phase 2 (10 bugs fixed, all 3 roles tested, lint clean)
+- Dev server healthy, all APIs returning 200
+- QA sweep of all existing farmer views confirmed no regressions
+
+### New Features Added
+
+1. **Soil Test Reports Module** (`soil-tests` view + API)
+   - New `SoilTest` Prisma model with pH, NPK, organic carbon, EC, micronutrients (S, Fe, Zn, B), soil moisture, texture, fertility
+   - POST `/api/v1/soil-tests` — creates test, auto-computes fertility score (LOW/MEDIUM/HIGH) based on nutrient levels, generates fertilizer recommendations, auto-logs activity, creates HIGH-priority recommendation if fertility is LOW
+   - GET `/api/v1/soil-tests` — list with farm/crop relations
+   - DELETE `/api/v1/soil-tests/[id]`
+   - UI: comprehensive form with grouped nutrient sections, NPK tiles with optimal ranges, micronutrient badges, auto-generated fertilizer recommendations panel
+   - Demo soil test seeded (pH 6.8, N 180, P 18, K 160, MEDIUM fertility)
+
+2. **Harvest & Yield Tracking Module** (`harvests` view + API)
+   - New `Harvest` Prisma model with quantity, area, yield/acre (computed), quality, sale price, total income (computed), expenses, net profit (computed), buyer
+   - POST `/api/v1/harvests` — creates harvest, auto-computes yieldPerAcre, totalIncome, netProfit, auto-logs activity, updates crop stage to HARVESTED
+   - GET `/api/v1/harvests` — list with computed summary (total yield, income, profit, avg yield/acre)
+   - DELETE `/api/v1/harvests/[id]`
+   - UI: summary stat cards, bar chart (yield & profit by crop), harvest cards with quality badges, profit/loss indicators
+
+3. **Crop Calendar Module** (`crop-calendar` view + API)
+   - GET `/api/v1/crop-calendar` — returns crops with seasonal info, current season detection (Kharif/Rabi/Zaid based on month), planting windows
+   - UI: current season banner, season legend with "NOW" indicator, season/category filters, crops grouped by category, planting window info, fertilizer schedule per crop (from FertilizerRecommendation DB), suitability indicator (✓ for current season)
+
+4. **Fertilizer Recommendations Reference DB**
+   - New `FertilizerRecommendation` Prisma model (cropName, growthStage, NPK, fertilizer name, quantity, timing, notes)
+   - GET `/api/v1/fertilizer-recommendations` — filterable by crop and stage
+   - 35 recommendations seeded across 15 crops × 2-4 growth stages (Rice, Wheat, Tomato, Cotton, Onion, Maize, Potato, Soybean, Groundnut, Sugarcane, Mustard, Gram, Chilli, Banana, Brinjal)
+
+### Styling Improvements
+- **StatCard**: Added hover effects (lift + shadow), decorative gradient circle, icon scale animation, tabular-nums for aligned numbers
+- **Quick Actions Grid**: Expanded from 6 to 8 actions (added Soil Test, Harvest, Calendar), improved hover (lift + border highlight + icon scale), more compact grid (8 cols on desktop)
+- **Dashboard**: New onboarding banner for farmers with no farms (gradient card with Create Farm CTA)
+
+### Verification Results
+- All 15 farmer views load with 0 console errors (including 3 new views)
+- APIs tested: soil-tests (1 demo test, MEDIUM fertility), harvests (created test harvest: 450kg, ₹8,100 income, ₹5,100 profit), crop-calendar (Kharif season detected), fertilizer-recommendations (35 records)
+- `bun run lint` → 0 errors, 0 warnings
+- Dev server: all 200, no 500 errors
+
+### Database Changes
+- 3 new models: SoilTest, Harvest, FertilizerRecommendation
+- Farm model: added soilTests + harvests relations
+- Crop model: added soilTests + harvests relations
+- User model: added soilTests + harvests relations
+- Schema pushed, Prisma client regenerated, seed updated with 35 fertilizer recs + demo soil test
+
+Stage Summary:
+- 3 new feature modules fully implemented (Soil Tests, Harvests, Crop Calendar)
+- 35 fertilizer recommendation reference records seeded
+- Styling polished (animated stat cards, improved quick actions)
+- Platform now has 17 farmer views (was 12), all functional
+- Lint clean, 0 errors, deploy-ready

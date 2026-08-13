@@ -20,6 +20,9 @@ import {
   CalendarClock,
   ShieldCheck,
   MessageSquare,
+  FlaskConical,
+  Wheat,
+  CalendarDays,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-store";
 import { useNav, type AppView } from "@/lib/nav-store";
@@ -51,6 +54,9 @@ const FARMER_NAV: NavItem[] = [
   { view: "weather", label: "Weather", icon: CloudSun },
   { view: "irrigation", label: "Irrigation", icon: Droplets },
   { view: "disease", label: "Disease Scan", icon: Bug },
+  { view: "soil-tests", label: "Soil Tests", icon: FlaskConical },
+  { view: "harvests", label: "Harvests", icon: Wheat },
+  { view: "crop-calendar", label: "Crop Calendar", icon: CalendarDays },
   { view: "market", label: "Market Prices", icon: TrendingUp },
   { view: "schemes", label: "Govt. Schemes", icon: Landmark },
   { view: "expert-connect", label: "Expert Connect", icon: MessageSquare },

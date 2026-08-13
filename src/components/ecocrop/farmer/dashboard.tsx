@@ -20,6 +20,9 @@ import {
   CalendarClock,
   CheckCircle2,
   Plus,
+  FlaskConical,
+  Wheat,
+  CalendarDays,
 } from "lucide-react";
 import {
   StatCard,
@@ -224,24 +227,26 @@ export function FarmerDashboard() {
       </Card>
 
       {/* Quick actions */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-8">
         {[
           { icon: Droplets, label: "Irrigation", view: "irrigation" as const, color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300" },
-          { icon: Bug, label: "Disease Scan", view: "disease" as const, color: "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300" },
-          { icon: TrendingUp, label: "Market", view: "market" as const, color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300" },
-          { icon: CalendarClock, label: "Activity", view: "timeline" as const, color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300" },
+          { icon: Bug, label: "Disease", view: "disease" as const, color: "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300" },
+          { icon: FlaskConical, label: "Soil Test", view: "soil-tests" as const, color: "bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300" },
+          { icon: Wheat, label: "Harvest", view: "harvests" as const, color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300" },
+          { icon: CalendarDays, label: "Calendar", view: "crop-calendar" as const, color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300" },
+          { icon: TrendingUp, label: "Market", view: "market" as const, color: "bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300" },
           { icon: CloudSun, label: "Weather", view: "weather" as const, color: "bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300" },
-          { icon: Sprout, label: "Crops", view: "crops" as const, color: "bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300" },
+          { icon: Sprout, label: "Crops", view: "crops" as const, color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300" },
         ].map((a) => (
           <button
             key={a.view}
             onClick={() => navigate(a.view)}
-            className="flex flex-col items-center gap-2 rounded-xl border bg-card p-4 transition-shadow hover:shadow-md"
+            className="group flex flex-col items-center gap-1.5 rounded-xl border bg-card p-3 transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-primary/30"
           >
-            <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${a.color}`}>
-              <a.icon className="h-5 w-5" />
+            <div className={`flex h-9 w-9 items-center justify-center rounded-lg transition-transform group-hover:scale-110 ${a.color}`}>
+              <a.icon className="h-4 w-4" />
             </div>
-            <span className="text-xs font-medium">{a.label}</span>
+            <span className="text-[11px] font-medium">{a.label}</span>
           </button>
         ))}
       </div>
