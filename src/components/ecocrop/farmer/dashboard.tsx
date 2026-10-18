@@ -16,26 +16,26 @@ import {
   Droplets,
   Bug,
   TrendingUp,
-  ArrowRight,
+  ArrowUpRight,
   RefreshCw,
   CalendarClock,
   CheckCircle2,
   Plus,
-  FlaskConical,
+  Beaker,
   Wheat,
   CalendarDays,
   Sparkles,
   Zap,
   Activity,
-  BellRing,
+  Bell,
   Check,
+  ChevronRight,
+  HelpCircle,
+  FileText,
+  Landmark,
+  MessageSquare,
 } from "lucide-react";
-import {
-  PriorityBadge,
-  CategoryIcon,
-  HealthScoreRing,
-  EmptyState,
-} from "@/components/ecocrop/shared";
+import { HealthScoreRing } from "@/components/ecocrop/shared";
 import { useT } from "@/lib/i18n-store";
 
 export function FarmerDashboard() {
@@ -53,7 +53,8 @@ export function FarmerDashboard() {
     queryKey: ["farms"],
     queryFn: () => api.get<any[]>("/api/v1/farms"),
   });
-  const firstFarmId = farmsData?.[0]?.id;
+  const firstFarm = farmsData?.[0];
+  const firstFarmId = firstFarm?.id;
 
   const { data: weather } = useQuery({
     queryKey: ["weather", firstFarmId],
@@ -69,11 +70,6 @@ export function FarmerDashboard() {
     queryFn: () => api.get<any[]>("/api/v1/recommendations"),
   });
 
-  const { data: notifData } = useQuery({
-    queryKey: ["notifications-summary"],
-    queryFn: () => api.get<{ unreadCount: number }>("/api/v1/notifications"),
-  });
-
   const refreshRecs = useMutation({
     mutationFn: () => api.post<{ generated: number }>("/api/v1/recommendations", {}),
     onSuccess: (d) => {
@@ -83,302 +79,329 @@ export function FarmerDashboard() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const completeRec = useMutation({
-    mutationFn: (id: string) => api.patch(`/api/v1/recommendations/${id}`, { status: "COMPLETED" }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["recommendations"] });
-      toast.success("Marked as completed");
-    },
-  });
-
-  const pendingRecs = recs?.filter((r) => r.status === "PENDING").slice(0, 4) ?? [];
+  const pendingRecs = recs?.filter((r) => r.status === "PENDING").slice(0, 3) ?? [];
 
   return (
     <div className="space-y-6">
       
-      {/* ── 1. Top Greeting & Quick Sync Banner ── */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
-        {/* Background glow overlay */}
-        <div className="absolute right-0 top-0 h-40 w-40 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-        <div className="relative z-10 space-y-1">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white">
-            <Sparkles className="h-3 w-3 animate-pulse" />
-            Live intelligence active
-          </span>
-          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-            Welcome back, {user?.fullName || "Farmer"}!
+      {/* ── 1. Top Greeting, Weather Info, and Profile Row ── */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        
+        {/* Left: Personalized greeting */}
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+            Good Morning, {user?.fullName?.split(" ")[0] || "Farmer"}! 🌿
           </h1>
-          <p className="text-xs text-blue-100 max-w-md">
-            All systems online. Access AI disease insights, crop schedules, and real-time mandi prices from one centralized command.
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Let's make your farm more productive today.
           </p>
         </div>
-        <Button 
-          onClick={() => refreshRecs.mutate()} 
-          disabled={refreshRecs.isPending}
-          className="relative z-10 bg-white text-blue-700 hover:bg-blue-50 font-semibold shadow-sm text-xs rounded-xl"
-        >
-          <RefreshCw className={`mr-2 h-3.5 w-3.5 ${refreshRecs.isPending ? "animate-spin" : ""}`} />
-          Run AI Diagnosis
-        </Button>
-      </div>
 
-      {/* Onboarding Banner for Farmers without Farms */}
-      {farmsData && farmsData.length === 0 && (
-        <Card className="border-blue-200 bg-blue-50/50 dark:border-blue-900 dark:bg-blue-950/20">
-          <CardContent className="flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
-                <Tractor className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-foreground">{t("dash.onboardingTitle")}</h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {t("dash.onboardingDesc")}
-                </p>
-              </div>
+        {/* Right: Weather & User Badge */}
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          {/* Live weather box */}
+          <div className="flex items-center gap-3 bg-white dark:bg-card px-4 py-2 rounded-2xl shadow-sm border border-border">
+            <CloudSun className="h-6 w-6 text-amber-500 shrink-0" />
+            <div className="text-left">
+              <p className="text-[10px] text-muted-foreground font-semibold leading-none">{firstFarm?.district || "Pune"}, {firstFarm?.state?.substring(0, 2) || "MH"}</p>
+              <p className="text-xs font-bold text-foreground mt-0.5 leading-none">
+                {weather?.today ? `${weather.today.temperature}°C` : "28°C"}
+              </p>
+              <p className="text-[9px] text-muted-foreground font-medium mt-0.5 leading-none">
+                {weather?.today?.conditionText || "Partly Cloudy"}
+              </p>
             </div>
-            <Button onClick={() => navigate("farms")} className="bg-blue-600 text-white hover:bg-blue-500 rounded-xl">
-              <Plus className="mr-1 h-4 w-4" /> Create Farm
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* ── 2. Asymmetric Central Dashboard Layout Grid ── */}
-      <div className="grid gap-6 lg:grid-cols-12">
-        
-        {/* Left Column: Diagnostics & Action Cards (8/12 Width) */}
-        <div className="lg:col-span-8 space-y-6">
-          
-          {/* Diagnostic Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {aLoading ? (
-              Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-28 rounded-xl" />)
-            ) : (
-              <>
-                <Card className="if-card hover:border-blue-500/20">
-                  <CardContent className="p-4 flex flex-col justify-between h-full min-h-[100px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Farms</span>
-                      <div className="h-7 w-7 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                        <Tractor className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <div className="text-2xl font-black text-foreground">{analytics?.totals.farms ?? 0}</div>
-                      <p className="text-[10px] text-muted-foreground">Registered plots</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="if-card hover:border-emerald-500/20">
-                  <CardContent className="p-4 flex flex-col justify-between h-full min-h-[100px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Active Crops</span>
-                      <div className="h-7 w-7 rounded-lg bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                        <Sprout className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <div className="text-2xl font-black text-foreground">{analytics?.totals.activeCrops ?? 0}</div>
-                      <p className="text-[10px] text-muted-foreground">{analytics?.totals.crops ?? 0} seeded total</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="if-card hover:border-amber-500/20">
-                  <CardContent className="p-4 flex flex-col justify-between h-full min-h-[100px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Attention</span>
-                      <div className={`h-7 w-7 rounded-lg flex items-center justify-center ${
-                        analytics?.totals.needsAttention 
-                          ? "bg-rose-50 text-rose-600 dark:bg-rose-950 dark:text-rose-400 animate-pulse" 
-                          : "bg-slate-50 text-slate-400 dark:bg-slate-900"
-                      }`}>
-                        <AlertTriangle className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <div className={`text-2xl font-black ${analytics?.totals.needsAttention ? "text-rose-600 dark:text-rose-400" : "text-foreground"}`}>
-                        {analytics?.totals.needsAttention ?? 0}
-                      </div>
-                      <p className="text-[10px] text-muted-foreground">Pending risks</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="if-card hover:border-sky-500/20">
-                  <CardContent className="p-4 flex flex-col justify-between h-full min-h-[100px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Weather</span>
-                      <div className="h-7 w-7 rounded-lg bg-sky-50 dark:bg-sky-950 flex items-center justify-center text-sky-600 dark:text-sky-400">
-                        <CloudSun className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <div className="text-2xl font-black text-foreground">
-                        {weather?.today ? `${weather.today.temperature}°C` : "—"}
-                      </div>
-                      <p className="text-[10px] text-muted-foreground truncate">{weather?.today?.conditionText || "Fetching..."}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            )}
           </div>
 
-          {/* Action Center: Recommendations Table Layout */}
-          <Card className="if-card">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
-              <div>
-                <CardTitle className="text-base font-bold text-foreground">Active Farm Directives</CardTitle>
-                <CardDescription className="text-xs">AI recommendations and operational alerts requiring confirmation</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate("analytics")} className="text-blue-600 text-xs font-semibold">
-                Historical Log
-              </Button>
-            </CardHeader>
-            <CardContent className="p-0 border-t border-border">
-              {pendingRecs.length === 0 ? (
-                <div className="py-12">
-                  <EmptyState
-                    icon={CheckCircle2}
-                    title="All caught up!"
-                    description="No pending recommendations. Click 'Run AI Diagnosis' at the top to check for new inputs."
-                  />
-                </div>
-              ) : (
-                <div className="divide-y divide-border">
-                  {pendingRecs.map((r) => (
-                    <div key={r.id} className="flex items-start gap-4 p-4 hover:bg-muted/30 transition-colors group">
-                      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
-                        <CategoryIcon category={r.category} />
-                      </div>
-                      <div className="min-w-0 flex-1 space-y-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h4 className="text-sm font-bold text-foreground">{r.title}</h4>
-                          <PriorityBadge priority={r.priority} />
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{r.description}</p>
-                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground pt-1">
-                          {r.farm?.name && <span className="flex items-center gap-1 font-medium">📍 {r.farm.name}</span>}
-                          <span>•</span>
-                          <span>AI Engine</span>
-                        </div>
-                      </div>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="h-8 px-3 rounded-lg border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-900/40 dark:text-emerald-400 dark:hover:bg-emerald-950/20 shrink-0 self-center" 
-                        onClick={() => completeRec.mutate(r.id)}
-                      >
-                        <Check className="mr-1 h-3.5 w-3.5" /> Resolve
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Column: Widgets & Quick Actions (4/12 Width) */}
-        <div className="lg:col-span-4 space-y-6">
-          
-          {/* Health Index Gauge & Diagnostics */}
-          <Card className="if-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold">Overall Health Index</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center pt-2 pb-4">
-              {aLoading ? (
-                <Skeleton className="h-32 w-32 rounded-full" />
-              ) : (
-                <HealthScoreRing score={analytics?.overallScore ?? 0} />
-              )}
-              <p className="mt-4 text-center text-xs text-muted-foreground max-w-[220px]">
-                Diagnostics incorporate NPK readings, disease risk, activity completion, and weather stressors.
-              </p>
-              <Button variant="outline" size="sm" className="mt-4 w-full rounded-xl border-border" onClick={() => navigate("analytics")}>
-                View Diagnostics <ArrowRight className="ml-1 h-3.5 w-3.5" />
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Quick Action Navigation Grid */}
-          <Card className="if-card">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-bold">Quick Operations</CardTitle>
-            </CardHeader>
-            <CardContent className="p-3">
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { icon: Droplets, label: "Irrigation", view: "irrigation" as const, color: "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" },
-                  { icon: Bug, label: "Disease", view: "disease" as const, color: "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400" },
-                  { icon: FlaskConical, label: "Soil Test", view: "soil-tests" as const, color: "bg-violet-50 text-violet-600 dark:bg-violet-950/40 dark:text-violet-400" },
-                  { icon: Wheat, label: "Harvest", view: "harvests" as const, color: "bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400" },
-                  { icon: CalendarDays, label: "Calendar", view: "crop-calendar" as const, color: "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400" },
-                  { icon: TrendingUp, label: "Market", view: "market" as const, color: "bg-lime-50 text-lime-600 dark:bg-lime-950/40 dark:text-lime-400" },
-                  { icon: CloudSun, label: "Weather", view: "weather" as const, color: "bg-sky-50 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400" },
-                  { icon: Sprout, label: "Crops", view: "crops" as const, color: "bg-green-50 text-green-600 dark:bg-green-950/40 dark:text-green-400" },
-                ].map((a) => (
-                  <button
-                    key={a.view}
-                    onClick={() => navigate(a.view)}
-                    className="flex items-center gap-2.5 p-2 rounded-xl border border-border bg-card text-left transition-all hover:bg-muted/40 hover:border-blue-600/30 group"
-                  >
-                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-105 ${a.color}`}>
-                      <a.icon className="h-4 w-4" />
-                    </div>
-                    <span className="text-xs font-bold text-foreground truncate">{a.label}</span>
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-          
-          {/* Live Weather Bulletins */}
-          <Card className="if-card">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
-              <CardTitle className="text-sm font-bold">Climate Advisories</CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => navigate("weather")} className="h-auto p-0 text-xs text-blue-600 font-semibold">
-                Forecasting
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {weather?.insights?.slice(0, 2).map((ins, i) => (
-                <div key={i} className="flex items-start gap-2.5 rounded-xl border border-border bg-muted/20 p-3">
-                  <div className="mt-0.5">
-                    <CloudSun className="h-4 w-4 text-sky-500" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-foreground leading-snug">{ins.title}</p>
-                    <p className="text-[11px] text-muted-foreground leading-normal mt-0.5">{ins.message}</p>
-                  </div>
-                </div>
-              )) ?? (
-                <p className="text-xs text-muted-foreground">Add a farm plot to view real-time climate intelligence warnings.</p>
-              )}
-            </CardContent>
-          </Card>
-
-        </div>
-        
-      </div>
-      
-      {/* Footer System Notifications Banner */}
-      <div className="flex justify-between items-center p-3.5 bg-muted/40 border border-border rounded-xl">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-          <span>
-            {notifData?.unreadCount ? `You have ${notifData.unreadCount} unread system notifications` : "System checks active. Notifications clear."}
-          </span>
-        </div>
-        {!!notifData?.unreadCount && (
-          <Button variant="ghost" size="sm" className="h-6 text-xs text-blue-600 font-semibold p-0 hover:bg-transparent" onClick={() => navigate("notifications")}>
-            Open Inbox <ArrowRight className="ml-1 h-3 w-3" />
+          {/* Quick sync */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => refreshRecs.mutate()}
+            disabled={refreshRecs.isPending}
+            className="h-9 w-9 rounded-2xl bg-white shadow-sm hover:border-blue-600/30"
+          >
+            <RefreshCw className={`h-4 w-4 ${refreshRecs.isPending ? "animate-spin" : ""}`} />
           </Button>
+
+          {/* Notification */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => navigate("notifications")}
+            className="h-9 w-9 rounded-2xl bg-white shadow-sm relative hover:border-blue-600/30"
+          >
+            <Bell className="h-4 w-4" />
+            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500" />
+          </Button>
+
+          {/* User profile dropdown badge */}
+          <div className="flex items-center gap-2.5 bg-white dark:bg-card pl-3 pr-4 py-1.5 rounded-2xl shadow-sm border border-border">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 font-bold text-xs text-white shadow-sm">
+              {user?.fullName?.charAt(0).toUpperCase() || "F"}
+            </div>
+            <div className="text-left hidden sm:block">
+              <p className="text-xs font-bold text-slate-800 dark:text-white leading-none">{user?.fullName || "Ramesh Kumar"}</p>
+              <p className="text-[9px] text-muted-foreground font-medium mt-0.5 leading-none">Farmer</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── 2. Summary Diagnostics Row (4 Cards) ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {aLoading ? (
+          Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl" />)
+        ) : (
+          <>
+            {/* Health score gauge card */}
+            <Card className="if-card">
+              <CardContent className="p-3.5 flex items-center justify-between gap-2 h-full">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Farm Health Score</span>
+                  <div className="text-xl font-black text-foreground">
+                    {analytics?.overallScore ?? 82} <span className="text-xs font-bold text-muted-foreground">/100</span>
+                  </div>
+                  <button onClick={() => navigate("analytics")} className="text-[10px] font-bold text-blue-600 dark:text-blue-400 hover:underline text-left">
+                    View Details →
+                  </button>
+                </div>
+                <div className="shrink-0 scale-75 origin-right">
+                  <HealthScoreRing score={analytics?.overallScore ?? 82} size={76} />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Active Crops card */}
+            <Card className="if-card">
+              <CardContent className="p-3.5 flex items-center justify-between gap-2 h-full">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Active Crops</span>
+                  <div className="text-xl font-black text-foreground">
+                    {analytics?.totals.activeCrops ?? 5} <span className="text-xs font-medium text-muted-foreground">Growing</span>
+                  </div>
+                  <button onClick={() => navigate("crops")} className="text-[10px] font-bold text-blue-600 dark:text-blue-400 hover:underline text-left">
+                    View All →
+                  </button>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 flex items-center justify-center shrink-0">
+                  <Sprout className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Next Irrigation card */}
+            <Card className="if-card">
+              <CardContent className="p-3.5 flex items-center justify-between gap-2 h-full">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Next Irrigation</span>
+                  <div className="text-base font-black text-foreground">
+                    Tomorrow
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-semibold">18 July, 2025</p>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 flex items-center justify-center shrink-0">
+                  <Droplets className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Market Trend card */}
+            <Card className="if-card">
+              <CardContent className="p-3.5 flex items-center justify-between gap-2 h-full">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Market Trend</span>
+                  <div className="text-base font-black text-foreground flex items-center gap-1">
+                    Tomato <ArrowUpRight className="h-4.5 w-4.5 text-blue-600" />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-semibold">₹24.5 /kg</p>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
+      </div>
+
+      {/* ── 3. Large Middle Split Layout Row ── */}
+      <div className="grid gap-6 lg:grid-cols-12">
+        
+        {/* Left Column (2/3 width) - "Today's AI Recommendation" Card */}
+        <div className="lg:col-span-8">
+          <Card className="relative overflow-hidden h-full rounded-2xl border-none shadow-md bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 text-white min-h-[300px]">
+            {/* Visual crop background drone overlay */}
+            <div className="absolute right-0 bottom-0 top-0 w-full md:w-1/2 opacity-25 md:opacity-40 bg-[url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=600')] bg-cover bg-center pointer-events-none" />
+            <div className="absolute right-10 top-10 pointer-events-none animate-float hidden md:block">
+              <span className="inline-block px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs font-semibold backdrop-blur-sm text-blue-400">
+                🛸 Drone Spraying Active
+              </span>
+            </div>
+
+            <CardContent className="relative z-10 p-6 md:p-8 flex flex-col justify-between h-full space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                    <Sparkles className="h-4.5 w-4.5 animate-pulse" />
+                    Today's AI Recommendation
+                  </span>
+                  <p className="text-xs text-blue-100">
+                    Based on local weather, soil reports & active crop metrics
+                  </p>
+                </div>
+                
+                {/* Dynamically render top bullet recommendations */}
+                <div className="space-y-3">
+                  {pendingRecs.length > 0 ? (
+                    pendingRecs.map((r, i) => (
+                      <div key={r.id} className="flex items-start gap-2.5">
+                        <Check className="h-4 w-4 text-blue-400 shrink-0 mt-0.5 bg-blue-500/20 rounded-full p-0.5" />
+                        <span className="text-sm font-semibold text-slate-100 leading-normal">{r.description}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="flex items-start gap-2.5">
+                        <Check className="h-4 w-4 text-blue-400 shrink-0 mt-0.5 bg-blue-500/20 rounded-full p-0.5" />
+                        <span className="text-sm font-semibold text-slate-100 leading-normal">Irrigate your tomato field tomorrow morning.</span>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <Check className="h-4 w-4 text-blue-400 shrink-0 mt-0.5 bg-blue-500/20 rounded-full p-0.5" />
+                        <span className="text-sm font-semibold text-slate-100 leading-normal">Apply recommended organic nitrogen to soil.</span>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <Check className="h-4 w-4 text-blue-400 shrink-0 mt-0.5 bg-blue-500/20 rounded-full p-0.5" />
+                        <span className="text-sm font-semibold text-slate-100 leading-normal">Check for leaf curl or downy mildew scan alerts.</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                <Button onClick={() => navigate("advisory")} className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm">
+                  View Full Advisory
+                </Button>
+                <div className="text-right">
+                  <p className="text-[10px] text-blue-300 font-semibold uppercase tracking-wider">AI Confidence</p>
+                  <p className="text-lg font-black text-white leading-none">92%</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column (1/3 width) - "Farm Overview" Card */}
+        <div className="lg:col-span-4">
+          <Card className="if-card h-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-bold text-foreground">Farm Overview</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {[
+                { label: "Total Area", value: firstFarm ? `${firstFarm.areaAcres} Acres` : "12.5 Acres", icon: Tractor, color: "text-blue-600 bg-blue-50 dark:bg-blue-950/40" },
+                { label: "Soil Type", value: firstFarm?.soilType ? `${firstFarm.soilType.charAt(0) + firstFarm.soilType.slice(1).toLowerCase()} Soil` : "Red Soil", icon: Beaker, color: "text-amber-600 bg-amber-50 dark:bg-amber-950/40" },
+                { label: "Water Source", value: firstFarm?.waterSource ? (firstFarm.waterSource.charAt(0) + firstFarm.waterSource.slice(1).toLowerCase()) : "Borewell", icon: Droplets, color: "text-sky-600 bg-sky-50 dark:bg-sky-950/40" },
+                { label: "Farming Since", value: user?.farmingExp === "EXPERIENCED" ? "8 Years" : user?.farmingExp === "INTERMEDIATE" ? "4 Years" : "1 Year", icon: Sprout, color: "text-blue-600 bg-blue-50 dark:bg-blue-950/40" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3.5 pb-3 border-b border-border last:border-0 last:pb-0">
+                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${item.color}`}>
+                    <item.icon className="h-4.5 w-4.5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-muted-foreground font-semibold leading-none">{item.label}</p>
+                    <p className="text-sm font-bold text-foreground mt-1 leading-none">{item.value}</p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
+      </div>
+
+      {/* ── 4. Lower "Explore IntelliFarm" Capability Grid ── */}
+      <div className="space-y-3">
+        <h2 className="text-base font-bold text-slate-800 dark:text-white">Explore IntelliFarm</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            {
+              title: "Crop Advisory",
+              desc: "Get AI powered crop recommendations",
+              icon: Sprout,
+              view: "advisory" as const,
+              color: "bg-blue-500/10 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
+            },
+            {
+              title: "Soil Health Test",
+              desc: "Test your soil health and get insights",
+              icon: Beaker,
+              view: "soil-tests" as const,
+              color: "bg-amber-500/10 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400"
+            },
+            {
+              title: "Disease Detection",
+              desc: "Identify plant diseases instantly",
+              icon: Bug,
+              view: "disease" as const,
+              color: "bg-rose-500/10 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400"
+            },
+            {
+              title: "Irrigation Advisor",
+              desc: "Smart irrigation schedule for crops",
+              icon: Droplets,
+              view: "irrigation" as const,
+              color: "bg-blue-500/10 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
+            },
+            {
+              title: "Market Prices",
+              desc: "Live mandi prices & price trends",
+              icon: TrendingUp,
+              view: "market" as const,
+              color: "bg-violet-500/10 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400"
+            },
+            {
+              title: "Agri Marketplace",
+              desc: "Buy seeds, crop inputs & supplies",
+              icon: Wheat,
+              view: "inventory" as const,
+              color: "bg-indigo-500/10 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400"
+            },
+            {
+              title: "Government Schemes",
+              desc: "Find schemes & apply easily",
+              icon: Landmark,
+              view: "schemes" as const,
+              color: "bg-sky-500/10 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400"
+            },
+            {
+              title: "AI Assistant",
+              desc: "Ask anything about farming queries",
+              icon: MessageSquare,
+              view: "expert-connect" as const,
+              color: "bg-lime-500/10 text-lime-700 dark:bg-lime-950/40 dark:text-lime-400"
+            }
+          ].map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => navigate(item.view)}
+              className="flex items-start gap-3.5 p-4 rounded-2xl border border-border bg-white dark:bg-card text-left transition-all hover:shadow-md hover:border-blue-600/30 group"
+            >
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-bold text-xs ${item.color}`}>
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex justify-between items-center">
+                  <p className="text-xs font-bold text-slate-800 dark:text-white leading-none group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.title}</p>
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1.5 leading-normal">{item.desc}</p>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
 
     </div>

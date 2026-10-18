@@ -61,6 +61,7 @@ export const useAuth = create<AuthState>((set) => ({
       await api.post("/api/v1/auth/logout");
     } catch {}
     set({ user: null, view: "public" });
+    window.location.href = "/";
   },
   setView: (v) => set({ view: v }),
 }));

@@ -26,7 +26,7 @@ import {
   Github,
   Twitter,
   Facebook,
-  FlaskConical,
+  Beaker,
   Wallet,
   ShieldAlert,
   Wheat,
@@ -99,7 +99,7 @@ const FEATURES = [
     border: "border-orange-100 dark:border-orange-900/40",
   },
   {
-    icon: FlaskConical,
+    icon: Beaker,
     title: "Soil Testing",
     desc: "Log soil test reports with NPK, pH & micronutrients. Get auto fertility scores and fertilizer recommendations.",
     color: "bg-teal-50 text-teal-600 dark:bg-teal-950/50 dark:text-teal-400",
@@ -158,7 +158,7 @@ const STEPS = [
 const STATS = [
   { value: "15+", label: "Crops in database", icon: Wheat },
   { value: "27+", label: "Disease profiles", icon: Bug },
-  { value: "35+", label: "Fertilizer schedules", icon: FlaskConical },
+  { value: "35+", label: "Fertilizer schedules", icon: Beaker },
   { value: "10+", label: "Govt. schemes", icon: Landmark },
 ];
 

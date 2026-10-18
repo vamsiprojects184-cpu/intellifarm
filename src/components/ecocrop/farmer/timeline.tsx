@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  CalendarClock, Plus, Sprout, Droplets, FlaskConical, Bug, CloudRain, Scissors, Activity as ActivityIcon, Trash2,
+  CalendarClock, Plus, Sprout, Droplets, Beaker, Bug, CloudRain, Scissors, Activity as ActivityIcon, Trash2,
 } from "lucide-react";
 import { EmptyState } from "@/components/ecocrop/shared";
 import { ACTIVITY_TYPES, formatDate, timeAgo } from "@/components/ecocrop/constants";
@@ -24,8 +24,8 @@ import { ACTIVITY_TYPES, formatDate, timeAgo } from "@/components/ecocrop/consta
 const ACTIVITY_ICONS: Record<string, any> = {
   PLANTING: Sprout,
   IRRIGATION: Droplets,
-  FERTILIZER: FlaskConical,
-  PESTICIDE: FlaskConical,
+  FERTILIZER: Beaker,
+  PESTICIDE: Beaker,
   DISEASE_OBS: Bug,
   DISEASE_SCAN: Bug,
   HARVEST: Scissors,

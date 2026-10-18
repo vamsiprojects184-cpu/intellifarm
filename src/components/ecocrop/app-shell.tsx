@@ -1,204 +1,128 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState } from "react";
+import { useAuth } from "@/lib/auth-store";
+import { useNav } from "@/lib/nav-store";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
   Tractor,
-  Brain,
+  Sprout,
+  AlertTriangle,
   CloudSun,
   Droplets,
   Bug,
   TrendingUp,
   Landmark,
-  Users,
-  Activity,
   Bell,
+  CalendarClock,
+  ListTodo,
+  CalendarDays,
   Settings,
   User,
-  Menu,
   LogOut,
-  CalendarClock,
-  ShieldCheck,
+  Menu,
+  Brain,
   MessageSquare,
-  FlaskConical,
-  Wheat,
-  CalendarDays,
-  ShieldAlert,
-  Wallet,
-  ListTodo,
-  Map as MapIcon,
-  Sunrise,
-  BarChart3,
-  Wrench,
-  Package,
+  Search,
+  BookOpen,
+  MapIcon,
+  Beaker,
 } from "lucide-react";
-import { useAuth } from "@/lib/auth-store";
-import { useNav, type AppView } from "@/lib/nav-store";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { useState } from "react";
-import { Toaster } from "@/components/ui/sonner";
-import { FarmerViews } from "@/components/ecocrop/farmer/views";
-import { ExpertViews } from "@/components/ecocrop/expert/views";
-import { AdminViews } from "@/components/ecocrop/admin/views";
+import { FarmerViews } from "./farmer/views";
+import { ExpertViews } from "./expert/views";
+import { AdminViews } from "./admin/views";
 import { useT } from "@/lib/i18n-store";
 
-interface NavItem {
-  view: AppView;
-  label: string;
-  tKey: string;
-  icon: typeof LayoutDashboard;
-}
-
-interface NavSection {
-  title: string;
-  tKey: string;
-  items: NavItem[];
-}
-
-const FARMER_NAV_SECTIONS: NavSection[] = [
+const FARMER_NAV_SECTIONS = [
   {
-    title: "Overview",
-    tKey: "nav.overview",
+    title: "Operations",
+    tKey: "nav.operations",
     items: [
-      { view: "dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
-      { view: "advisory", label: "Daily Advisory", tKey: "nav.advisory", icon: Sunrise },
-      { view: "analytics", label: "Analytics", tKey: "nav.analytics", icon: Activity },
-    ],
-  },
-  {
-    title: "Farm Management",
-    tKey: "nav.farmManagement",
-    items: [
+      { view: "dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: Tractor },
       { view: "farms", label: "My Farms", tKey: "nav.farms", icon: Tractor },
-      { view: "crops", label: "Crops", tKey: "nav.crops", icon: Wheat },
+      { view: "crops", label: "Crops", tKey: "nav.crops", icon: Sprout },
       { view: "farm-map", label: "Farm Map", tKey: "nav.farmMap", icon: MapIcon },
       { view: "tasks", label: "Tasks", tKey: "nav.tasks", icon: ListTodo },
-      { view: "timeline", label: "Activity", tKey: "nav.timeline", icon: CalendarClock },
-    ],
+      { view: "timeline", label: "Activity Log", tKey: "nav.timeline", icon: CalendarClock },
+    ]
   },
   {
-    title: "Crop Intelligence",
+    title: "Intelligence",
     tKey: "nav.cropIntelligence",
     items: [
-      { view: "weather", label: "Weather", tKey: "nav.weather", icon: CloudSun },
-      { view: "irrigation", label: "Irrigation", tKey: "nav.irrigation", icon: Droplets },
+      { view: "advisory", label: "AI Recommendations", tKey: "nav.advisory", icon: Brain },
+      { view: "soil-tests", label: "Soil Health", tKey: "nav.soilTests", icon: Beaker },
+      { view: "weather", label: "Weather Forecast", tKey: "nav.weather", icon: CloudSun },
+      { view: "irrigation", label: "Irrigation Advisor", tKey: "nav.irrigation", icon: Droplets },
       { view: "disease", label: "Disease Scan", tKey: "nav.disease", icon: Bug },
-      { view: "soil-tests", label: "Soil Tests", tKey: "nav.soilTests", icon: FlaskConical },
-      { view: "pests", label: "Pest Control", tKey: "nav.pests", icon: ShieldAlert },
-      { view: "crop-calendar", label: "Crop Calendar", tKey: "nav.cropCalendar", icon: CalendarDays },
-    ],
+    ]
   },
   {
-    title: "Harvest & Finance",
-    tKey: "nav.harvestFinance",
+    title: "Market & Support",
+    tKey: "nav.marketSupport",
     items: [
-      { view: "harvests", label: "Harvests", tKey: "nav.harvests", icon: Wheat },
-      { view: "benchmark", label: "Yield Compare", tKey: "nav.benchmark", icon: BarChart3 },
-      { view: "expenses", label: "Expenses", tKey: "nav.expenses", icon: Wallet },
-      { view: "equipment", label: "Equipment", tKey: "nav.equipment", icon: Wrench },
-      { view: "inventory", label: "Inventory", tKey: "nav.inventory", icon: Package },
-    ],
-  },
-  {
-    title: "Resources",
-    tKey: "nav.resources",
-    items: [
-      { view: "market", label: "Market Prices", tKey: "nav.market", icon: TrendingUp },
-      { view: "schemes", label: "Govt. Schemes", tKey: "nav.schemes", icon: Landmark },
-      { view: "expert-connect", label: "Expert Connect", tKey: "nav.expertConnect", icon: MessageSquare },
-      { view: "notifications", label: "Notifications", tKey: "nav.notifications", icon: Bell },
-    ],
-  },
+      { view: "market", label: "Mandi Prices", tKey: "nav.market", icon: TrendingUp },
+      { view: "schemes", label: "Govt Schemes", tKey: "nav.schemes", icon: Landmark },
+      { view: "expert-connect", label: "Expert Consult", tKey: "nav.expertConnect", icon: MessageSquare },
+    ]
+  }
 ];
 
-const FARMER_NAV: NavItem[] = FARMER_NAV_SECTIONS.flatMap((s) => s.items);
+const EXPERT_NAV = [
+  { view: "dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: Tractor },
+  { view: "expert-connect", label: "Consultation Queue", tKey: "nav.expertConnect", icon: MessageSquare },
+  { view: "timeline", label: "My Responses", tKey: "nav.timeline", icon: CalendarClock },
+];
 
-const FARMER_NAV_SECONDARY: NavItem[] = [
-  { view: "profile", label: "Profile", tKey: "nav.profile", icon: User },
+const ADMIN_NAV = [
+  { view: "dashboard", label: "Overview", tKey: "nav.dashboard", icon: Tractor },
+  { view: "crops", label: "Crop Database", tKey: "nav.crops", icon: Sprout },
+  { view: "disease", label: "Disease Profile Registry", tKey: "nav.disease", icon: Bug },
+  { view: "market", label: "Mandi Price Feed", tKey: "nav.market", icon: TrendingUp },
+  { view: "schemes", label: "Govt Schemes Catalog", tKey: "nav.schemes", icon: Landmark },
+];
+
+const SECONDARY_NAV = [
+  { view: "profile", label: "My Profile", tKey: "nav.profile", icon: User },
   { view: "settings", label: "Settings", tKey: "nav.settings", icon: Settings },
-];
-
-const EXPERT_NAV: NavItem[] = [
-  { view: "expert-dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
-  { view: "consultations", label: "Consultations", tKey: "nav.expertConnect", icon: MessageSquare },
-  { view: "disease-cases", label: "Disease Cases", tKey: "nav.disease", icon: Bug },
-  { view: "expert-profile", label: "My Profile", tKey: "nav.profile", icon: User },
-];
-
-const ADMIN_NAV: NavItem[] = [
-  { view: "admin-dashboard", label: "Dashboard", tKey: "nav.dashboard", icon: LayoutDashboard },
-  { view: "admin-users", label: "Users", tKey: "nav.profile", icon: Users },
-  { view: "admin-farms", label: "Farms", tKey: "nav.farms", icon: Tractor },
-  { view: "admin-schemes", label: "Schemes", tKey: "nav.schemes", icon: Landmark },
-  { view: "admin-market", label: "Market Data", tKey: "nav.market", icon: TrendingUp },
-  { view: "admin-disease-db", label: "Disease DB", tKey: "nav.disease", icon: Bug },
-  { view: "admin-stats", label: "System Stats", tKey: "nav.analytics", icon: Activity },
 ];
 
 export function AppShell() {
   const { user, logout } = useAuth();
-  const { view, navigate } = useNav();
-  const t = useT();
+  const { view, setView } = useNav();
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  // default view per role — only reset when a role lands on another role's portal
-  useEffect(() => {
-    if (!user) return;
-    // Expert portal views (excluding farmer's "expert-connect")
-    const isExpertPortal =
-      view === "expert-dashboard" ||
-      view === "expert-profile" ||
-      view === "disease-cases" ||
-      view === "consultations" ||
-      view === "consultation-detail";
-    const isAdminPortal = view.startsWith("admin-");
-    const isFarmerPortal = !isExpertPortal && !isAdminPortal;
-    if (user.role === "EXPERT" && !isExpertPortal) navigate("expert-dashboard");
-    else if (user.role === "ADMIN" && !isAdminPortal) navigate("admin-dashboard");
-    else if (user.role === "FARMER" && !isFarmerPortal) navigate("dashboard");
-  }, [user, view, navigate]);
+  const t = useT();
 
   if (!user) return null;
 
-  const nav =
-    user.role === "EXPERT"
-      ? EXPERT_NAV
-      : user.role === "ADMIN"
-      ? ADMIN_NAV
-      : FARMER_NAV;
-  const secondary = user.role === "FARMER" ? FARMER_NAV_SECONDARY : [];
-
   const roleLabel =
-    user.role === "ADMIN" ? t("app.adminPortal") : user.role === "EXPERT" ? t("app.expertPortal") : t("app.farmerPortal");
+    user.role === "ADMIN" ? "Administrator" : user.role === "EXPERT" ? "Agricultural Expert" : "Farmer";
   const roleColor =
     user.role === "ADMIN"
-      ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
+      ? "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300"
       : user.role === "EXPERT"
-      ? "bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
-      : "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300";
+      ? "bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-950 dark:text-violet-300"
+      : "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300";
 
-  function handleNav(v: AppView) {
-    navigate(v);
+  const nav = user.role === "EXPERT" ? EXPERT_NAV : ADMIN_NAV;
+  const secondary = SECONDARY_NAV;
+
+  function handleNav(viewName: string) {
+    setView(viewName);
     setMobileOpen(false);
   }
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2 px-5">
+      <div className="flex h-16 items-center gap-2 px-5 border-b border-border">
         <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
           <Brain className="h-4 w-4" />
         </div>
         <div>
-          <p className="text-sm font-bold leading-none text-sidebar-foreground">Intelli<span className="text-blue-400">Farm</span></p>
-          <p className="text-[10px] text-sidebar-foreground/50">{roleLabel} Portal</p>
+          <p className="text-sm font-bold leading-none text-foreground">Intelli<span className="text-blue-600">Farm</span></p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">{roleLabel} Portal</p>
         </div>
       </div>
 
@@ -207,7 +131,7 @@ export function AppShell() {
           <>
             {FARMER_NAV_SECTIONS.map((section, si) => (
               <div key={section.title} className={si > 0 ? "mt-4" : ""}>
-                <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 opacity-80">
+                <p className="mb-1.5 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
                   {t(section.tKey)}
                 </p>
                 <div className="space-y-0.5">
@@ -219,7 +143,7 @@ export function AppShell() {
                         "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
                         view === item.view
                           ? "if-nav-active"
-                          : "if-nav text-slate-300 hover:text-white hover:bg-white/5"
+                          : "if-nav text-sidebar-foreground"
                       )}
                     >
                       <item.icon className="h-4 w-4 shrink-0" />
@@ -240,7 +164,7 @@ export function AppShell() {
                   "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
                   view === item.view
                     ? "if-nav-active"
-                    : "if-nav text-slate-300 hover:text-white hover:bg-white/5"
+                    : "if-nav text-sidebar-foreground"
                 )}
               >
                 <item.icon className="h-4 w-4 shrink-0" />
@@ -252,7 +176,7 @@ export function AppShell() {
 
         {secondary.length > 0 && (
           <>
-            <p className="mb-1.5 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 opacity-80">
+            <p className="mb-1.5 mt-4 px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
               Account
             </p>
             <div className="space-y-1">
@@ -264,7 +188,7 @@ export function AppShell() {
                     "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
                     view === item.view
                       ? "if-nav-active"
-                      : "if-nav text-slate-300 hover:text-white hover:bg-white/5"
+                      : "if-nav text-sidebar-foreground"
                   )}
                 >
                   <item.icon className="h-4 w-4 shrink-0" />
@@ -276,16 +200,16 @@ export function AppShell() {
         )}
       </nav>
 
-      <div className="mx-3 mb-3 rounded-xl border border-white/10 bg-white/5 p-2.5">
+      <div className="mx-3 mb-3 rounded-xl border border-border bg-slate-50/50 p-2.5 dark:bg-muted/10">
         <div className="flex items-center gap-3 p-1">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 font-bold text-sm text-white shadow-sm">
             {user.fullName.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-white">{user.fullName}</p>
-            <p className="truncate text-[11px] text-slate-400">{user.email}</p>
+            <p className="truncate text-sm font-bold text-foreground">{user.fullName}</p>
+            <p className="truncate text-[11px] text-muted-foreground">{user.email}</p>
           </div>
-          <Button size="icon" variant="ghost" className="text-slate-400 hover:text-white hover:bg-white/10" onClick={() => logout()} title="Logout">
+          <Button size="icon" variant="ghost" className="text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20" onClick={() => logout()} title="Logout">
             <LogOut className="h-4 w-4" />
           </Button>
         </div>
@@ -293,29 +217,17 @@ export function AppShell() {
     </div>
   );
 
-  // Bottom nav for mobile (max 5 items)
-  const bottomNav = nav.slice(0, 5);
-
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Desktop sidebar */}
-      <aside className="if-sidebar hidden w-64 shrink-0 lg:block">
+    <div className="flex h-screen overflow-hidden bg-background">
+      {/* Sidebar: Desktop */}
+      <aside className="if-sidebar hidden w-64 shrink-0 lg:block border-r border-border">
         {SidebarContent}
       </aside>
 
-      {/* Mobile sidebar */}
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="w-72 p-0">
-          <SheetHeader className="sr-only">
-            <SheetTitle>Navigation</SheetTitle>
-          </SheetHeader>
-          {SidebarContent}
-        </SheetContent>
-      </Sheet>
-
-      <div className="flex flex-1 flex-col">
-        {/* Mobile top bar */}
-        <header className="if-topbar sticky top-0 z-30 flex h-14 items-center gap-3 px-4 lg:hidden">
+      {/* Main content area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Mobile Header */}
+        <header className="if-topbar flex h-16 shrink-0 items-center gap-4 px-4 lg:hidden border-b border-border">
           <Button
             variant="ghost"
             size="icon"
@@ -339,33 +251,20 @@ export function AppShell() {
             {user.role === "ADMIN" && <AdminViews />}
           </div>
         </main>
-
-        {/* Mobile bottom nav */}
-        <nav className="if-bottomnav fixed bottom-0 left-0 right-0 z-40 lg:hidden">
-          <div className="grid grid-cols-5">
-            {bottomNav.map((item) => (
-              <button
-                key={item.view}
-                onClick={() => handleNav(item.view)}
-                className={cn(
-                  "flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium transition-colors",
-                  view === item.view
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                <span className="truncate">{item.label.split(" ")[0]}</span>
-              </button>
-            ))}
-          </div>
-        </nav>
       </div>
 
-      <Toaster richColors position="top-right" />
+      {/* Mobile Drawer Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setMobileOpen(false)}
+          />
+          <aside className="relative flex w-64 max-w-xs flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
+            {SidebarContent}
+          </aside>
+        </div>
+      )}
     </div>
   );
 }
-
-// keep icon imports referenced
-export const _icons = { ShieldCheck };

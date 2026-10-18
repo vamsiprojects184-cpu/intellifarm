@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  FlaskConical, Plus, Trash2, Loader2, Beaker, Gauge, Leaf, AlertCircle,
+  Plus, Trash2, Loader2, Beaker, Gauge, Leaf, AlertCircle,
 } from "lucide-react";
 import { EmptyState } from "@/components/ecocrop/shared";
 import { formatDate, timeAgo } from "@/components/ecocrop/constants";
@@ -81,7 +81,7 @@ export function SoilTestsView() {
       ) : !tests?.length ? (
         <Card><CardContent>
           <EmptyState
-            icon={FlaskConical}
+            icon={Beaker}
             title="No soil tests yet"
             description="Log your soil test reports to track NPK, pH, and fertility levels. Get fertilizer recommendations automatically."
           />
@@ -94,7 +94,7 @@ export function SoilTestsView() {
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2">
-                      <FlaskConical className="h-5 w-5 text-primary" />
+                      <Beaker className="h-5 w-5 text-primary" />
                       <h3 className="font-semibold">{t.farm?.name ?? "Farm"}</h3>
                       <Badge className={FERTILITY_STYLES[t.fertility] ?? FERTILITY_STYLES.MEDIUM}>
                         {t.fertility} fertility

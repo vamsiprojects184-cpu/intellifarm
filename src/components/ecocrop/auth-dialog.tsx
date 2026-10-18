@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-store";
 import { Brain, Loader2, Sparkles, ShieldCheck, Check, User, Users, Landmark } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   open: boolean;
@@ -39,6 +40,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
   const [tab, setTab] = useState<"login" | "register">(defaultTab);
   const [loading, setLoading] = useState(false);
   const { fetchUser } = useAuth();
+  const queryClient = useQueryClient();
 
   // login state
   const [loginEmail, setLoginEmail] = useState("");
@@ -67,6 +69,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
         email: loginEmail,
         password: loginPassword,
       });
+      queryClient.clear();
       await fetchUser();
       onOpenChange(false);
       toast.success("Welcome back to IntelliFarm!");
@@ -85,6 +88,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
         ...reg,
         farmSizeAcres: reg.farmSizeAcres ? Number(reg.farmSizeAcres) : undefined,
       });
+      queryClient.clear();
       await fetchUser();
       onOpenChange(false);
       toast.success("Welcome to IntelliFarm! Your journey begins.");
@@ -109,6 +113,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
     setLoading(true);
     try {
       await api.post("/api/v1/auth/login", { email, password });
+      queryClient.clear();
       await fetchUser();
       onOpenChange(false);
       toast.success("Welcome back to IntelliFarm!");
@@ -125,18 +130,18 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
         <div className="grid w-full md:grid-cols-12 min-h-[500px]">
           
           {/* Left Column: Visual branding sidebar (hidden on mobile) */}
-          <div className="relative hidden md:flex md:col-span-5 bg-gradient-to-br from-emerald-950 via-green-950 to-emerald-900 p-8 text-white flex-col justify-between overflow-hidden">
+          <div className="relative hidden md:flex md:col-span-5 bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 p-8 text-white flex-col justify-between overflow-hidden">
             {/* Ambient glows */}
-            <div className="absolute -left-10 -top-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl" />
+            <div className="absolute -left-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl" />
             <div className="absolute -right-20 bottom-10 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl" />
             
             {/* Header branding */}
             <div className="relative z-10 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-green-600 text-white shadow-md">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
                 <Brain className="h-4.5 w-4.5" />
               </div>
               <span className="text-lg font-bold tracking-tight">
-                Intelli<span className="text-emerald-400">Farm</span>
+                Intelli<span className="text-blue-400">Farm</span>
               </span>
             </div>
 
@@ -153,7 +158,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                   { icon: Landmark, text: "Govt Scheme Insights" }
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2.5">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-emerald-400">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-blue-400">
                       <item.icon className="h-4 w-4" />
                     </div>
                     <span className="text-sm font-medium text-slate-300">{item.text}</span>
@@ -219,7 +224,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="farmer@intellifarm.in"
-                      className="rounded-lg border-border focus-visible:ring-green-600 bg-muted/20"
+                      className="rounded-lg border-border focus-visible:ring-blue-600 bg-muted/20"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -233,10 +238,10 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="rounded-lg border-border focus-visible:ring-green-600 bg-muted/20"
+                      className="rounded-lg border-border focus-visible:ring-blue-600 bg-muted/20"
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-green-700 hover:bg-green-600 text-white font-semibold rounded-lg shadow-sm py-2 animate-fade-up" disabled={loading}>
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-sm py-2 animate-fade-up" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Sign In
                   </Button>
@@ -318,7 +323,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                     <Label className="text-xs font-bold text-foreground/80">Farm Size (acres) — optional</Label>
                     <Input type="number" step="0.1" value={reg.farmSizeAcres} onChange={(e) => setReg({ ...reg, farmSizeAcres: e.target.value })} placeholder="2.5" className="rounded-lg border-border bg-muted/20" />
                   </div>
-                  <Button type="submit" className="w-full bg-green-700 hover:bg-green-600 text-white font-semibold rounded-lg shadow-sm py-2" disabled={loading}>
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-sm py-2" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Create Account
                   </Button>
@@ -338,7 +343,7 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                     name: "Ramesh Kumar",
                     email: "farmer@ecocrop.farm",
                     pass: "farmer123",
-                    avatarColor: "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
+                    avatarColor: "bg-blue-500/10 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
                   },
                   {
                     role: "Expert",
@@ -359,13 +364,13 @@ export function AuthDialog({ open, onOpenChange, defaultTab = "login" }: Props) 
                     key={profile.role}
                     type="button"
                     onClick={() => quickLogin(profile.email, profile.pass)}
-                    className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-card text-left transition-all hover:bg-muted/40 hover:border-green-600/30 group"
+                    className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-card text-left transition-all hover:bg-muted/40 hover:border-blue-600/30 group"
                   >
                     <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${profile.avatarColor}`}>
                       {profile.name.substring(0, 2)}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-foreground group-hover:text-green-700 transition-colors leading-none">{profile.role}</p>
+                      <p className="text-xs font-bold text-foreground group-hover:text-blue-600 transition-colors leading-none">{profile.role}</p>
                       <p className="text-[10px] text-muted-foreground truncate mt-0.5">{profile.name}</p>
                     </div>
                   </button>
