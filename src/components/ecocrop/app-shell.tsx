@@ -91,7 +91,8 @@ const SECONDARY_NAV = [
 
 export function AppShell() {
   const { user, logout } = useAuth();
-  const { view, setView } = useNav();
+  const view = useNav((s) => s.view);
+  const setView = (v: any) => useNav.getState().navigate(v);
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = useT();
 

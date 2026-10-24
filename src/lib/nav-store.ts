@@ -52,12 +52,19 @@ interface NavState {
   view: AppView;
   params: Record<string, string>;
   navigate: (view: AppView, params?: Record<string, string>) => void;
+  setView: (view: AppView, params?: Record<string, string>) => void;
 }
 
 export const useNav = create<NavState>((set) => ({
   view: "dashboard",
   params: {},
   navigate: (view, params = {}) => {
+    set({ view, params });
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  },
+  setView: (view, params = {}) => {
     set({ view, params });
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
