@@ -1,0 +1,19 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d4ed8"/>
+      <stop offset="100%" style="stop-color:#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="wh" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#bfdbfe"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <line x1="16" y1="27" x2="16" y2="10" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+  <ellipse cx="11.5" cy="14" rx="3.5" ry="5.5" fill="url(#wh)" transform="rotate(-30 11.5 14)" opacity="0.95"/>
+  <ellipse cx="20.5" cy="14" rx="3.5" ry="5.5" fill="url(#wh)" transform="rotate(30 20.5 14)" opacity="0.95"/>
+  <ellipse cx="16" cy="9.5" rx="2.8" ry="5" fill="url(#wh)" opacity="0.95"/>
+  <ellipse cx="12.5" cy="19.5" rx="2.5" ry="4" fill="url(#wh)" transform="rotate(-25 12.5 19.5)" opacity="0.8"/>
+  <ellipse cx="19.5" cy="19.5" rx="2.5" ry="4" fill="url(#wh)" transform="rotate(25 19.5 19.5)" opacity="0.8"/>
+</svg>

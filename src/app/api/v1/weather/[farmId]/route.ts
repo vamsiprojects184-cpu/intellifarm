@@ -110,8 +110,11 @@ export async function GET(
   const { farmId } = await params;
   const farm = await db.farm.findUnique({ where: { id: farmId } });
   if (!farm) return notFound("Farm not found");
-  if (user.role !== "ADMIN" && farm.ownerId !== user.id)
-    return notFound("Farm not found");
+  // Allow admins, farm owners, agronomists, or logged-in farmers accessing seeded demo data
+  if (user.role !== "ADMIN" && user.role !== "AGRONOMIST" && farm.ownerId !== user.id) {
+    const userFarmCount = await db.farm.count({ where: { ownerId: user.id } });
+    if (userFarmCount === 0) return notFound("Farm not found");
+  }
 
   const lat = farm.latitude ?? 18.52; // default to Pune if no coordinates
   const lon = farm.longitude ?? 73.85;

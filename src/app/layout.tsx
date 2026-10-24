@@ -33,7 +33,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "IntelliFarm Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/favicon.svg",
   },
   openGraph: {
     title: "IntelliFarm — AI-Powered Smart Farming Platform",
