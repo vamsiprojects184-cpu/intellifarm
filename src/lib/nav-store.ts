@@ -64,3 +64,7 @@ export const useNav = create<NavState>((set) => ({
     }
   },
 }));
+
+export const navigate = (view: AppView, params: Record<string, string> = {}) => {
+  useNav.getState().navigate(view, params);
+};

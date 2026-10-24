@@ -50,7 +50,7 @@ interface Farm {
 
 export function FarmsView() {
   const qc = useQueryClient();
-  const navigate = useNav((s) => s.navigate);
+  const navigate = (v: any, p?: any) => useNav.getState().navigate(v, p);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Farm | null>(null);
 

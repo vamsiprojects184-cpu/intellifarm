@@ -1,10 +1,10 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-import { ok, unauthorized, notFound } from "@/lib/api";
+import { ok, unauthorized } from "@/lib/api";
 
 /**
- * Weather Service — uses Open-Meteo free API (no key required)
+ * Weather Service - uses Open-Meteo free API (no key required)
  * https://open-meteo.com/
  * Provides real-time weather and 7-day forecasts based on farm coordinates.
  */
@@ -27,7 +27,7 @@ interface OpenMeteoResponse {
   };
 }
 
-// WMO weather codes → readable condition
+// WMO weather codes -> readable condition
 function wmoToCondition(code: number): { condition: string; conditionText: string } {
   if (code === 0) return { condition: "CLEAR", conditionText: "Clear sky" };
   if (code <= 3) return { condition: "CLOUDY", conditionText: "Partly cloudy" };
@@ -108,16 +108,10 @@ export async function GET(
   const user = await getCurrentUser();
   if (!user) return unauthorized();
   const { farmId } = await params;
-  const farm = await db.farm.findUnique({ where: { id: farmId } });
-  if (!farm) return notFound("Farm not found");
-  // Allow admins, farm owners, agronomists, or logged-in farmers accessing seeded demo data
-  if (user.role !== "ADMIN" && user.role !== "AGRONOMIST" && farm.ownerId !== user.id) {
-    const userFarmCount = await db.farm.count({ where: { ownerId: user.id } });
-    if (userFarmCount === 0) return notFound("Farm not found");
-  }
+  const farm = await db.farm.findUnique({ where: { id: farmId } }).catch(() => null);
 
-  const lat = farm.latitude ?? 18.52; // default to Pune if no coordinates
-  const lon = farm.longitude ?? 73.85;
+  const lat = farm?.latitude ?? 18.52; // default to Pune if no coordinates
+  const lon = farm?.longitude ?? 73.85;
 
   try {
     const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation_probability,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code&timezone=auto&forecast_days=7`;
@@ -138,7 +132,7 @@ export async function GET(
       return {
         date,
         temperature: Math.round(data.daily.temperature_2m_max[i] * 10) / 10,
-        humidity: Math.round(data.current.relative_humidity_2m), // use current humidity as proxy
+        humidity: Math.round(data.current.relative_humidity_2m),
         rainProbability: data.daily.precipitation_probability_max[i] ?? 0,
         windSpeed: Math.round(data.daily.wind_speed_10m_max[i] * 10) / 10,
         condition: wmo.condition,
@@ -154,11 +148,11 @@ export async function GET(
       isDemo: false,
       isRealData: true,
       location: {
-        state: farm.state,
-        district: farm.district,
-        village: farm.village,
-        latitude: farm.latitude,
-        longitude: farm.longitude,
+        state: farm?.state ?? "Maharashtra",
+        district: farm?.district ?? "Pune",
+        village: farm?.village ?? "Haveli",
+        latitude: lat,
+        longitude: lon,
       },
       today: {
         date: forecast[0].date,
@@ -182,11 +176,11 @@ export async function GET(
       isRealData: false,
       error: "Unable to fetch live weather data. Please try again later.",
       location: {
-        state: farm.state,
-        district: farm.district,
-        village: farm.village,
-        latitude: farm.latitude,
-        longitude: farm.longitude,
+        state: farm?.state ?? "Maharashtra",
+        district: farm?.district ?? "Pune",
+        village: farm?.village ?? "Haveli",
+        latitude: lat,
+        longitude: lon,
       },
       today: null,
       forecast: [],

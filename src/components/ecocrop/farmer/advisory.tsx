@@ -19,7 +19,7 @@ const PRIORITY_RING: Record<string, string> = {
 };
 
 export function AdvisoryView() {
-  const navigate = useNav((s) => s.navigate);
+  const navigate = (v: any, p?: any) => useNav.getState().navigate(v, p);
 
   const { data, isLoading } = useQuery({
     queryKey: ["daily-advisory"],

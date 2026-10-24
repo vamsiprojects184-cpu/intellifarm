@@ -13,7 +13,7 @@ import { useNav } from "@/lib/nav-store";
 import { timeAgo } from "@/components/ecocrop/constants";
 
 export function AdminDashboard() {
-  const { navigate } = useNav();
+  const navigate = (v: any, p?: any) => useNav.getState().navigate(v, p);
   const { data: stats, isLoading } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: () => api.get<any>("/api/v1/admin/stats"),

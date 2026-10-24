@@ -40,7 +40,7 @@ import { useT } from "@/lib/i18n-store";
 
 export function FarmerDashboard() {
   const qc = useQueryClient();
-  const navigate = useNav((s) => s.navigate);
+  const navigate = (v: any, p?: any) => useNav.getState().navigate(v, p);
   const { user } = useAuth();
   const t = useT();
 

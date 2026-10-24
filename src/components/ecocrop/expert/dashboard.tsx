@@ -12,7 +12,7 @@ import { timeAgo } from "@/components/ecocrop/constants";
 import { useNav } from "@/lib/nav-store";
 
 export function ExpertDashboard() {
-  const { navigate } = useNav();
+  const navigate = (v: any, p?: any) => useNav.getState().navigate(v, p);
   const { user } = useAuth();
   const { data: consultations, isLoading } = useQuery({
     queryKey: ["expert-consultations"],
